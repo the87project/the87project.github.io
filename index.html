@@ -14,6 +14,8 @@
   --line-soft:#D8D5CE;
   --ink:#141414;
   --ink-soft:#6B675E;
+  --bus-red:#D62828;
+  --bus-gold:#E8A93A;
   --g1:#C93B32; --g2:#2E5FB7; --g3:#2AA198; --g4:#E28A2B; --g5:#4C9A3F; --g6:#D9B417; --grey:#A9A69E;
 }
 *{box-sizing:border-box; margin:0;}
@@ -27,9 +29,13 @@ body{
 
 /* ---------- NAV ---------- */
 nav{
-  border-bottom:2px solid var(--line);
+  border-bottom:4px solid var(--line);
   background:var(--bg);
   position:sticky; top:0; z-index:50;
+  background-image:linear-gradient(90deg, var(--bus-red) 0 12%, var(--bus-gold) 12% 16%, transparent 16%);
+  background-repeat:no-repeat;
+  background-position:bottom;
+  background-size:100% 4px;
 }
 .nav-inner{
   max-width:1100px; margin:0 auto;
@@ -42,6 +48,7 @@ nav{
   letter-spacing:.01em;
   text-transform:uppercase;
 }
+.brand::before{content:'🚌 '; }
 .nav-note{font-size:13px; color:var(--ink-soft); font-weight:500;}
 
 /* ---------- HERO ---------- */
@@ -49,6 +56,20 @@ nav{
   max-width:1100px; margin:0 auto;
   padding:56px 24px 36px;
   border-bottom:1px solid var(--line-soft);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'87';
+  position:absolute;
+  top:-38px; right:-6px;
+  font-family:'Archivo Black',sans-serif;
+  font-size:220px;
+  line-height:1;
+  color:var(--bus-red);
+  opacity:.06;
+  pointer-events:none;
+  transform:rotate(-6deg);
 }
 .hero h1{
   font-family:'Archivo Black',sans-serif;
@@ -80,13 +101,14 @@ nav{
   text-transform:uppercase;
   background:var(--bg);
   border:2px solid var(--line);
+  border-radius:999px;
   color:var(--ink);
-  padding:7px 14px;
+  padding:7px 16px;
   cursor:pointer;
   transition:all .15s ease;
 }
-.tab:hover{background:#F2F0EA;}
-.tab.active{background:var(--line); color:#fff;}
+.tab:hover{background:#FCE9E4; border-color:var(--bus-red); color:var(--bus-red); transform:translateY(-1px);}
+.tab.active{background:var(--bus-red); border-color:var(--bus-red); color:#fff;}
 
 /* ---------- ENTRIES ---------- */
 main{
@@ -96,7 +118,14 @@ main{
 }
 .entry{
   border:2px solid var(--line);
+  border-radius:16px;
   background:var(--paper);
+  overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.entry:hover{
+  transform:translateY(-3px);
+  box-shadow:6px 6px 0 var(--bus-red);
 }
 .entry-head{
   padding:22px 26px 16px;
@@ -136,7 +165,7 @@ main{
   display:flex; gap:12px;
 }
 .card:last-child{border-right:none;}
-.card-bar{width:5px; border-radius:2px; flex-shrink:0;}
+.card-bar{width:6px; border-radius:4px; flex-shrink:0;}
 .card-label{
   font-family:'Archivo',sans-serif;
   font-weight:700;
@@ -176,18 +205,30 @@ main{
   text-transform:uppercase;
   background:var(--bg);
   border:2px solid var(--line);
-  padding:6px 12px;
+  border-radius:999px;
+  padding:6px 14px;
   cursor:pointer;
   color:var(--ink);
   display:flex; align-items:center; gap:6px;
-  transition:all .15s ease;
+  transition:background .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
 }
-.react-btn:hover{background:#F2F0EA;}
-.react-btn.picked{background:var(--line); color:#fff;}
-.react-btn:disabled{opacity:.6; cursor:default;}
+.react-btn:hover{background:#FCE9E4; border-color:var(--bus-red); color:var(--bus-red);}
+.react-btn.picked{background:var(--bus-red); border-color:var(--bus-red); color:#fff;}
+.react-btn.bump{animation:bump .35s ease;}
+@keyframes bump{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.18);}
+  100%{transform:scale(1);}
+}
+.react-btn:disabled{opacity:.85; cursor:default;}
 .react-count{font-weight:700;}
 
-footer{border-top:2px solid var(--line); padding:32px 24px 48px;}
+footer{border-top:4px solid var(--line); padding:32px 24px 48px; position:relative;}
+footer::before{
+  content:'';
+  position:absolute; top:-4px; left:0; right:0; height:4px;
+  background:linear-gradient(90deg, var(--bus-red) 0 12%, var(--bus-gold) 12% 16%, transparent 16%);
+}
 .footer-inner{
   max-width:1100px; margin:0 auto;
   font-size:13px; color:var(--ink-soft); line-height:1.7; max-width:760px;
@@ -437,7 +478,7 @@ function roomSvg(groups, seedNum){
   svg += `<rect x="${busL}" y="${busTop}" width="${busR-busL}" height="${busBot-busTop}" rx="24" fill="#FFFFFF" stroke="#141414" stroke-width="2.5"/>`;
   svg += `<line x1="${busL}" y1="${divider}" x2="${busR}" y2="${divider}" stroke="#141414" stroke-width="2"/>`;
   // route plate
-  svg += `<rect x="${busL+18}" y="${busTop-16}" width="64" height="30" rx="6" fill="#141414"/>`;
+  svg += `<rect x="${busL+18}" y="${busTop-16}" width="64" height="30" rx="10" fill="#D62828" stroke="#141414" stroke-width="2"/>`;
   svg += `<text x="${busL+50}" y="${busTop+5}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="17" fill="#fff">87</text>`;
   // door
   svg += `<line x1="${busR-70}" y1="${divider}" x2="${busR-70}" y2="${busBot}" stroke="#D8D5CE" stroke-width="2"/>`;
@@ -446,9 +487,9 @@ function roomSvg(groups, seedNum){
   svg += `<text x="${busL+16}" y="${divider+22}" font-family="Archivo, sans-serif" font-weight="600" font-size="11" letter-spacing="1.5" fill="#A9A69E">LOWER DECK · 47</text>`;
   // wheels
   svg += `<circle cx="220" cy="${busBot}" r="21" fill="#fff" stroke="#141414" stroke-width="2.5"/>`;
-  svg += `<circle cx="220" cy="${busBot}" r="8" fill="none" stroke="#141414" stroke-width="1.6"/>`;
+  svg += `<circle cx="220" cy="${busBot}" r="8" fill="#E8A93A" stroke="#141414" stroke-width="1.6"/>`;
   svg += `<circle cx="780" cy="${busBot}" r="21" fill="#fff" stroke="#141414" stroke-width="2.5"/>`;
-  svg += `<circle cx="780" cy="${busBot}" r="8" fill="none" stroke="#141414" stroke-width="1.6"/>`;
+  svg += `<circle cx="780" cy="${busBot}" r="8" fill="#E8A93A" stroke="#141414" stroke-width="1.6"/>`;
   // ground
   svg += `<line x1="20" y1="${busBot+21}" x2="${W-20}" y2="${busBot+21}" stroke="#141414" stroke-width="2"/>`;
 
@@ -502,7 +543,8 @@ function bumpReaction(id, kind, btnEl, countEl){
   const counts = getReactionCounts(id);
   counts[kind] += 1;
   countEl.textContent = counts[kind];
-  btnEl.classList.add('picked');
+  btnEl.classList.add('picked', 'bump');
+  btnEl.addEventListener('animationend', () => btnEl.classList.remove('bump'), {once:true});
   btnEl.disabled = true;
 }
 
