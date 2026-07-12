@@ -294,6 +294,81 @@ const ENTRIES = [
     source: 'YouGov, UK business leaders survey 2026',
     url: 'https://yougov.com/en-gb/articles/47618-risks-and-opportunities-around-ai'
   },
+  {
+    id: 'assisted-dying-moreincommon',
+    cat: 'health', catLabel: 'Health & Ethics', date: '2026',
+    question: 'Should assisted dying be legal in the UK, in principle?',
+    groups: [
+      {label:'Support in principle', pct:65, color:'#2AA198'},
+      {label:'Oppose', pct:13, color:'#C93B32'},
+      {label:'Undecided', pct:22, color:'#A9A69E'},
+    ],
+    analysis: "A separate, much larger poll — over 17,000 people, roughly 200 times the size of a bus — lands on the same side as the YouGov figure above, but with a bigger undecided section. Twenty of the eighty-seven here still haven't settled, seated between two much larger camps that mostly agree with each other. Two pollsters, two different sample sizes, and the same basic shape of opinion.",
+    source: 'More in Common: Assisted Dying – Public Opinion Tracker',
+    url: 'https://www.moreincommon.org.uk/'
+  },
+  {
+    id: 'unpaid-care',
+    cat: 'health', catLabel: 'Health & Ethics', date: '2023',
+    question: 'How many people provide unpaid care for a family member or friend?',
+    groups: [
+      {label:'Provide 50+ hrs of care a week', pct:3, color:'#C93B32'},
+      {label:'Provide unpaid care, fewer hours', pct:6, color:'#E28A2B'},
+      {label:'Provide no unpaid care', pct:91, color:'#A9A69E'},
+    ],
+    analysis: "About one in eleven on this bus is quietly doing a second unwaged job — roughly 5 million people across England and Wales provide unpaid care for a family member or friend. A third of that group, the row seated at the front, are doing it for 50 hours a week or more: close to a full-time job on top of whatever else fills their day.",
+    source: 'ONS: Unpaid care, England and Wales (Census 2021)',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthcaresystem/bulletins/unpaidcareenglandandwales/census2021'
+  },
+  {
+    id: 'party-membership',
+    cat: 'society', catLabel: 'Society', date: '2025',
+    question: 'How many UK adults are members of a political party?',
+    groups: [
+      {label:'Member of a political party', pct:2, color:'#2E5FB7'},
+      {label:'Not a member of any party', pct:98, color:'#A9A69E'},
+    ],
+    analysis: "One or two people on the whole bus — that's the entire membership of party politics in this country, and it barely moves regardless of who's leading which party or what the news cycle looks like. Nearly everyone else's political opinions, including everything else measured on this site, are formed entirely outside of party membership.",
+    source: 'House of Commons Library: Political party membership statistics',
+    url: 'https://commonslibrary.parliament.uk/research-briefings/sn05125/'
+  },
+  {
+    id: 'fraud-victims',
+    cat: 'society', catLabel: 'Society', date: '2020',
+    question: 'How many adults are victims of fraud each year?',
+    groups: [
+      {label:'Victim of fraud in the past year', pct:7, color:'#C93B32'},
+      {label:'Not a victim in the past year', pct:93, color:'#A9A69E'},
+    ],
+    analysis: "Six people on this bus — about one in fifteen passengers — were defrauded in the last twelve months alone. It's one of the few crime categories still climbing while most others fall, and unlike most crime it follows its victims onto this bus fairly evenly across age, income and postcode.",
+    source: 'GOV.UK: Economic Crime Survey 2020',
+    url: 'https://www.gov.uk/government/publications/economic-crime-survey-2020'
+  },
+  {
+    id: 'farage-sleaze',
+    cat: 'society', catLabel: 'Society', date: '2026',
+    question: "Do Britons see Nigel Farage as 'sleazy'?",
+    groups: [
+      {label:'Yes, very sleazy', pct:56, color:'#C93B32'},
+      {label:'Yes, somewhat sleazy', pct:17, color:'#E28A2B'},
+      {label:'No / unsure', pct:27, color:'#A9A69E'},
+    ],
+    analysis: "Almost three in four on the bus call Farage sleazy, and most of those don't hedge — they go straight to 'very.' The number worth sitting with is the front row of Reform UK's own voters: even 40% of them agree with the description. Perceptions of Reform as a party have followed the same path, its 'sleazy' rating up 18 points in two years, enough that the public now rates the party as dodgier than Labour.",
+    source: 'YouGov',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'government-sleaze',
+    cat: 'society', catLabel: 'Society', date: '2026',
+    question: 'Do people think British governments are generally sleazy?',
+    groups: [
+      {label:'Say governments are generally sleazy', pct:77, color:'#C93B32'},
+      {label:'Disagree or unsure', pct:23, color:'#A9A69E'},
+    ],
+    analysis: "This isn't really about one party or one scandal — more than three-quarters of the bus have written off the institution of government itself as sleazy, regardless of who's driving. Individual leaders fare a little better than the office they hold: Keir Starmer is seen as sleazy by 51%, Zack Polanski by 42%, and Kemi Badenoch and Andy Burnham both sit around 34–36%. Every one of them still polls cleaner than 'government' as a general idea.",
+    source: 'YouGov',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
 ];
 
 const TOTAL = 87;
