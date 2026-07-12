@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 87 — Public opinion, one full bus at a time</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#FFFFFF;
+  --paper:#FDFCFA;
+  --line:#141414;
+  --line-soft:#D8D5CE;
+  --ink:#141414;
+  --ink-soft:#6B675E;
+  --g1:#C93B32; --g2:#2E5FB7; --g3:#2AA198; --g4:#E28A2B; --g5:#4C9A3F; --g6:#D9B417; --grey:#A9A69E;
+}
+*{box-sizing:border-box; margin:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',-apple-system,sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- NAV ---------- */
+nav{
+  border-bottom:2px solid var(--line);
+  background:var(--bg);
+  position:sticky; top:0; z-index:50;
+}
+.nav-inner{
+  max-width:1100px; margin:0 auto;
+  padding:16px 24px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+}
+.brand{
+  font-family:'Archivo Black',sans-serif;
+  font-size:19px;
+  letter-spacing:.01em;
+  text-transform:uppercase;
+}
+.nav-note{font-size:13px; color:var(--ink-soft); font-weight:500;}
+
+/* ---------- HERO ---------- */
+.hero{
+  max-width:1100px; margin:0 auto;
+  padding:56px 24px 36px;
+  border-bottom:1px solid var(--line-soft);
+}
+.hero h1{
+  font-family:'Archivo Black',sans-serif;
+  text-transform:uppercase;
+  font-size:clamp(28px, 4.6vw, 46px);
+  line-height:1.12;
+  letter-spacing:.005em;
+  max-width:860px;
+}
+.hero h1 span{color:var(--ink-soft); font-family:'Archivo',sans-serif; font-weight:600;}
+.hero p{
+  margin-top:18px;
+  font-size:16.5px;
+  color:var(--ink-soft);
+  max-width:640px;
+}
+
+/* ---------- TABS ---------- */
+.tabs{
+  max-width:1100px; margin:0 auto;
+  padding:20px 24px 4px;
+  display:flex; gap:8px; flex-wrap:wrap;
+}
+.tab{
+  font-family:'Archivo',sans-serif;
+  font-weight:600;
+  font-size:12.5px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  background:var(--bg);
+  border:2px solid var(--line);
+  color:var(--ink);
+  padding:7px 14px;
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.tab:hover{background:#F2F0EA;}
+.tab.active{background:var(--line); color:#fff;}
+
+/* ---------- ENTRIES ---------- */
+main{
+  max-width:1100px; margin:0 auto;
+  padding:28px 24px 80px;
+  display:grid; gap:40px;
+}
+.entry{
+  border:2px solid var(--line);
+  background:var(--paper);
+}
+.entry-head{
+  padding:22px 26px 16px;
+  border-bottom:1px solid var(--line-soft);
+  display:flex; justify-content:space-between; gap:18px; align-items:baseline; flex-wrap:wrap;
+}
+.entry h2{
+  font-family:'Archivo Black',sans-serif;
+  text-transform:uppercase;
+  font-size:20px;
+  line-height:1.25;
+  max-width:700px;
+}
+.entry-meta{
+  font-family:'Archivo',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  white-space:nowrap;
+}
+
+.room-wrap{padding:8px 14px 0;}
+.room{width:100%; display:block;}
+
+/* ---------- STAT CARDS ---------- */
+.cards{
+  display:flex; flex-wrap:wrap;
+  border-top:1px solid var(--line-soft);
+  margin-top:10px;
+}
+.card{
+  flex:1 1 150px;
+  padding:16px 18px;
+  border-right:1px solid var(--line-soft);
+  display:flex; gap:12px;
+}
+.card:last-child{border-right:none;}
+.card-bar{width:5px; border-radius:2px; flex-shrink:0;}
+.card-label{
+  font-family:'Archivo',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  line-height:1.35;
+}
+.card-num{
+  font-family:'Archivo Black',sans-serif;
+  font-size:30px;
+  line-height:1.1;
+}
+.card-sub{font-size:12.5px; color:var(--ink-soft); font-weight:500;}
+
+.analysis{
+  padding:18px 26px;
+  font-size:15px;
+  color:#3A382F;
+  line-height:1.7;
+  max-width:760px;
+  border-top:1px solid var(--line-soft);
+}
+.entry-footer{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  padding:14px 26px 18px;
+  border-top:1px solid var(--line-soft);
+}
+.source-line{font-size:13px; color:var(--ink-soft);}
+.source-line a{color:var(--ink); font-weight:600; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:2px;}
+.reactions{display:flex; gap:8px;}
+.react-btn{
+  font-family:'Archivo',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  background:var(--bg);
+  border:2px solid var(--line);
+  padding:6px 12px;
+  cursor:pointer;
+  color:var(--ink);
+  display:flex; align-items:center; gap:6px;
+  transition:all .15s ease;
+}
+.react-btn:hover{background:#F2F0EA;}
+.react-btn.picked{background:var(--line); color:#fff;}
+.react-btn:disabled{opacity:.6; cursor:default;}
+.react-count{font-weight:700;}
+
+footer{border-top:2px solid var(--line); padding:32px 24px 48px;}
+.footer-inner{
+  max-width:1100px; margin:0 auto;
+  font-size:13px; color:var(--ink-soft); line-height:1.7; max-width:760px;
+}
+
+@media (max-width:640px){
+  .entry h2{font-size:17px;}
+  .card{flex:1 1 45%;}
+  .card-num{font-size:24px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="brand">The 87</span>
+    <span class="nav-note">What Britain actually thinks — one full double-decker at a time</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Put 87 people on one double-decker <span>and ask them the big questions.</span></h1>
+  <p>A full London double-decker carries 87 people — 40 on the upper deck, 47 below. Every poll here is redrawn as that one busload, seated together by what they actually said. Data from published public polling, primarily YouGov.</p>
+</section>
+
+<div class="tabs" id="tabs">
+  <button class="tab active" data-cat="all">All</button>
+  <button class="tab" data-cat="tech">Technology &amp; AI</button>
+  <button class="tab" data-cat="health">Health &amp; Ethics</button>
+  <button class="tab" data-cat="economy">Economy</button>
+  <button class="tab" data-cat="society">Society</button>
+</div>
+
+<main id="entries"></main>
+
+<footer>
+  <div class="footer-inner">
+    <strong>About the numbers.</strong> Figures are drawn from publicly reported polling (primarily YouGov). Each question is redrawn as one full double-decker bus of 87 people — the capacity of a New Routemaster (40 upper deck, 47 below) — so one passenger represents ~1.15% of respondents; rounding applies, and no group that registered in the source polling is ever rounded off the bus entirely. All commentary is original and independent, and every entry links to its source. Built as a personal data &amp; policy project.
+  </div>
+</footer>
+
+<script>
+const ENTRIES = [
+  {
+    id: 'ai-safety',
+    cat: 'tech', catLabel: 'Technology & AI', date: 'Jan 2026',
+    question: 'Should AI developers have to prove their systems are safe before release?',
+    groups: [
+      {label:'Yes — prove it first', pct:87, color:'#2E5FB7'},
+      {label:'No / unsure', pct:13, color:'#A9A69E'},
+    ],
+    analysis: "Almost the whole bus is seated on one side. And in the same polling, only around one person in ten says they'd trust tech executives to regulate themselves. That's not really a technology question — it's a trust question, and right now the trust section of the bus is nearly empty.",
+    source: 'YouGov / TIME, Jan 2026',
+    url: 'https://time.com/7213096/uk-public-ai-law-poll/'
+  },
+  {
+    id: 'ai-tax',
+    cat: 'economy', catLabel: 'Economy', date: 'May 2026',
+    question: 'Should work carried out by AI be taxed differently to human labour?',
+    groups: [
+      {label:'Support an AI tax', pct:47, color:'#4C9A3F'},
+      {label:'Undecided', pct:33, color:'#A9A69E'},
+      {label:'Oppose', pct:20, color:'#C93B32'},
+    ],
+    analysis: "Nearly half the bus backs a levy on AI work — a striking number for a policy that barely exists as a mainstream proposal yet. But watch the undecided crowd in the middle of the bus: twenty-nine passengers still working out what fairness looks like once machines are doing paid work.",
+    source: 'YouGov, May 2026',
+    url: 'https://yougov.com/en-gb/articles/54709-how-do-britons-think-ai-will-impact-the-uk'
+  },
+  {
+    id: 'assisted-dying',
+    cat: 'health', catLabel: 'Health & Ethics', date: 'Jan 2026',
+    question: 'Should assisted dying be legal in the UK, in principle?',
+    groups: [
+      {label:'Support in principle', pct:76, color:'#2AA198'},
+      {label:'Oppose', pct:14, color:'#C93B32'},
+      {label:'Unsure', pct:10, color:'#A9A69E'},
+    ],
+    analysis: "What stands out isn't the size of the majority — it's how still this bus is. The split has barely moved across years of polling and multiple rounds of parliamentary debate, which suggests settled sentiment rather than a reaction to any one news cycle.",
+    source: 'YouGov, Jan 2026',
+    url: 'https://theweekinpolls.substack.com/p/assisted-dying-what-the-polls-say'
+  },
+  {
+    id: 'smartphones-focus',
+    cat: 'society', catLabel: 'Society', date: '2026',
+    question: "Do smartphones harm society's ability to focus?",
+    groups: [
+      {label:'Yes, they harm focus', pct:76, color:'#E28A2B'},
+      {label:'Disagree or unsure', pct:24, color:'#A9A69E'},
+    ],
+    analysis: "Sixty-six of the eighty-seven on this bus say the device is hurting our attention — and nearly all of them have one in their pocket while they say it. Agreement on the diagnosis, with little sign of a change in behaviour to match.",
+    source: 'YouGov, UK media consumption trends 2026',
+    url: 'https://yougov.com/en-gb/search?q_type=articles'
+  },
+  {
+    id: 'business-ai-risk',
+    cat: 'economy', catLabel: 'Economy', date: '2026',
+    question: 'Do business leaders see AI regulation itself as a business risk?',
+    groups: [
+      {label:'Cite future regulation as a key risk', pct:50, color:'#D9B417'},
+      {label:'Did not cite it', pct:50, color:'#A9A69E'},
+    ],
+    analysis: "This bus splits clean down the middle — but notice what's missing from the worry list entirely: job losses rank near the bottom of what decision-makers flag. What keeps them up at night isn't AI replacing people; it's not knowing what rules they'll have to comply with next.",
+    source: 'YouGov, UK business leaders survey 2026',
+    url: 'https://yougov.com/en-gb/articles/47618-risks-and-opportunities-around-ai'
+  },
+];
+
+const TOTAL = 87;
+const container = document.getElementById('entries');
+const tabs = document.querySelectorAll('.tab');
+let currentFilter = 'all';
+
+// deterministic pseudo-random for stable jitter
+function seeded(seed){
+  let s = seed;
+  return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+}
+
+// --- illustrated characters ---
+const SKIN = ['#F1C7A8','#E0AC7E','#C68B59','#9C6B43','#7A4E30','#5C3A22'];
+const HAIRC = ['#1E1E1E','#4A3222','#8C6239','#B0641F','#C9C4BA','#67493B'];
+
+function shade(hex, f){
+  const n = parseInt(hex.slice(1),16);
+  let r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  r=Math.min(255,Math.max(0,Math.round(r*f)));
+  g=Math.min(255,Math.max(0,Math.round(g*f)));
+  b=Math.min(255,Math.max(0,Math.round(b*f)));
+  return '#'+((r<<16)|(g<<8)|b).toString(16).padStart(6,'0');
+}
+
+function personSvg(x, y, color, rand, scale){
+  const skin = SKIN[Math.floor(rand()*SKIN.length)];
+  const hair = HAIRC[Math.floor(rand()*HAIRC.length)];
+  const shirt = shade(color, 0.85 + rand()*0.35);
+  const trouser = rand() < 0.5 ? '#2A2A2A' : '#4B4640';
+  const hairstyle = Math.floor(rand()*4);
+  const S = 'stroke="#141414" stroke-width="0.9" stroke-linejoin="round"';
+  let p = `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${scale})">`;
+  // legs
+  p += `<rect x="-2.7" y="3" width="2" height="7.4" rx="0.9" fill="${trouser}" ${S}/>`;
+  p += `<rect x="0.7" y="3" width="2" height="7.4" rx="0.9" fill="${trouser}" ${S}/>`;
+  // arms
+  p += `<rect x="-4.6" y="-5" width="1.8" height="7.6" rx="0.9" fill="${shade(shirt,0.9)}" ${S}/>`;
+  p += `<rect x="2.8" y="-5" width="1.8" height="7.6" rx="0.9" fill="${shade(shirt,0.9)}" ${S}/>`;
+  // torso
+  p += `<path d="M -3.2 -5.8 Q 0 -7.6 3.2 -5.8 L 3 3.6 L -3 3.6 Z" fill="${shirt}" ${S}/>`;
+  // head
+  p += `<circle cx="0" cy="-10.6" r="3.3" fill="${skin}" ${S}/>`;
+  // hair variants
+  if(hairstyle===0){ // short cap
+    p += `<path d="M -3.2 -11.2 Q 0 -15.4 3.2 -11.2 Q 0 -13.4 -3.2 -11.2 Z" fill="${hair}" ${S}/>`;
+  } else if(hairstyle===1){ // curly
+    p += `<circle cx="-2" cy="-13" r="1.5" fill="${hair}" ${S}/><circle cx="0" cy="-13.8" r="1.6" fill="${hair}" ${S}/><circle cx="2" cy="-13" r="1.5" fill="${hair}" ${S}/>`;
+  } else if(hairstyle===2){ // bun
+    p += `<path d="M -3.2 -11 Q 0 -14.8 3.2 -11 Q 0 -12.8 -3.2 -11 Z" fill="${hair}" ${S}/><circle cx="0" cy="-15" r="1.3" fill="${hair}" ${S}/>`;
+  } else { // longer hair
+    p += `<path d="M -3.4 -11 Q 0 -15.2 3.4 -11 L 3.6 -6.5 L 2.2 -7.5 L 2.4 -11 Q 0 -13 -2.4 -11 L -2.2 -7.5 L -3.6 -6.5 Z" fill="${hair}" ${S}/>`;
+  }
+  p += `</g>`;
+  return p;
+}
+
+function roomSvg(groups, seedNum){
+  const W = 1000, H = 330;
+  const rand = seeded(seedNum);
+  let svg = `<svg class="room" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A double-decker bus of 87 passengers grouped by opinion">`;
+
+  // ----- bus body -----
+  const busL = 48, busR = 952, busTop = 52, busBot = 288, divider = 172;
+  svg += `<rect x="${busL}" y="${busTop}" width="${busR-busL}" height="${busBot-busTop}" rx="24" fill="#FFFFFF" stroke="#141414" stroke-width="2.5"/>`;
+  svg += `<line x1="${busL}" y1="${divider}" x2="${busR}" y2="${divider}" stroke="#141414" stroke-width="2"/>`;
+  // route plate
+  svg += `<rect x="${busL+18}" y="${busTop-16}" width="64" height="30" rx="6" fill="#141414"/>`;
+  svg += `<text x="${busL+50}" y="${busTop+5}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="17" fill="#fff">87</text>`;
+  // door
+  svg += `<line x1="${busR-70}" y1="${divider}" x2="${busR-70}" y2="${busBot}" stroke="#D8D5CE" stroke-width="2"/>`;
+  // deck labels
+  svg += `<text x="${busL+16}" y="${busTop+24}" font-family="Archivo, sans-serif" font-weight="600" font-size="11" letter-spacing="1.5" fill="#A9A69E">UPPER DECK · 40</text>`;
+  svg += `<text x="${busL+16}" y="${divider+22}" font-family="Archivo, sans-serif" font-weight="600" font-size="11" letter-spacing="1.5" fill="#A9A69E">LOWER DECK · 47</text>`;
+  // wheels
+  svg += `<circle cx="220" cy="${busBot}" r="21" fill="#fff" stroke="#141414" stroke-width="2.5"/>`;
+  svg += `<circle cx="220" cy="${busBot}" r="8" fill="none" stroke="#141414" stroke-width="1.6"/>`;
+  svg += `<circle cx="780" cy="${busBot}" r="21" fill="#fff" stroke="#141414" stroke-width="2.5"/>`;
+  svg += `<circle cx="780" cy="${busBot}" r="8" fill="none" stroke="#141414" stroke-width="1.6"/>`;
+  // ground
+  svg += `<line x1="20" y1="${busBot+21}" x2="${W-20}" y2="${busBot+21}" stroke="#141414" stroke-width="2"/>`;
+
+  // ----- counts with min-1 guarantee -----
+  let counts = groups.map(g => Math.max(1, Math.round((g.pct/100)*TOTAL)));
+  let diff = counts.reduce((a,b)=>a+b,0) - TOTAL;
+  while(diff !== 0){
+    const idx = counts.indexOf(Math.max(...counts));
+    counts[idx] += diff > 0 ? -1 : 1;
+    diff += diff > 0 ? -1 : 1;
+  }
+
+  // ----- 87 seat positions: upper 2x20, lower 24+23 -----
+  const seats = [];
+  const SC = 1.5;
+  function rowSeats(n, y, xPad){
+    const span = (busR - 30) - (busL + 30) - xPad*2;
+    const step = span / (n - 1);
+    for(let i=0;i<n;i++) seats.push({x: busL + 30 + xPad + i*step, y});
+  }
+  rowSeats(20, 98, 60);   // upper back row
+  rowSeats(20, 146, 60);  // upper front row
+  rowSeats(24, 216, 0);   // lower back row
+  rowSeats(23, 264, 10);  // lower front row
+
+  // ----- fill seats group by group -----
+  let seatIdx = 0;
+  groups.forEach((g) => {
+    const n = counts[groups.indexOf(g)];
+    for(let k=0;k<n;k++){
+      const s = seats[seatIdx++];
+      const jx = (rand() - .5) * 5;
+      const jy = (rand() - .5) * 4;
+      const sc = SC * (0.95 + rand() * 0.1);
+      svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc);
+    }
+  });
+
+  svg += `</svg>`;
+  return {svg, counts};
+}
+
+const reactionCounts = {};
+
+function getReactionCounts(id){
+  if(!reactionCounts[id]) reactionCounts[id] = {surprised:0, expected:0};
+  return reactionCounts[id];
+}
+
+function bumpReaction(id, kind, btnEl, countEl){
+  const counts = getReactionCounts(id);
+  counts[kind] += 1;
+  countEl.textContent = counts[kind];
+  btnEl.classList.add('picked');
+  btnEl.disabled = true;
+}
+
+function render(){
+  container.innerHTML = '';
+  const visible = ENTRIES.filter(e => currentFilter==='all' || e.cat===currentFilter);
+  for(let i=0;i<visible.length;i++){
+    const e = visible[i];
+    const wrap = document.createElement('article');
+    wrap.className = 'entry';
+
+    const {svg, counts} = roomSvg(e.groups, 42 + i*7);
+
+    const cardsHtml = e.groups.map((g, gi) => `
+      <div class="card">
+        <div class="card-bar" style="background:${g.color}"></div>
+        <div>
+          <div class="card-label">${g.label}</div>
+          <div class="card-num">${counts[gi]}</div>
+          <div class="card-sub">people &middot; ${g.pct}%</div>
+        </div>
+      </div>
+    `).join('');
+
+    wrap.innerHTML = `
+      <div class="entry-head">
+        <h2>${e.question}</h2>
+        <span class="entry-meta">${e.catLabel} &middot; ${e.date}</span>
+      </div>
+      <div class="room-wrap">${svg}</div>
+      <div class="cards">${cardsHtml}</div>
+      <p class="analysis">${e.analysis}</p>
+      <div class="entry-footer">
+        <div class="source-line">Source: <a href="${e.url}" target="_blank" rel="noopener">${e.source}</a></div>
+        <div class="reactions">
+          <button class="react-btn" data-kind="surprised">😮 Surprised <span class="react-count">0</span></button>
+          <button class="react-btn" data-kind="expected">🤝 Figured <span class="react-count">0</span></button>
+        </div>
+      </div>
+    `;
+    container.appendChild(wrap);
+
+    const rcounts = getReactionCounts(e.id);
+    wrap.querySelectorAll('.react-btn').forEach(btn=>{
+      const kind = btn.getAttribute('data-kind');
+      const countEl = btn.querySelector('.react-count');
+      countEl.textContent = rcounts[kind];
+      btn.addEventListener('click', ()=> bumpReaction(e.id, kind, btn, countEl));
+    });
+  }
+}
+
+tabs.forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    tabs.forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    currentFilter = tab.getAttribute('data-cat');
+    render();
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>
