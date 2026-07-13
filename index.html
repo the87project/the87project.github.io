@@ -259,7 +259,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 
 <section class="hero">
   <h1>Put 87 people on one double-decker <span>and ask them the big questions.</span></h1>
-  <p>A standard London double-decker bus seats exactly 87 people: 40 on the upper deck and 47 on the lower deck. By mapping abstract public opinion data to these physical seats, we turn cold percentages into a tangible, human-scale reality.</p>
+  <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.</p>
 </section>
 
 <div class="tabs" id="tabs">
@@ -541,7 +541,7 @@ function roomSvg(groups, seedNum){
 
   // deck labels (sit above the roofline, clear of the passenger rows)
   svg += `<text x="${busL}" y="${busTop-24}" font-family="Archivo, sans-serif" font-weight="600" font-size="12" letter-spacing="1" fill="#83898F">Upper deck &middot; 40 people</text>`;
-  svg += `<text x="${busL+260}" y="${busTop-24}" font-family="Archivo, sans-serif" font-weight="600" font-size="12" letter-spacing="1" fill="#83898F">Lower deck &middot; 47 people</text>`;
+  svg += `<text x="${busL+260}" y="${busTop-24}" font-family="Archivo, sans-serif" font-weight="600" font-size="12" letter-spacing="1" fill="#83898F">Lower deck &middot; 47 people (22 seated, 25 standing)</text>`;
 
   // wheels
   const wheel1 = busL + (seatAreaR-busL) * 0.2, wheel2 = seatAreaR - 55;
@@ -561,28 +561,36 @@ function roomSvg(groups, seedNum){
     diff += diff > 0 ? -1 : 1;
   }
 
-  // ----- 87 seat positions: upper 2x20, lower 24+23, within the seating area (excludes cab) -----
+  // ----- 87 places, matching a real Routemaster: 40 seated up, 22 seated + 25 standing below -----
   const seats = [];
   const SC = 1.5;
-  function rowSeats(n, y, xPad){
+  function rowSeats(n, y, xPad, seated){
     const span = (seatAreaR - 26) - (busL + 26) - xPad*2;
     const step = span / (n - 1);
-    for(let i=0;i<n;i++) seats.push({x: busL + 26 + xPad + i*step, y});
+    for(let i=0;i<n;i++) seats.push({x: busL + 26 + xPad + i*step, y, seated});
   }
-  rowSeats(20, 98, 40);   // upper back row
-  rowSeats(20, 150, 40);  // upper front row
-  rowSeats(24, 216, 0);   // lower back row
-  rowSeats(23, 264, 8);   // lower front row
+  rowSeats(20, 98, 40, true);    // upper back row — seated
+  rowSeats(20, 150, 40, true);   // upper front row — seated
+  rowSeats(22, 216, 30, true);   // lower back row — 22 seated
+  rowSeats(25, 264, 4, false);   // lower front row — 25 standing, packed tighter
 
-  // ----- fill seats group by group -----
+  // simple side-view chair: seat back + pad, drawn behind the passenger
+  function chairSvg(x, y, scale){
+    return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${scale})">`
+      + `<path d="M -8 -9.5 L -8 6.8 L 4.8 6.8 L 4.8 3.4 L -5 3.4 L -5 -9.5 Z" fill="#E4E1D6" stroke="#9A968A" stroke-width="0.8" stroke-linejoin="round"/>`
+      + `</g>`;
+  }
+
+  // ----- fill places group by group -----
   let seatIdx = 0;
   groups.forEach((g) => {
     const n = counts[groups.indexOf(g)];
     for(let k=0;k<n;k++){
       const s = seats[seatIdx++];
-      const jx = (rand() - .5) * 5;
+      const jx = (rand() - .5) * (s.seated ? 4 : 6);
       const jy = (rand() - .5) * 4;
       const sc = SC * (0.95 + rand() * 0.1);
+      if(s.seated) svg += chairSvg(s.x + jx, s.y + jy, sc);
       svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc);
     }
   });
