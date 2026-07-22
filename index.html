@@ -268,6 +268,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   <button class="tab" data-cat="health">Health &amp; Ethics</button>
   <button class="tab" data-cat="economy">Economy</button>
   <button class="tab" data-cat="society">Society</button>
+  <button class="tab" data-cat="politics">Politics</button>
   <button class="tab tab-about" data-cat="about">About</button>
 </div>
 
@@ -470,6 +471,111 @@ const ENTRIES = [
     analysis: "This bus splits almost evenly between two readings of the same country: 35 passengers who feel Englishness is quietly under-celebrated, and 32 who think the current level is about right. It's one of the tighter divides on this site — closer than assisted dying, closer than AI safety — which is exactly what makes identity questions so politically live: neither camp can claim to be the obvious majority.",
     source: 'More in Common',
     url: 'https://www.moreincommon.org.uk/'
+  },
+  {
+    id: 'eu-rejoin',
+    cat: 'politics', catLabel: 'Politics', date: 'Jun 2026',
+    question: 'Would Britain vote to rejoin the EU?',
+    groups: [
+      {label:'Rejoin', pct:55, color:'#2E5FB7'},
+      {label:'Stay out', pct:34, color:'#C93B32'},
+      {label:'Undecided', pct:11, color:'#A9A69E'},
+    ],
+    analysis: "A decade on from the referendum, this bus has quietly changed its mind: 47 passengers would now vote to rejoin against 30 who'd stay out — almost the mirror image of 2016. It fits the pattern More in Common has tracked, with support for rejoining rising across nearly every voter segment since the vote. But before treating this as settled, read the next entry.",
+    source: 'YouGov, 2–3 June 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'eu-optouts',
+    cat: 'politics', catLabel: 'Politics', date: 'Jun 2026',
+    question: 'And if rejoining meant losing our old opt-outs?',
+    groups: [
+      {label:'Support rejoining', pct:35, color:'#2E5FB7'},
+      {label:'Oppose', pct:43, color:'#C93B32'},
+      {label:'Undecided', pct:22, color:'#A9A69E'},
+    ],
+    analysis: "Same bus, same month, one condition added — and the majority flips. Tell people that rejoining likely means the euro and Schengen rather than Britain's old opt-outs, and support drops twenty points from the entry above, from 55% to 35%, with opposition now the largest group on board. The rejoin majority is real, but it's a majority for rejoining on terms that are no longer on offer.",
+    source: 'YouGov, June 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'voting-intention',
+    cat: 'politics', catLabel: 'Politics', date: 'Jul 2026',
+    question: 'If there were an election tomorrow?',
+    groups: [
+      {label:'Reform UK', pct:25, color:'#12B6CF'},
+      {label:'Conservative', pct:21, color:'#0087DC'},
+      {label:'Labour', pct:20, color:'#DC241F'},
+      {label:'Green', pct:13, color:'#6AB023'},
+      {label:'Liberal Democrat', pct:12, color:'#FAA61A'},
+      {label:"Others / don't know", pct:9, color:'#A9A69E'},
+    ],
+    analysis: "No one owns this bus. The leading party carries just 23 of 87 passengers, the 2024 landslide winner has slipped to third, and five parties each hold a meaningful section of seats. Whatever your view of any single party, the structural story is the same: Britain's two-party bus has become a five-party one, and no one has worked out what a parliament elected from it looks like.",
+    source: 'YouGov / The Times, 5–6 July 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'monarchy',
+    cat: 'politics', catLabel: 'Politics', date: 'Jan 2026',
+    question: 'Should the UK keep the monarchy?',
+    groups: [
+      {label:'Keep the monarchy', pct:64, color:'#D9B417'},
+      {label:'Elected head of state', pct:23, color:'#2E5FB7'},
+      {label:"Don't know", pct:13, color:'#A9A69E'},
+    ],
+    analysis: "A comfortable majority — but the number depends on who's asking: Ipsos put 'keep' at just 55% in March 2026, nine points below YouGov's figure, and that pollster gap is part of the story. So is age. Only 45% of 18–24s want to keep the monarchy against 84% of over-65s — meaning the institution's long-term majority rests on today's young changing their minds the way previous generations did.",
+    source: 'YouGov, January 2026',
+    url: 'https://yougov.com/en-gb/articles/53895-royal-family-favourability-trackers-january-2026'
+  },
+  {
+    id: 'water-nationalisation',
+    cat: 'economy', catLabel: 'Economy', date: 'May 2026',
+    question: 'Who should run the water companies?',
+    groups: [
+      {label:'Public sector', pct:82, color:'#2E5FB7'},
+      {label:'Private companies', pct:8, color:'#C93B32'},
+      {label:"Don't know", pct:10, color:'#A9A69E'},
+    ],
+    analysis: "This is what near-unanimity looks like: 71 of 87 passengers want water in public hands, and just 7 are prepared to defend the current private model. Very few questions in British polling produce a split like this across party lines — renationalising water is less a left-right argument than a settled public verdict waiting for a government to act on it.",
+    source: 'YouGov, May 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'social-media-ban',
+    cat: 'society', catLabel: 'Society', date: 'Jun 2026',
+    question: 'Ban under-16s from social media (via age verification)?',
+    groups: [
+      {label:'Support a ban', pct:69, color:'#4C9A3F'},
+      {label:'Oppose / unsure', pct:31, color:'#A9A69E'},
+    ],
+    analysis: "Sixty of 87 back the ban in principle — but the same Ipsos polling finds support falls to 50% the moment it means everyone, adults included, uploading ID to prove their age. The condition changes the answer: people want children protected, and are much less sure they want to hand over their own documents to do it. (Ipsos published the headline support figure without a full oppose/unsure split, so the remainder rides here as a single grey group.)",
+    source: 'Ipsos, 19–22 June 2026',
+    url: 'https://www.ipsos.com/en-uk/2-3-support-social-media-ban-under-16s-though-support-softens-if-it-requires-nationwide-id'
+  },
+  {
+    id: 'net-zero',
+    cat: 'society', catLabel: 'Society', date: 'Jun 2026',
+    question: 'Should the UK try to meet net zero by 2050?',
+    groups: [
+      {label:'Yes, keep the target', pct:63, color:'#4C9A3F'},
+      {label:'No / scrap it', pct:29, color:'#C93B32'},
+      {label:"Don't know", pct:8, color:'#A9A69E'},
+    ],
+    analysis: "For all the noise around net zero politics, the target itself still carries a clear majority: 55 passengers to 25. What's changed is the size of the opposition — a quarter of the bus now wants the target scrapped outright, which is a real constituency rather than a fringe. The argument has moved from whether climate action matters to what it's allowed to cost.",
+    source: 'YouGov / ECIU, June 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'immigration-decade',
+    cat: 'politics', catLabel: 'Politics', date: 'Jan 2026',
+    question: 'Has immigration over the last decade been too high?',
+    groups: [
+      {label:'Too high', pct:70, color:'#C93B32'},
+      {label:"About right / too low / don't know", pct:30, color:'#A9A69E'},
+    ],
+    analysis: "Sixty-one passengers say the last decade's immigration was too high — and the direction of travel matters more than the level: this figure stood at 55% at the start of 2020, a fifteen-point rise in six years that spans every major party's voters. (YouGov's tracker headline doesn't publish the full split of the remainder, so the other 26 passengers ride as a single grey group covering 'about right', 'too low' and 'don't know'.)",
+    source: 'YouGov tracker, January 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
   },
 ];
 
