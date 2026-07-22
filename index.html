@@ -182,6 +182,49 @@ main[hidden]{display:none;}
 .legend-item{display:flex; align-items:center; gap:6px;}
 .legend-swatch{width:8px; height:8px; flex-shrink:0;}
 
+/* ---------- CABINET PAIRINGS ---------- */
+.pair-head{
+  display:flex; align-items:center; gap:12px;
+  margin:26px 0 4px;
+}
+.badge{
+  font-family:'Archivo',sans-serif;
+  font-weight:700;
+  font-size:10.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:3px 11px;
+  border-radius:999px;
+  border:1px solid;
+}
+.badge-out{color:#6B675E; border-color:#C9CDD1; background:#EFEEE9;}
+.badge-in{color:#fff; border-color:var(--accent); background:var(--accent);}
+.badge-stay{color:#fff; border-color:#2AA198; background:#2AA198;}
+.pair-name{
+  font-family:'Archivo',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.pair-net{
+  font-family:'Archivo Black',sans-serif;
+  font-size:14px;
+  color:var(--ink);
+}
+.handover{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  margin:34px 0 2px;
+  font-family:'Archivo',sans-serif;
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  color:var(--slate);
+}
+.handover-arrow{font-size:22px; line-height:1; color:var(--accent);}
+
 /* ---------- STAT CARDS ---------- */
 .cards{
   display:flex; flex-wrap:wrap;
@@ -308,7 +351,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 
 <footer>
   <div class="footer-inner">
-    <strong>About the numbers.</strong> Figures are drawn from publicly reported polling. Each question is redrawn as one full double-decker bus of 87 people — the capacity of a New Routemaster (40 upper deck, 47 below) — so one passenger represents ~1.15% of respondents; rounding applies, and no group that registered in the source polling is ever rounded off the bus entirely. All commentary is original and independent, and every entry links to its source. Built as a personal data &amp; policy project.
+    <strong>About the numbers.</strong> Figures are drawn from publicly reported polling. Each question is redrawn as one full double-decker bus of 87 people — the capacity of a New Routemaster (40 upper deck, 47 below) — so one passenger represents ~1.15% of respondents; rounding applies, and no group that registered in the source polling is ever rounded off the bus entirely. All commentary is original and independent, and every entry links to its source. Cabinet favourability figures mix YouGov and Ipsos polling, whose question wording differs — they are not directly comparable. Built as a personal data &amp; policy project.
   </div>
 </footer>
 
@@ -600,81 +643,156 @@ const ENTRIES = [
     url: 'https://yougov.com/en-gb/topics/politics'
   },
   {
-    id: 'cabinet-burnham',
+    id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
-    question: 'Andy Burnham — Prime Minister',
+    question: 'Prime Minister',
     groups: [
-      {label:'Favourable', pct:34, color:'#4C9A3F'},
+      {label:'Favourable', pct:34, color:'#2E5FB7'},
       {label:'Unfavourable', pct:38, color:'#C93B32'},
       {label:"Don't know", pct:28, color:'#A9A69E'},
     ],
-    analysis: "Net −4. Barely underwater — and against the man he replaces, that is a forty-one-point improvement: Keir Starmer's final pre-resignation reading was 22 favourable to 67 unfavourable, net −45. Note the 24 passengers who still hold no view of the new Prime Minister: after a decade of leaders the public knew all too well, room to make a first impression is itself a political asset.",
+    pairing: [
+      {name:'Keir Starmer', status:'outgoing', groups:[
+        {label:'Favourable', pct:22, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:67, color:'#C93B32'},
+        {label:"Don't know", pct:11, color:'#A9A69E'},
+      ]},
+      {name:'Andy Burnham', status:'incoming', groups:[
+        {label:'Favourable', pct:34, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:38, color:'#C93B32'},
+        {label:"Don't know", pct:28, color:'#A9A69E'},
+      ]},
+    ],
+    analysis: "Burnham arrives at net −4, the least-unpopular front-line politician YouGov polled; Starmer leaves at −45, an exit in the same territory as Rishi Sunak (−53) and Boris Johnson (−40) at theirs. Prime ministers rarely leave office popular — what's unusual is a successor starting this close to level, with 24 of 87 passengers still to make up their minds about him.",
     source: 'YouGov, June 2026',
     url: 'https://yougov.com/en-gb/topics/politics'
   },
   {
-    id: 'cabinet-healey',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'May 2026',
-    question: 'John Healey — Chancellor',
+    id: 'cabinet-chancellor',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Mar–Jun 2026',
+    question: 'Chancellor',
     groups: [
-      {label:'Favourable', pct:13, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:15, color:'#C93B32'},
-      {label:"Don't know", pct:72, color:'#A9A69E'},
+      {label:'Favourable', pct:24, color:'#2E5FB7'},
+      {label:'Unfavourable', pct:35, color:'#C93B32'},
+      {label:"Don't know", pct:41, color:'#A9A69E'},
     ],
-    analysis: "Net −2 — arithmetically the least unpopular member of the new cabinet. But look at the grey: 63 of 87 passengers have no opinion of the new Chancellor at all. That is low recognition, not quiet approval, and it makes this the least certain figure in the section. Even so, next to the outgoing Chancellor — Rachel Reeves left at roughly net −51 — an unknown quantity is an upgrade.",
-    source: 'YouGov, May 2026',
+    pairing: [
+      {name:'Rachel Reeves', status:'outgoing', groups:[
+        {label:'Favourable', pct:14, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:64, color:'#C93B32'},
+        {label:"Don't know", pct:22, color:'#A9A69E'},
+      ]},
+      {name:'John Healey', status:'incoming', groups:[
+        {label:'Favourable', pct:24, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:35, color:'#C93B32'},
+        {label:"Don't know", pct:41, color:'#A9A69E'},
+      ]},
+    ],
+    analysis: "The single biggest popularity jump of the reshuffle: Rachel Reeves leaves as the lowest-rated chancellor YouGov has recorded, at net −50, and John Healey arrives at −11 as the least-unpopular member of Burnham's senior team. Note his grey section — 36 of 87 passengers hold no view of the Treasury's surprise appointment, which is room to fall as well as room to grow.",
+    source: 'YouGov (Reeves Jun 2026, Healey Mar 2026)',
     url: 'https://yougov.com/en-gb/topics/politics'
   },
   {
-    id: 'cabinet-rayner',
+    id: 'cabinet-foreign',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
-    question: 'Angela Rayner — Housing Secretary',
+    question: 'Foreign Secretary',
     groups: [
-      {label:'Favourable', pct:21, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:54, color:'#C93B32'},
-      {label:"Don't know", pct:25, color:'#A9A69E'},
-    ],
-    analysis: "Net −33 for the returning Housing Secretary, with 47 of 87 passengers viewing her unfavourably — the heaviest red section in the new cabinet bar one. But Rayner is also its best-recognised member: only 22 passengers hold no view either way. Hers is a settled reputation being brought back into government, for better and worse — not a blank slate like much of the front bench around her.",
-    source: 'YouGov, June 2026',
-    url: 'https://yougov.com/en-gb/topics/politics'
-  },
-  {
-    id: 'cabinet-streeting',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
-    question: 'Wes Streeting — Defence Secretary',
-    groups: [
-      {label:'Favourable', pct:13, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:51, color:'#C93B32'},
+      {label:'Favourable', pct:19, color:'#2E5FB7'},
+      {label:'Unfavourable', pct:45, color:'#C93B32'},
       {label:"Don't know", pct:36, color:'#A9A69E'},
     ],
-    analysis: "Net −38 — the worst rating in the new cabinet, carried by the man who led the calls for Starmer to go. The job swap is the story here: Streeting takes Defence from John Healey, who rides at net −2, while Healey takes the Treasury. One of the reshuffle's quiet asymmetries: the new Defence Secretary is twenty times better known than the man he replaced there, and vastly less liked.",
-    source: 'YouGov, June 2026',
-    url: 'https://yougov.com/en-gb/topics/politics'
+    pairing: [
+      {name:'Yvette Cooper', status:'outgoing', groups:[
+        {label:'Favourable', pct:17, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:38, color:'#C93B32'},
+        {label:"Don't know", pct:45, color:'#A9A69E'},
+      ]},
+      {name:'Ed Miliband', status:'incoming', groups:[
+        {label:'Favourable', pct:19, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:45, color:'#C93B32'},
+        {label:"Don't know", pct:36, color:'#A9A69E'},
+      ]},
+    ],
+    analysis: "A near-even swap on paper: Cooper leaves the Foreign Office at net −21, Miliband takes it at −26. Sixteen years after leading the party, he returns to the great offices better known than the woman he replaces — a smaller grey section — and slightly less liked. Few politicians get a second act at this level; the numbers say the public is reserving judgement on this one.",
+    source: 'Ipsos, June 2026',
+    url: 'https://www.ipsos.com/en-uk'
   },
   {
-    id: 'cabinet-cooper',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'May 2026',
-    question: 'Yvette Cooper — Health Secretary',
+    id: 'cabinet-health',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    question: 'Health Secretary',
     groups: [
-      {label:'Favourable', pct:17, color:'#4C9A3F'},
+      {label:'Favourable', pct:17, color:'#2E5FB7'},
       {label:'Unfavourable', pct:38, color:'#C93B32'},
       {label:"Don't know", pct:45, color:'#A9A69E'},
     ],
-    analysis: "Net −21 — firmly negative, but well clear of the Starmer-Reeves pairing that led the outgoing government, and seventeen points ahead of Wes Streeting, whom she replaces at Health. Thirty-nine passengers hold no view of one of the longest-serving figures in Labour politics, a reminder that even three decades in frontline politics doesn't guarantee the public is paying attention.",
-    source: 'YouGov, May 2026',
+    pairing: [
+      {name:'Wes Streeting', status:'outgoing', groups:[
+        {label:'Favourable', pct:13, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:51, color:'#C93B32'},
+        {label:"Don't know", pct:36, color:'#A9A69E'},
+      ]},
+      {name:'Yvette Cooper', status:'incoming', groups:[
+        {label:'Favourable', pct:17, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:38, color:'#C93B32'},
+        {label:"Don't know", pct:45, color:'#A9A69E'},
+      ]},
+    ],
+    analysis: "Streeting leaves Health at net −38; Cooper arrives at −21. But the caveat matters more here than anywhere on this page: the two figures come from different pollsters using different question wording, so read the direction of the swap rather than the size of the gap. What's not in dispute is that the NHS brief changes hands from the cabinet's most unfavourably-viewed minister to one of its least examined.",
+    source: 'Streeting: YouGov Jun 2026; Cooper: Ipsos Jun 2026 — different pollsters, not directly comparable',
     url: 'https://yougov.com/en-gb/topics/politics'
   },
   {
-    id: 'cabinet-mahmood',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'May 2026',
-    question: 'Shabana Mahmood — Home Secretary',
+    id: 'cabinet-defence',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Mar–Jun 2026',
+    question: 'Defence Secretary',
     groups: [
-      {label:'Favourable', pct:11, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:40, color:'#C93B32'},
-      {label:"Don't know", pct:49, color:'#A9A69E'},
+      {label:'Favourable', pct:13, color:'#2E5FB7'},
+      {label:'Unfavourable', pct:51, color:'#C93B32'},
+      {label:"Don't know", pct:36, color:'#A9A69E'},
     ],
-    analysis: "Net −29, with 42 passengers — nearly half the bus — holding no view at all. Like Healey's, this is a rating built on partial recognition: the unfavourable number has formed faster than the favourable one, which is the usual pattern for holders of the Home Office, the cabinet's most reliably bruising job. The test is whether the grey section breaks her way as it shrinks.",
-    source: 'YouGov, May 2026',
+    pairing: [
+      {name:'John Healey', status:'outgoing', groups:[
+        {label:'Favourable', pct:24, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:35, color:'#C93B32'},
+        {label:"Don't know", pct:41, color:'#A9A69E'},
+      ]},
+      {name:'Wes Streeting', status:'incoming', groups:[
+        {label:'Favourable', pct:13, color:'#2E5FB7'},
+        {label:'Unfavourable', pct:51, color:'#C93B32'},
+        {label:"Don't know", pct:36, color:'#A9A69E'},
+      ]},
+    ],
+    analysis: "An inversion: the least-unpopular senior minister vacated this seat, and the most unpopular took it. Healey leaves Defence at net −11 for the Treasury; Streeting arrives at −38, carrying the heaviest red section in the cabinet into the ministry most insulated from day-to-day headlines — which, depending on your reading, is either where a bruised reputation goes to recover or where the new Prime Minister parked his loudest rival.",
+    source: 'YouGov (Healey Mar 2026, Streeting Jun 2026)',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'cabinet-home',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    question: 'Home Secretary',
+    badge: 'STAYS',
+    groups: [
+      {label:'Favourable', pct:14, color:'#2E5FB7'},
+      {label:'Unfavourable', pct:39, color:'#C93B32'},
+      {label:"Don't know", pct:47, color:'#A9A69E'},
+    ],
+    analysis: "The only great office of state to keep its holder across the reshuffle. Shabana Mahmood rides at net −25, with 41 of 87 passengers holding no view — which, for the occupant of the cabinet's most reliably bruising job, is its own quiet achievement. Continuity at the Home Office while everything above it changed is one of the reshuffle's more deliberate signals.",
+    source: 'YouGov, June 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'cabinet-housing',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    question: 'Housing Secretary',
+    badge: 'INCOMING',
+    groups: [
+      {label:'Favourable', pct:21, color:'#2E5FB7'},
+      {label:'Unfavourable', pct:54, color:'#C93B32'},
+      {label:"Don't know", pct:25, color:'#A9A69E'},
+    ],
+    analysis: "Angela Rayner returns to the exact role she resigned from last year, at net −33 — the most unfavourable-heavy single bus in this section — but also with the best recognition on the front bench: only 22 of 87 passengers hold no view of her. Her predecessor Steve Reed isn't individually polled by the major houses, so no outgoing bus is shown; this page draws real buses or none.",
+    source: 'YouGov, June 2026',
     url: 'https://yougov.com/en-gb/topics/politics'
   },
 ];
@@ -736,13 +854,13 @@ function personSvg(x, y, color, rand, scale){
   return p;
 }
 
-function roomSvg(groups, seedNum){
+function roomSvg(groups, seedNum, flipped){
   // coordinate space matches the bus artwork: bus.png is 1792x592
   const W = 1792, IMGH = 592;
   const rand = seeded(seedNum);
-  let svg = `<svg class="room" viewBox="0 -46 ${W} 650" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Side profile of a double-decker bus of 87 passengers grouped by opinion">`;
+  let svg = `<svg class="room" viewBox="0 -46 ${W} 650" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Side profile of a double-decker bus of 87 passengers grouped by opinion${flipped ? ', driving left' : ''}">`;
 
-  // deck labels above the roofline
+  // deck labels above the roofline (always upright, never mirrored)
   svg += `<text x="200" y="-18" font-family="Archivo, sans-serif" font-weight="600" font-size="20" letter-spacing="1.5" fill="#83898F">Upper deck &middot; 40 people</text>`;
   svg += `<text x="720" y="-18" font-family="Archivo, sans-serif" font-weight="600" font-size="20" letter-spacing="1.5" fill="#83898F">Lower deck &middot; 47 people (22 seated, 25 standing)</text>`;
 
@@ -780,6 +898,8 @@ function roomSvg(groups, seedNum){
   counts.forEach((n, gi) => { for(let k=0;k<n;k++) assign.push(gi); });
 
   // ----- passengers first, then the bus artwork on top: figures show through the transparent glass -----
+  // when flipped (outgoing minister driving left), mirror bus + passengers but keep all text upright
+  if(flipped) svg += `<g transform="translate(${W},0) scale(-1,1)">`;
   seats.forEach((s, i) => {
     const g = groups[assign[i]];
     const jx = (rand() - .5) * (s.seated ? 8 : 12);
@@ -793,6 +913,12 @@ function roomSvg(groups, seedNum){
   svg += `<image href="bus.png" x="0" y="0" width="${W}" height="${IMGH}"/>`;
   // ground
   svg += `<line x1="60" y1="588" x2="${W-60}" y2="588" stroke="#3A3A3A" stroke-width="2.5"/>`;
+  if(flipped){
+    svg += `</g>`;
+    // the mirrored artwork flips the painted "87" blind; cover it with an upright one
+    svg += `<rect x="${W-1663}" y="201" width="86" height="66" rx="8" fill="#2B2B2B"/>`;
+    svg += `<text x="${W-1620}" y="248" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="34" fill="#F5F2EA">87</text>`;
+  }
 
   svg += `</svg>`;
   return {svg, counts};
@@ -814,7 +940,7 @@ function bumpReaction(id, kind, btnEl, countEl){
   btnEl.disabled = true;
 }
 
-const CABINET_STANDFIRST = "Britain has a new government: Andy Burnham's cabinet, formed on 20 July 2026. The buses below are a baseline, not a verdict — each shows that politician's most recent personal favourability from before the reshuffle (June 2026 unless noted), because no polling yet exists on jobs that are only days old. Figures are net favourability — the share viewing them favourably minus the share viewing them unfavourably — from YouGov unless marked Opinium or Ipsos. For scale, the government this one replaces left office with Keir Starmer at net −45, Rachel Reeves at roughly −51 and David Lammy at −38. The bar the new cabinet has to clear is, historically speaking, on the floor.";
+const CABINET_STANDFIRST = "When Andy Burnham became prime minister on 20 July 2026, he reshaped the cabinet. Each role below shows the minister leaving and the minister arriving — where both have been polled, their buses pass in opposite directions. One caveat: these are favourability ratings taken <strong>before</strong> the reshuffle, so they show the standing each figure brought into or out of the role, not approval of their performance in it — the cabinet is only days old. Figures marked Ipsos and YouGov use different question wording and are not directly comparable.";
 
 function render(){
   container.innerHTML = '';
@@ -836,6 +962,61 @@ function render(){
     const wrap = document.createElement('article');
     wrap.className = 'entry';
 
+    const netStr = gs => {
+      const n = gs[0].pct - gs[1].pct;
+      return 'net ' + (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n);
+    };
+    const badgeClass = b => b === 'OUTGOING' ? 'badge-out' : b === 'STAYS' ? 'badge-stay' : 'badge-in';
+
+    const footerHtml = `
+      <div class="entry-footer">
+        <div class="source-line">Source: <a href="${e.url}" target="_blank" rel="noopener">${e.source}</a></div>
+        <div class="reactions">
+          <button class="react-btn" data-kind="surprised">😮 Surprised <span class="react-count">0</span></button>
+          <button class="react-btn" data-kind="expected">🤝 Figured <span class="react-count">0</span></button>
+        </div>
+      </div>
+    `;
+
+    if(e.pairing){
+      // two buses per role: outgoing minister driving left (mirrored), incoming driving right
+      const rendered = e.pairing.map((p, pi) => {
+        const {svg, counts} = roomSvg(p.groups, 42 + i*7 + pi*3, p.status === 'outgoing');
+        const legendHtml = p.groups.map((g, gi) => `
+          <span class="legend-item"><span class="legend-swatch" style="background:${g.color}"></span>${g.label} (${counts[gi]}) &middot; ${g.pct}%</span>
+        `).join('');
+        return {p, svg, legendHtml};
+      });
+
+      wrap.innerHTML = `
+        <div class="entry-head">
+          <span class="entry-meta">${e.catLabel} &middot; ${e.date}</span>
+          <h2>${e.question}</h2>
+        </div>
+        ${rendered.map((r, ri) => `
+          ${ri === 1 ? `<div class="handover">${rendered[0].p.name} <span class="handover-arrow">&rarr;</span> ${rendered[1].p.name}</div>` : ''}
+          <div class="pair-head">
+            <span class="badge ${badgeClass(r.p.status.toUpperCase())}">${r.p.status.toUpperCase()}</span>
+            <span class="pair-name">${r.p.name}</span>
+            <span class="pair-net">${netStr(r.p.groups)}</span>
+          </div>
+          <div class="room-wrap">${r.svg}</div>
+          <div class="legend">${r.legendHtml}</div>
+        `).join('')}
+        <p class="analysis">${e.analysis}</p>
+        ${footerHtml}
+      `;
+      container.appendChild(wrap);
+      const rcounts0 = getReactionCounts(e.id);
+      wrap.querySelectorAll('.react-btn').forEach(btn=>{
+        const kind = btn.getAttribute('data-kind');
+        const countEl = btn.querySelector('.react-count');
+        countEl.textContent = rcounts0[kind];
+        btn.addEventListener('click', ()=> bumpReaction(e.id, kind, btn, countEl));
+      });
+      continue;
+    }
+
     const {svg, counts} = roomSvg(e.groups, 42 + i*7);
 
     const cardsHtml = e.groups.map((g, gi) => `
@@ -849,22 +1030,24 @@ function render(){
       <span class="legend-item"><span class="legend-swatch" style="background:${g.color}"></span>${g.label} (${counts[gi]})</span>
     `).join('');
 
+    const badgeHtml = e.badge ? `
+      <div class="pair-head">
+        <span class="badge ${badgeClass(e.badge)}">${e.badge}</span>
+        <span class="pair-net">${netStr(e.groups)}</span>
+      </div>
+    ` : '';
+
     wrap.innerHTML = `
       <div class="entry-head">
         <span class="entry-meta">${e.catLabel} &middot; ${e.date}</span>
         <h2>${e.question}</h2>
       </div>
+      ${badgeHtml}
       <div class="room-wrap">${svg}</div>
       <div class="legend">${legendHtml}</div>
       <div class="cards">${cardsHtml}</div>
       <p class="analysis">${e.analysis}</p>
-      <div class="entry-footer">
-        <div class="source-line">Source: <a href="${e.url}" target="_blank" rel="noopener">${e.source}</a></div>
-        <div class="reactions">
-          <button class="react-btn" data-kind="surprised">😮 Surprised <span class="react-count">0</span></button>
-          <button class="react-btn" data-kind="expected">🤝 Figured <span class="react-count">0</span></button>
-        </div>
-      </div>
+      ${footerHtml}
     `;
     container.appendChild(wrap);
 
