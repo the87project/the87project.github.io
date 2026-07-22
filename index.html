@@ -299,7 +299,7 @@ const ENTRIES = [
       {label:'Yes — prove it first', pct:87, color:'#2E5FB7'},
       {label:'No / unsure', pct:13, color:'#A9A69E'},
     ],
-    analysis: "Almost the whole bus is in the same camp. And in the same polling, only around one person in ten says they'd trust tech executives to regulate themselves. That's not really a technology question — it's a trust question, and right now trust is nearly empty.",
+    analysis: "Almost the whole bus is seated on one side. And in the same polling, only around one person in ten says they'd trust tech executives to regulate themselves. That's not really a technology question — it's a trust question, and right now the trust section of the bus is nearly empty.",
     source: 'YouGov / TIME, Jan 2026',
     url: 'https://time.com/7213096/uk-public-ai-law-poll/'
   },
@@ -312,7 +312,7 @@ const ENTRIES = [
       {label:'Undecided', pct:33, color:'#A9A69E'},
       {label:'Oppose', pct:20, color:'#C93B32'},
     ],
-    analysis: "Nearly half the bus backs a levy on AI work — a striking number for a policy that barely exists as a mainstream proposal yet. But count the undecided passengers scattered through both decks: twenty-nine people still working out what fairness looks like once machines are doing paid work.",
+    analysis: "Nearly half the bus backs a levy on AI work — a striking number for a policy that barely exists as a mainstream proposal yet. But watch the undecided crowd in the middle of the bus: twenty-nine passengers still working out what fairness looks like once machines are doing paid work.",
     source: 'YouGov, May 2026',
     url: 'https://yougov.com/en-gb/articles/54709-how-do-britons-think-ai-will-impact-the-uk'
   },
@@ -569,13 +569,9 @@ function roomSvg(groups, seedNum){
       + `</g>`;
   }
 
-  // ----- scatter opinions through the bus like a real crowd (deterministic per entry) -----
+  // ----- seat passengers in opinion blocks: same answer, same section of the bus -----
   const assign = [];
   counts.forEach((n, gi) => { for(let k=0;k<n;k++) assign.push(gi); });
-  for(let i=assign.length-1;i>0;i--){
-    const j = Math.floor(rand()*(i+1));
-    [assign[i], assign[j]] = [assign[j], assign[i]];
-  }
 
   // ----- passengers first, then the bus artwork on top: figures show through the transparent glass -----
   seats.forEach((s, i) => {
