@@ -114,6 +114,27 @@ nav{
   margin-bottom:18px;
 }
 
+/* ---------- SECTION HEADER ---------- */
+.section-head{
+  padding:64px 0 8px;
+  border-top:2px solid var(--line);
+  margin-top:24px;
+}
+.section-head .section-title{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:34px;
+  line-height:1.25;
+  color:var(--ink);
+  margin:10px 0 16px;
+}
+.section-head .section-standfirst{
+  font-size:15.5px;
+  line-height:1.75;
+  color:#3A382F;
+  max-width:700px;
+}
+
 /* ---------- ENTRIES ---------- */
 main{
   max-width:1100px; margin:0 auto;
@@ -269,6 +290,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   <button class="tab" data-cat="economy">Economy</button>
   <button class="tab" data-cat="society">Society</button>
   <button class="tab" data-cat="politics">Politics</button>
+  <button class="tab" data-cat="cabinet">Burnham's Cabinet</button>
   <button class="tab tab-about" data-cat="about">About</button>
 </div>
 
@@ -577,6 +599,84 @@ const ENTRIES = [
     source: 'YouGov tracker, January 2026',
     url: 'https://yougov.com/en-gb/topics/politics'
   },
+  {
+    id: 'cabinet-burnham',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    question: 'Andy Burnham — Prime Minister',
+    groups: [
+      {label:'Favourable', pct:34, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:38, color:'#C93B32'},
+      {label:"Don't know", pct:28, color:'#A9A69E'},
+    ],
+    analysis: "Net −4. Barely underwater — and against the man he replaces, that is a forty-one-point improvement: Keir Starmer's final pre-resignation reading was 22 favourable to 67 unfavourable, net −45. Note the 24 passengers who still hold no view of the new Prime Minister: after a decade of leaders the public knew all too well, room to make a first impression is itself a political asset.",
+    source: 'YouGov, June 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'cabinet-healey',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'May 2026',
+    question: 'John Healey — Chancellor',
+    groups: [
+      {label:'Favourable', pct:13, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:15, color:'#C93B32'},
+      {label:"Don't know", pct:72, color:'#A9A69E'},
+    ],
+    analysis: "Net −2 — arithmetically the least unpopular member of the new cabinet. But look at the grey: 63 of 87 passengers have no opinion of the new Chancellor at all. That is low recognition, not quiet approval, and it makes this the least certain figure in the section. Even so, next to the outgoing Chancellor — Rachel Reeves left at roughly net −51 — an unknown quantity is an upgrade.",
+    source: 'YouGov, May 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'cabinet-rayner',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    question: 'Angela Rayner — Housing Secretary',
+    groups: [
+      {label:'Favourable', pct:21, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:54, color:'#C93B32'},
+      {label:"Don't know", pct:25, color:'#A9A69E'},
+    ],
+    analysis: "Net −33 for the returning Housing Secretary, with 47 of 87 passengers viewing her unfavourably — the heaviest red section in the new cabinet bar one. But Rayner is also its best-recognised member: only 22 passengers hold no view either way. Hers is a settled reputation being brought back into government, for better and worse — not a blank slate like much of the front bench around her.",
+    source: 'YouGov, June 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'cabinet-streeting',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    question: 'Wes Streeting — Defence Secretary',
+    groups: [
+      {label:'Favourable', pct:13, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:51, color:'#C93B32'},
+      {label:"Don't know", pct:36, color:'#A9A69E'},
+    ],
+    analysis: "Net −38 — the worst rating in the new cabinet, carried by the man who led the calls for Starmer to go. The job swap is the story here: Streeting takes Defence from John Healey, who rides at net −2, while Healey takes the Treasury. One of the reshuffle's quiet asymmetries: the new Defence Secretary is twenty times better known than the man he replaced there, and vastly less liked.",
+    source: 'YouGov, June 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'cabinet-cooper',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'May 2026',
+    question: 'Yvette Cooper — Health Secretary',
+    groups: [
+      {label:'Favourable', pct:17, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:38, color:'#C93B32'},
+      {label:"Don't know", pct:45, color:'#A9A69E'},
+    ],
+    analysis: "Net −21 — firmly negative, but well clear of the Starmer-Reeves pairing that led the outgoing government, and seventeen points ahead of Wes Streeting, whom she replaces at Health. Thirty-nine passengers hold no view of one of the longest-serving figures in Labour politics, a reminder that even three decades in frontline politics doesn't guarantee the public is paying attention.",
+    source: 'YouGov, May 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
+  {
+    id: 'cabinet-mahmood',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'May 2026',
+    question: 'Shabana Mahmood — Home Secretary',
+    groups: [
+      {label:'Favourable', pct:11, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:40, color:'#C93B32'},
+      {label:"Don't know", pct:49, color:'#A9A69E'},
+    ],
+    analysis: "Net −29, with 42 passengers — nearly half the bus — holding no view at all. Like Healey's, this is a rating built on partial recognition: the unfavourable number has formed faster than the favourable one, which is the usual pattern for holders of the Home Office, the cabinet's most reliably bruising job. The test is whether the grey section breaks her way as it shrinks.",
+    source: 'YouGov, May 2026',
+    url: 'https://yougov.com/en-gb/topics/politics'
+  },
 ];
 
 const TOTAL = 87;
@@ -714,11 +814,25 @@ function bumpReaction(id, kind, btnEl, countEl){
   btnEl.disabled = true;
 }
 
+const CABINET_STANDFIRST = "Britain has a new government: Andy Burnham's cabinet, formed on 20 July 2026. The buses below are a baseline, not a verdict — each shows that politician's most recent personal favourability from before the reshuffle (June 2026 unless noted), because no polling yet exists on jobs that are only days old. Figures are net favourability — the share viewing them favourably minus the share viewing them unfavourably — from YouGov unless marked Opinium or Ipsos. For scale, the government this one replaces left office with Keir Starmer at net −45, Rachel Reeves at roughly −51 and David Lammy at −38. The bar the new cabinet has to clear is, historically speaking, on the floor.";
+
 function render(){
   container.innerHTML = '';
   const visible = ENTRIES.filter(e => currentFilter==='all' || e.cat===currentFilter);
+  let cabinetHeaderAdded = false;
   for(let i=0;i<visible.length;i++){
     const e = visible[i];
+    if(e.cat === 'cabinet' && !cabinetHeaderAdded){
+      const head = document.createElement('div');
+      head.className = 'section-head';
+      head.innerHTML = `
+        <span class="entry-meta">New section &middot; cabinet formed 20 July 2026</span>
+        <h2 class="section-title">Burnham's Cabinet</h2>
+        <p class="section-standfirst">${CABINET_STANDFIRST}</p>
+      `;
+      container.appendChild(head);
+      cabinetHeaderAdded = true;
+    }
     const wrap = document.createElement('article');
     wrap.className = 'entry';
 
