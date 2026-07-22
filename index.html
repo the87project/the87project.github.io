@@ -224,6 +224,19 @@ main[hidden]{display:none;}
   color:var(--slate);
 }
 .handover-arrow{font-size:22px; line-height:1; color:var(--accent);}
+.dk-note{
+  display:flex; align-items:baseline; gap:8px;
+  margin-top:10px;
+  font-size:13px;
+  color:var(--slate);
+  max-width:640px;
+}
+.dk-note .dk-key{
+  width:9px; height:9px; flex-shrink:0;
+  border:1px solid #B9B4A8; background:#EDEBE4; opacity:.7;
+  transform:translateY(1px);
+}
+.dk-note strong{color:var(--ink); font-weight:700;}
 
 /* ---------- STAT CARDS ---------- */
 .cards{
@@ -772,6 +785,7 @@ const ENTRIES = [
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Home Secretary',
     badge: 'STAYS',
+    who: 'Mahmood',
     groups: [
       {label:'Favourable', pct:14, color:'#2E5FB7'},
       {label:'Unfavourable', pct:39, color:'#C93B32'},
@@ -786,6 +800,7 @@ const ENTRIES = [
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Housing Secretary',
     badge: 'INCOMING',
+    who: 'Rayner',
     groups: [
       {label:'Favourable', pct:21, color:'#2E5FB7'},
       {label:'Unfavourable', pct:54, color:'#C93B32'},
@@ -822,14 +837,17 @@ function shade(hex, f){
   return '#'+((r<<16)|(g<<8)|b).toString(16).padStart(6,'0');
 }
 
-function personSvg(x, y, color, rand, scale){
-  const skin = SKIN[Math.floor(rand()*SKIN.length)];
-  const hair = HAIRC[Math.floor(rand()*HAIRC.length)];
-  const shirt = shade(color, 0.85 + rand()*0.35);
-  const trouser = rand() < 0.5 ? '#2A2A2A' : '#4B4640';
+function personSvg(x, y, color, rand, scale, hollow){
+  // hollow = "don't know": drawn as a pale outline figure that recedes but stays countable
+  const skin = hollow ? '#EDEBE4' : SKIN[Math.floor(rand()*SKIN.length)];
+  const hair = hollow ? '#EDEBE4' : HAIRC[Math.floor(rand()*HAIRC.length)];
+  const shirt = hollow ? '#EDEBE4' : shade(color, 0.85 + rand()*0.35);
+  const trouser = hollow ? '#EDEBE4' : (rand() < 0.5 ? '#2A2A2A' : '#4B4640');
   const hairstyle = Math.floor(rand()*4);
-  const S = 'stroke="#141414" stroke-width="0.9" stroke-linejoin="round"';
-  let p = `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${scale})">`;
+  const S = hollow
+    ? 'stroke="#B9B4A8" stroke-width="0.8" stroke-linejoin="round"'
+    : 'stroke="#141414" stroke-width="0.9" stroke-linejoin="round"';
+  let p = `<g opacity="${hollow ? 0.55 : 1}" transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${scale})">`;
   // legs
   p += `<rect x="-2.7" y="3" width="2" height="7.4" rx="0.9" fill="${trouser}" ${S}/>`;
   p += `<rect x="0.7" y="3" width="2" height="7.4" rx="0.9" fill="${trouser}" ${S}/>`;
@@ -902,11 +920,12 @@ function roomSvg(groups, seedNum, flipped){
   if(flipped) svg += `<g transform="translate(${W},0) scale(-1,1)">`;
   seats.forEach((s, i) => {
     const g = groups[assign[i]];
+    const hollow = /don'?t know|unsure|undecided/i.test(g.label);
     const jx = (rand() - .5) * (s.seated ? 8 : 12);
     const jy = (rand() - .5) * 7;
     const sc = SC * (0.95 + rand() * 0.1);
     if(s.seated) svg += chairSvg(s.x + jx, s.y + jy, sc);
-    svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc);
+    svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc, hollow);
   });
 
   // bus artwork over the passengers (windows are transparent)
@@ -968,6 +987,16 @@ function render(){
     };
     const badgeClass = b => b === 'OUTGOING' ? 'badge-out' : b === 'STAYS' ? 'badge-stay' : 'badge-in';
 
+    // "grey = no opinion" note with favourable share among those who have a view
+    const viewNote = (name, gs, cnts) => {
+      const fi = gs.findIndex(g => g.label.toLowerCase() === 'favourable');
+      const ui = gs.findIndex(g => g.label.toLowerCase() === 'unfavourable');
+      if(fi < 0 || ui < 0) return '';
+      const withView = cnts[fi] + cnts[ui];
+      const p = Math.round(gs[fi].pct / (gs[fi].pct + gs[ui].pct) * 100);
+      return `<p class="dk-note"><span class="dk-key"></span>Grey = no opinion. Among the ${withView} of 87 with a view, ${name} is seen <strong>${p}% favourably</strong>.</p>`;
+    };
+
     const footerHtml = `
       <div class="entry-footer">
         <div class="source-line">Source: <a href="${e.url}" target="_blank" rel="noopener">${e.source}</a></div>
@@ -985,7 +1014,7 @@ function render(){
         const legendHtml = p.groups.map((g, gi) => `
           <span class="legend-item"><span class="legend-swatch" style="background:${g.color}"></span>${g.label} (${counts[gi]}) &middot; ${g.pct}%</span>
         `).join('');
-        return {p, svg, legendHtml};
+        return {p, svg, legendHtml, counts};
       });
 
       wrap.innerHTML = `
@@ -1002,6 +1031,7 @@ function render(){
           </div>
           <div class="room-wrap">${r.svg}</div>
           <div class="legend">${r.legendHtml}</div>
+          ${viewNote(r.p.name, r.p.groups, r.counts)}
         `).join('')}
         <p class="analysis">${e.analysis}</p>
         ${footerHtml}
@@ -1045,6 +1075,7 @@ function render(){
       ${badgeHtml}
       <div class="room-wrap">${svg}</div>
       <div class="legend">${legendHtml}</div>
+      ${e.who ? viewNote(e.who, e.groups, counts) : ''}
       <div class="cards">${cardsHtml}</div>
       <p class="analysis">${e.analysis}</p>
       ${footerHtml}
