@@ -961,9 +961,43 @@ function roomSvg(groups, seedNum, flipped){
       + `</g>`;
   }
 
-  // ----- seat passengers in opinion blocks: same answer, same section of the bus -----
-  const assign = [];
-  counts.forEach((n, gi) => { for(let k=0;k<n;k++) assign.push(gi); });
+  // ----- seat passengers in opinion blocks -----
+  // Each colour is one contiguous block. Solid groups fill from the driver's-cab end backwards;
+  // the faded "don't know" group is anchored to the rear of EACH deck, so its see-through figures
+  // never sit sandwiched between solid blocks (which would read as empty seats). The cab is on the
+  // right for the standard bus and on the left for the departing (flipped) bus, so "front" flips.
+  const isHollowGroup = g => /don'?t know|unsure|undecided/i.test(g.label);
+  const solidIdx = groups.map((g,i)=>i).filter(i => !isHollowGroup(groups[i]));
+  const fadedIdx = groups.map((g,i)=>i).filter(i => isHollowGroup(groups[i]));
+  const order = [...solidIdx, ...fadedIdx];   // block order, faded last (= rear)
+
+  // split the 87 seats into the two decks (first 40 upper, next 47 lower)
+  const deckSeatIdx = [[], []];
+  seats.forEach((s, i) => { (i < 40 ? deckSeatIdx[0] : deckSeatIdx[1]).push(i); });
+  // order each deck front -> rear (front = cab end). Filling in `order` then leaves faded at the rear.
+  deckSeatIdx.forEach(arr => arr.sort((a,b) => flipped ? seats[a].x - seats[b].x : seats[b].x - seats[a].x));
+
+  // allocate each group across the two decks in proportion to deck capacity (40 / 47),
+  // using largest-remainder so the upper deck sums to exactly 40 and the lower to 47
+  const perDeck = [{}, {}];
+  const rema = [];
+  let used = 0;
+  groups.forEach((g, gi) => {
+    const share = counts[gi] * 40 / TOTAL;
+    const fl = Math.floor(share);
+    perDeck[0][gi] = fl; used += fl; rema.push([gi, share - fl]);
+  });
+  rema.sort((a,b) => b[1] - a[1]);
+  for(let k=0, need=40-used; need>0 && k<rema.length; k++, need--) perDeck[0][rema[k][0]]++;
+  groups.forEach((g, gi) => { perDeck[1][gi] = counts[gi] - perDeck[0][gi]; });
+
+  // lay each deck out front -> rear following the block order
+  const assign = new Array(seats.length);
+  [0,1].forEach(d => {
+    const arr = deckSeatIdx[d];
+    let p = 0;
+    order.forEach(gi => { for(let k=0;k<perDeck[d][gi];k++) assign[arr[p++]] = gi; });
+  });
 
   // ----- passengers first, then the bus artwork on top: figures show through the transparent glass -----
   const drawSeat = (s, i) => {
