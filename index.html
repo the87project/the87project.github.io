@@ -881,13 +881,13 @@ function shade(hex, f){
 function personSvg(x, y, color, rand, scale, hollow){
   // hollow = "don't know / unsure": a full, countable figure rendered in flat soft grey with
   // grey outlines, and drawn behind the coloured passengers — present but not competing for attention
-  const skin = hollow ? '#CFCCC4' : SKIN[Math.floor(rand()*SKIN.length)];
-  const hair = hollow ? '#BCB8AF' : HAIRC[Math.floor(rand()*HAIRC.length)];
-  const shirt = hollow ? '#C6C3BB' : shade(color, 0.85 + rand()*0.35);
-  const trouser = hollow ? '#B4B0A7' : (rand() < 0.5 ? '#2A2A2A' : '#4B4640');
+  const skin = hollow ? '#D6D2C7' : SKIN[Math.floor(rand()*SKIN.length)];
+  const hair = hollow ? '#B0AB9C' : HAIRC[Math.floor(rand()*HAIRC.length)];
+  const shirt = hollow ? '#C2BDB0' : shade(color, 0.85 + rand()*0.35);
+  const trouser = hollow ? '#A19C8D' : (rand() < 0.5 ? '#2A2A2A' : '#4B4640');
   const hairstyle = Math.floor(rand()*4);
   const S = hollow
-    ? 'stroke="#969287" stroke-width="0.8" stroke-linejoin="round"'
+    ? 'stroke="#7A7568" stroke-width="1" stroke-linejoin="round"'
     : 'stroke="#141414" stroke-width="0.9" stroke-linejoin="round"';
   let p = `<g opacity="${hollow ? 0.9 : 1}" transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${scale})">`;
   // legs
@@ -938,26 +938,52 @@ function roomSvg(groups, seedNum, flipped){
   // left, so its window x-ranges differ from the standard right-facing bus.
   const seats = [];
   const SC = 3.0;
-  function rowSeats(n, y, x0, x1, seated){
-    const step = (x1 - x0) / (n - 1);
-    for(let i=0;i<n;i++) seats.push({x: x0 + i*step, y, seated});
+  // measured window-frame (mullion) x-positions in each artwork, per deck — seats dodge clear of these
+  const MULLIONS = {
+    standard: {
+      upper: [342,402,532,586,744,938,1069,1174,1230,1295,1420],
+      lower: [360,390,532,605,753,937,1069,1168,1229,1293,1414],
+    },
+    departing: {
+      upper: [380,502,572,627,726,851,1052,1193,1245,1374,1428],
+      lower: [388,512,577,635,720,858,1074,1176,1243,1396],
+    },
+  };
+  // nudge an interior seat clear of any mullion within `pad`; run twice to settle cascades
+  function dodgeMullions(x, lines, pad){
+    for(let pass=0; pass<2; pass++){
+      for(const m of lines){
+        const d = x - m;
+        if(Math.abs(d) < pad) x = m + (d >= 0 ? pad : -pad);
+      }
+    }
+    return x;
   }
+  function rowSeats(n, y, x0, x1, seated, mullionLines){
+    const step = (x1 - x0) / (n - 1);
+    for(let i=0;i<n;i++){
+      let x = x0 + i*step;
+      if(mullionLines && i > 0 && i < n-1) x = dodgeMullions(x, mullionLines, 15);
+      seats.push({x, y, seated});
+    }
+  }
+  const M = flipped ? MULLIONS.departing : MULLIONS.standard;
   if(flipped){
-    rowSeats(20, 148, 325, 1560, true);   // upper back row — seated
-    rowSeats(20, 170, 335, 1565, true);   // upper front row — seated
-    rowSeats(22, 350, 415, 1378, true);   // lower back row — 22 seated
-    rowSeats(25, 372, 405, 1385, false);  // lower front row — 25 standing
+    rowSeats(20, 148, 325, 1560, true, M.upper);   // upper back row — seated
+    rowSeats(20, 170, 335, 1565, true, M.upper);   // upper front row — seated
+    rowSeats(22, 350, 415, 1378, true, M.lower);   // lower back row — 22 seated
+    rowSeats(25, 372, 405, 1385, false, M.lower);  // lower front row — 25 standing
   } else {
-    rowSeats(20, 148, 235, 1480, true);   // upper back row — seated
-    rowSeats(20, 170, 250, 1495, true);   // upper front row — seated
-    rowSeats(22, 350, 420, 1385, true);   // lower back row — 22 seated
-    rowSeats(25, 372, 410, 1395, false);  // lower front row — 25 standing, packed tighter
+    rowSeats(20, 148, 235, 1480, true, M.upper);   // upper back row — seated
+    rowSeats(20, 170, 250, 1495, true, M.upper);   // upper front row — seated
+    rowSeats(22, 350, 420, 1385, true, M.lower);   // lower back row — 22 seated
+    rowSeats(25, 372, 410, 1395, false, M.lower);  // lower front row — 25 standing, packed tighter
   }
 
   // simple side-view chair: seat back + pad, drawn behind the passenger
   function chairSvg(x, y, scale){
     return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${scale})">`
-      + `<path d="M -8 -9.5 L -8 6.8 L 4.8 6.8 L 4.8 3.4 L -5 3.4 L -5 -9.5 Z" fill="#E4E1D6" stroke="#9A968A" stroke-width="0.8" stroke-linejoin="round"/>`
+      + `<path d="M -7 1.5 L -7 6.8 L 4.8 6.8 L 4.8 4.6 L -4 4.6 L -4 1.5 Z" fill="#E9E7DF" stroke="#B8B4A8" stroke-width="0.6" stroke-linejoin="round"/>`
       + `</g>`;
   }
 
@@ -977,19 +1003,18 @@ function roomSvg(groups, seedNum, flipped){
   // order each deck front -> rear (front = cab end). Filling in `order` then leaves faded at the rear.
   deckSeatIdx.forEach(arr => arr.sort((a,b) => flipped ? seats[a].x - seats[b].x : seats[b].x - seats[a].x));
 
-  // allocate each group across the two decks in proportion to deck capacity (40 / 47),
-  // using largest-remainder so the upper deck sums to exactly 40 and the lower to 47
+  // pack groups sequentially across all 87 seats in block order and cut at seat 40: a group only
+  // straddles the two decks when its own seats genuinely cross the 40-seat line (too big for one
+  // floor). Small groups stay whole on a single deck instead of being sprinkled on both.
   const perDeck = [{}, {}];
-  const rema = [];
-  let used = 0;
-  groups.forEach((g, gi) => {
-    const share = counts[gi] * 40 / TOTAL;
-    const fl = Math.floor(share);
-    perDeck[0][gi] = fl; used += fl; rema.push([gi, share - fl]);
+  let filled = 0;
+  order.forEach(gi => {
+    const c = counts[gi];
+    const up = Math.max(0, Math.min(c, 40 - filled));
+    perDeck[0][gi] = up;
+    perDeck[1][gi] = c - up;
+    filled += c;
   });
-  rema.sort((a,b) => b[1] - a[1]);
-  for(let k=0, need=40-used; need>0 && k<rema.length; k++, need--) perDeck[0][rema[k][0]]++;
-  groups.forEach((g, gi) => { perDeck[1][gi] = counts[gi] - perDeck[0][gi]; });
 
   // lay each deck out front -> rear following the block order
   const assign = new Array(seats.length);
