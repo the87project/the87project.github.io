@@ -697,6 +697,59 @@ const ENTRIES = [
     url: 'https://yougov.com/en-gb/topics/politics'
   },
   {
+    id: 'assisted-dying-bsa43',
+    cat: 'health', catLabel: 'Health & Ethics', date: 'Feb 2026',
+    question: 'Should doctors be allowed to help someone with an incurable, painful terminal illness end their life, if they ask?',
+    groups: [
+      {label:'Definitely allow', pct:47, color:'#4C9A3F'},
+      {label:'Probably allow', pct:32, color:'#2AA198'},
+      {label:'Would not allow', pct:17, color:'#C93B32'},
+      {label:"Neither / don't know", pct:4, color:'#A9A69E'},
+    ],
+    analysis: "This is the 2026 British Social Attitudes reading — a different, more detailed survey than the YouGov figure already on the site (76% in Jan 2026). Sixty-nine of the eighty-seven back it here, and what stands out is how firm that support is: forty-one are in the 'definitely' seats, not just leaning that way. NatCen's own framing is the real story — this number has barely moved across years of polling and a live parliamentary bill, which is what settled opinion looks like rather than a reaction to the news cycle.",
+    source: 'NatCen, British Social Attitudes 43, Feb 2026',
+    url: 'https://natcen.ac.uk/news/public-support-assisted-dying-remains-high-and-stable'
+  },
+  {
+    id: 'lgb-identity-ons-2024',
+    cat: 'society', catLabel: 'Society', date: '2024 (published 2026)',
+    question: 'How would you describe your sexual identity?',
+    groups: [
+      {label:'Heterosexual or straight', pct:93.4, color:'#2E5FB7'},
+      {label:'Gay or lesbian', pct:2.1, color:'#2AA198'},
+      {label:'Bisexual', pct:1.6, color:'#E28A2B'},
+      {label:'Other', pct:1.1, color:'#4C9A3F'},
+      {label:'Not stated (residual)', pct:1.8, color:'#A9A69E'},
+    ],
+    analysis: "One passenger on this bus is worth roughly 1.15% — which is exactly why the ONS's own age breakdown is the number that actually lands. Nationally this is a one-person bus (1 in gay/lesbian seats, 1 in bisexual). But restrict it to 16–24 year-olds and it stops being background noise: 8.0% identify as LGB, versus 1.2% of over-65s — a seven-fold generational gap sitting inside the same national average. The grey seats here are a modelling note, not a published figure: ONS's four stated categories sum to 98.2%, and this bus shows the balance as unstated rather than folding it silently into 'heterosexual.'",
+    source: 'ONS, Sexual identity, UK: 2024',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/bulletins/sexualidentityuk/2024'
+  },
+  {
+    id: 'personal-optimism-2026',
+    cat: 'society', catLabel: 'Society', date: 'Dec 2025',
+    question: 'Do you think 2026 will be a better year for you personally than 2025 was?',
+    groups: [
+      {label:'Yes, optimistic', pct:58, color:'#4C9A3F'},
+      {label:'Not optimistic / unsure', pct:42, color:'#A9A69E'},
+    ],
+    analysis: "Fifty of the eighty-seven think next year treats them better than this one did. Sit this bus next to the unrest one and the contradiction is the whole point: most people expect their own life to improve while also expecting the country to be heading for trouble. Optimism about yourself and pessimism about everyone else, riding side by side.",
+    source: 'Ipsos, Predictions Survey 2026',
+    url: 'https://www.ipsos.com/en-us/71-global-citizens-are-optimistic-2026-will-be-better'
+  },
+  {
+    id: 'unrest-expectation-2026',
+    cat: 'society', catLabel: 'Society', date: 'Dec 2025',
+    question: 'Do you expect large-scale public unrest in Britain in 2026?',
+    groups: [
+      {label:'Yes, expect unrest', pct:75, color:'#C93B32'},
+      {label:"Don't expect it / unsure", pct:25, color:'#A9A69E'},
+    ],
+    analysis: "Sixty-five of the eighty-seven expect the country to see large-scale unrest this year — one of the starkest numbers in any bus on this site. Within that same survey, 59% specifically predict protests aimed at the government itself, not unrest in general. Read together with the optimism bus: Britain is bracing for a bad year in public, while quietly betting on a good one at home.",
+    source: 'Ipsos, Predictions for 2026 (UK)',
+    url: 'https://www.ipsos.com/en-uk/predictions-2026-three-quarters-britons-expect-large-scale-public-unrest-year-ahead'
+  },
+  {
     id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Prime Minister',
