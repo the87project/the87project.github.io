@@ -305,6 +305,34 @@ main[hidden]{display:none;}
   margin-top:4px;
 }
 
+/* ---------- STAT CHIPS (before -> after, for video entries) ---------- */
+.chips{
+  display:flex; flex-wrap:wrap;
+  gap:10px 12px;
+  margin-top:28px;
+  padding-top:24px;
+  border-top:1px solid var(--rule);
+}
+.chip{
+  display:flex; align-items:center; gap:8px;
+  padding:8px 14px;
+  border:1px solid var(--rule);
+  border-radius:999px;
+}
+.chip-swatch{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
+.chip-label{
+  font-family:'Archivo',sans-serif;
+  font-size:12px; font-weight:600;
+  letter-spacing:.03em; text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.chip-nums{
+  font-family:'Archivo Black',sans-serif;
+  font-size:14px;
+  color:var(--ink);
+}
+.chip-arrow{color:var(--accent); margin:0 3px;}
+
 .analysis{
   margin-top:26px;
   font-size:15.5px;
@@ -750,6 +778,23 @@ const ENTRIES = [
     url: 'https://www.ipsos.com/en-uk/predictions-2026-three-quarters-britons-expect-large-scale-public-unrest-year-ahead'
   },
   {
+    id: 'voting-swing-2025',
+    cat: 'politics', catLabel: 'Politics', date: 'Dec 2025',
+    question: 'Westminster voting intention: January 2025 → December 2025',
+    video: 'videos/bus-voting-swing.mp4',
+    statChips: [
+      {label:'Labour', color:'#C93B32', before:23, after:16},
+      {label:'Conservative', color:'#2E5FB7', before:19, after:15},
+      {label:'Lib Dem', color:'#E28A2B', before:12, after:12},
+      {label:'Green', color:'#4C9A3F', before:7, after:15},
+      {label:'Reform UK', color:'#2AA198', before:22, after:24},
+      {label:'Other', color:'#A9A69E', before:4, after:5},
+    ],
+    analysis: "Eighty-seven people ride this bus twice, eleven months apart. Between January and December 2025, seven of the Labour seats and four of the Conservative ones changed hands — not to each other, but mostly to Green (which nearly doubled its share, 8% to 17%) and Reform (25% to 28%, extending an already-record lead). The Liberal Democrats are the one group nobody moved on all year: 14% in January, 14% in December, the only party with the same seat count at both ends of the ride. What the animation can't show, and shouldn't be read as showing, is that any specific person swapped seats — this is the net change in the published numbers, not tracked individuals; YouGov's tracker doesn't follow the same respondents twice.",
+    source: 'YouGov, "How has political opinion changed over 2025?"',
+    url: 'https://yougov.com/en-gb/articles/53758-how-has-political-opinion-changed-over-2025'
+  },
+  {
     id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Prime Minister',
@@ -1165,6 +1210,39 @@ function render(){
         </div>
       </div>
     `;
+
+    if(e.video){
+      // video-based entry (e.g. an animated swing) instead of a procedurally-drawn bus;
+      // stat chips (before -> after) replace the usual .cards row since there are no
+      // percentage groups to build seat-count cards from.
+      const chipsHtml = e.statChips.map(g => `
+        <div class="chip">
+          <span class="chip-swatch" style="background:${g.color}"></span>
+          <span class="chip-label">${g.label}</span>
+          <span class="chip-nums">${g.before} <span class="chip-arrow">&rarr;</span> ${g.after}</span>
+        </div>
+      `).join('');
+
+      wrap.innerHTML = `
+        <div class="entry-head">
+          <span class="entry-meta">${e.catLabel} &middot; ${e.date}</span>
+          <h2>${e.question}</h2>
+        </div>
+        <div class="room-wrap"><video src="${e.video}" autoplay muted loop playsinline controls style="width:100%;display:block;"></video></div>
+        <div class="chips">${chipsHtml}</div>
+        <p class="analysis">${e.analysis}</p>
+        ${footerHtml}
+      `;
+      container.appendChild(wrap);
+      const rcountsV = getReactionCounts(e.id);
+      wrap.querySelectorAll('.react-btn').forEach(btn=>{
+        const kind = btn.getAttribute('data-kind');
+        const countEl = btn.querySelector('.react-count');
+        countEl.textContent = rcountsV[kind];
+        btn.addEventListener('click', ()=> bumpReaction(e.id, kind, btn, countEl));
+      });
+      continue;
+    }
 
     if(e.pairing){
       // two buses per role: outgoing minister driving left (mirrored), incoming driving right
