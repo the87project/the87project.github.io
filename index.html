@@ -552,6 +552,25 @@ const ENTRIES = [
     url: 'https://www.gov.uk/government/publications/economic-crime-survey-2020'
   },
   {
+    id: 'occupation-breakdown',
+    cat: 'society', catLabel: 'Society', date: '2021',
+    question: 'What kind of work does Britain actually do?',
+    groups: [
+      {label:'Professional occupations', pct:26, color:'#2E5FB7'},
+      {label:'Associate professional & technical', pct:15, color:'#2AA198'},
+      {label:'Administrative & secretarial', pct:11, color:'#6AB023'},
+      {label:'Managers, directors & senior officials', pct:10, color:'#8E7CC3'},
+      {label:'Skilled trades', pct:9, color:'#D9B417'},
+      {label:'Elementary occupations', pct:9, color:'#8C8A80'},
+      {label:'Caring, leisure & other service', pct:8, color:'#E28A2B'},
+      {label:'Sales & customer service', pct:7, color:'#C93B32'},
+      {label:'Process, plant & machine operatives', pct:5, color:'#A6447A'},
+    ],
+    analysis: "No single occupation gets close to owning this bus. Professional occupations — teachers, engineers, senior nurses, accountants — take the largest single block at 22 of 87, roughly a quarter, but that still leaves three in four passengers doing something else entirely. Associate professional and admin roles between them (13 plus 10) cover almost exactly as much ground as the professional block alone, and the two together outnumber managers and directors more than two-to-one. The smallest group on board is process, plant and machine operatives — just 4 passengers, a reminder of how much of Britain's old industrial workforce has shrunk, automated, or been reclassified into services over the last generation.",
+    source: 'GOV.UK Ethnicity facts and figures: Employment by occupation (Annual Population Survey)',
+    url: 'https://www.ethnicity-facts-figures.service.gov.uk/work-pay-and-benefits/employment/employment-by-occupation/latest'
+  },
+  {
     id: 'farage-sleaze',
     cat: 'society', catLabel: 'Society', date: '2026',
     question: "Do Britons see Nigel Farage as 'sleazy'?",
