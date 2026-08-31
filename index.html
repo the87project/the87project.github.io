@@ -221,14 +221,10 @@ nav{
 .fleet-legend{display:flex; flex-wrap:wrap; gap:8px 18px; margin:6px 0 20px;}
 .fleet-legend .leg{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-soft);}
 .fleet-legend .leg-sw{width:11px; height:11px; border-radius:3px; flex-shrink:0;}
-.fleet{display:flex; flex-direction:column; gap:20px;}
-.fleet-group .fleet-group-head{display:flex; align-items:baseline; gap:8px; margin-bottom:9px;}
-.fleet-group .fleet-group-name{font-family:'Archivo',sans-serif; font-weight:600; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink);}
-.fleet-group .fleet-group-count{font-size:12px; color:var(--slate);}
-.fleet-row{display:flex; flex-wrap:wrap; gap:8px;}
-.busglyph{width:42px; height:24px; display:block;}
-.fleet-bus{line-height:0;}
-.fleet-bus:hover{opacity:.7;}
+.fleet{display:block; margin-top:4px;}
+.fleet .roundabout{width:100%; height:auto; display:block; overflow:visible;}
+.fleet .rbus{cursor:pointer; transition:opacity .15s ease;}
+.fleet .rbus:hover{opacity:.55;}
 
 /* ---------- SECTION HEADER ---------- */
 .section-head{
@@ -1761,13 +1757,11 @@ const CAT_META = {
   politics:{label:'Politics',         color:'#C93B32'},
   cabinet: {label:"Burnham's Cabinet",color:'#D9B417'},
 };
-function busGlyph(color){
-  return `<svg class="busglyph" viewBox="0 0 42 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`
-    + `<rect x="1.5" y="2.5" width="35" height="16" rx="3.5" fill="${color}"/>`
-    + `<g fill="#ffffff" opacity="0.92"><rect x="4" y="4.5" width="4.4" height="4" rx="1"/><rect x="9.8" y="4.5" width="4.4" height="4" rx="1"/><rect x="15.6" y="4.5" width="4.4" height="4" rx="1"/><rect x="21.4" y="4.5" width="4.4" height="4" rx="1"/><rect x="27.2" y="4.5" width="4.4" height="4" rx="1"/>`
-    + `<rect x="4" y="10.6" width="4.4" height="4" rx="1"/><rect x="9.8" y="10.6" width="4.4" height="4" rx="1"/><rect x="15.6" y="10.6" width="4.4" height="4" rx="1"/><rect x="21.4" y="10.6" width="4.4" height="4" rx="1"/></g>`
-    + `<circle cx="9" cy="19.5" r="2.6" fill="#2b2b2b"/><circle cx="27" cy="19.5" r="2.6" fill="#2b2b2b"/>`
-    + `</svg>`;
+function tinyBus(color){
+  // drawn centred on the origin so it can be rotated cleanly; faces +x
+  return `<rect x="-11" y="-5.4" width="22" height="10" rx="2.4" fill="${color}"/>`
+    + `<g fill="#ffffff" opacity="0.9"><rect x="-8.4" y="-3.6" width="3" height="2.6" rx="0.6"/><rect x="-4.4" y="-3.6" width="3" height="2.6" rx="0.6"/><rect x="-0.4" y="-3.6" width="3" height="2.6" rx="0.6"/><rect x="3.8" y="-3.6" width="4.2" height="2.6" rx="0.9"/></g>`
+    + `<circle cx="-5.2" cy="4.6" r="1.6" fill="#242424"/><circle cx="5.2" cy="4.6" r="1.6" fill="#242424"/>`;
 }
 function buildFleet(){
   const fleet = document.getElementById('fleet');
@@ -1779,19 +1773,38 @@ function buildFleet(){
   legend.innerHTML = cats.map(c =>
     `<span class="leg"><span class="leg-sw" style="background:${CAT_META[c].color}"></span>${CAT_META[c].label} (${byCat[c].length})</span>`
   ).join('');
-  fleet.innerHTML = cats.map(c => {
-    const meta = CAT_META[c];
-    const n = byCat[c].length;
-    const buses = byCat[c].map(e => {
-      const q = (e.question || '').replace(/"/g,'&quot;');
-      return `<span class="fleet-bus" data-cat="${c}" title="${q}" role="button" tabindex="0">${busGlyph(meta.color)}</span>`;
-    }).join('');
-    return `<div class="fleet-group"><div class="fleet-group-head"><span class="fleet-group-name">${meta.label}</span><span class="fleet-group-count">${n} ${n===1?'bus':'buses'}</span></div><div class="fleet-row">${buses}</div></div>`;
-  }).join('');
-  fleet.querySelectorAll('.fleet-bus').forEach(el => {
+
+  // flat list of buses ordered by category so colours form contiguous arcs
+  const ordered = [];
+  cats.forEach(c => byCat[c].forEach(e => ordered.push({e, cat:c, color:CAT_META[c].color})));
+  const N = ordered.length;
+
+  const W = 680, H = 620, cx = 340, cy = 300, R = 208;
+  let s = `<svg class="roundabout" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A roundabout with ${N} tiny buses circling it, one per poll, coloured by section">`;
+  // approach roads (behind everything)
+  s += `<rect x="0" y="${cy-26}" width="${W}" height="52" fill="var(--rule)"/>`;
+  s += `<rect x="${cx-26}" y="0" width="52" height="${H}" fill="var(--rule)"/>`;
+  // roundabout: road ring + grass island
+  s += `<circle cx="${cx}" cy="${cy}" r="86" fill="var(--rule)"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="70" fill="none" stroke="var(--bg)" stroke-width="2" stroke-dasharray="6 7"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="58" fill="#6FA463"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="58" fill="none" stroke="#5B8C50" stroke-width="2"/>`;
+  s += `<text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="30" fill="#ffffff">${N}</text>`;
+  s += `<text x="${cx}" y="${cy+16}" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="600" font-size="12" letter-spacing="1" fill="#eef4ea">BUSES</text>`;
+  // buses circling clockwise, tangent to the ring
+  ordered.forEach((o, i) => {
+    const a = (i / N) * Math.PI * 2 - Math.PI/2;      // start at top
+    const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
+    const rot = a * 180 / Math.PI + 90;                // tangent (clockwise)
+    const q = (o.e.question || '').replace(/"/g,'&quot;');
+    s += `<g class="rbus" data-cat="${o.cat}" transform="translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${rot.toFixed(1)})" role="button" tabindex="0"><title>${q}</title>${tinyBus(o.color)}</g>`;
+  });
+  s += `</svg>`;
+  fleet.innerHTML = s;
+
+  fleet.querySelectorAll('.rbus').forEach(el => {
     el.addEventListener('click', () => {
-      const cat = el.getAttribute('data-cat');
-      const tab = document.querySelector(`.tab[data-cat="${cat}"]`);
+      const tab = document.querySelector(`.tab[data-cat="${el.getAttribute('data-cat')}"]`);
       if(tab){ tab.click(); window.scrollTo({top:0, behavior:'smooth'}); }
     });
   });
