@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The 87 — Public opinion, one full bus at a time</title>
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem('the87-theme');
+    if(!t){ t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+    if(t === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+  }catch(e){}
+})();
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Archivo+Black&family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -17,8 +26,42 @@
   --ink-soft:#6B675E;
   --slate:#83898F;
   --accent:#AF272F;
+  --hover-tint:#F7EDED;
+  --on-accent:#fff;
+  --text-warm:#3A382F;
+  --badge-out-text:#6B675E;
+  --badge-out-border:#C9CDD1;
+  --badge-out-bg:#EFEEE9;
+  --dk-border:#B9B4A8;
+  --dk-bg:#EDEBE4;
+  --room-card-bg:transparent;
+  --room-card-pad:0;
+  --room-card-border:transparent;
   --g1:#C93B32; --g2:#2E5FB7; --g3:#2AA198; --g4:#E28A2B; --g5:#4C9A3F; --g6:#D9B417; --grey:#A9A69E;
 }
+:root[data-theme="dark"]{
+  --bg:#14171A;
+  --paper:#14171A;
+  --line:#E9E7DF;
+  --rule:#2B2F33;
+  --line-soft:#2E3338;
+  --ink:#F2F1EA;
+  --ink-soft:#B3AFA2;
+  --slate:#9CA2A8;
+  --accent:#E2574F;
+  --hover-tint:#271A1A;
+  --on-accent:#fff;
+  --text-warm:#D8D4C8;
+  --badge-out-text:#B3AFA2;
+  --badge-out-border:#3A3F44;
+  --badge-out-bg:#1F2327;
+  --dk-border:#4A4E52;
+  --dk-bg:#22262A;
+  --room-card-bg:#F9F9F6;
+  --room-card-pad:16px;
+  --room-card-border:1px solid #2E3338;
+}
+body{transition:background-color .18s ease, color .18s ease;}
 *{box-sizing:border-box; margin:0;}
 body{
   background:var(--bg);
@@ -46,6 +89,19 @@ nav{
   text-transform:uppercase;
 }
 .nav-note{font-size:13px; color:var(--slate); font-weight:500;}
+.nav-right{display:flex; align-items:center; gap:14px;}
+.theme-toggle{
+  width:32px; height:32px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--line-soft);
+  background:var(--bg);
+  border-radius:999px;
+  color:var(--ink-soft);
+  cursor:pointer;
+  transition:border-color .15s ease, color .15s ease;
+}
+.theme-toggle:hover{border-color:var(--accent); color:var(--accent);}
+.theme-toggle svg{width:16px; height:16px;}
 
 /* ---------- HERO ---------- */
 .hero{
@@ -106,8 +162,8 @@ nav{
   display:flex; align-items:center; gap:8px;
   width:100%; text-align:left;
 }
-.tab:hover{background:#F7EDED; color:var(--accent);}
-.tab.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+.tab:hover{background:var(--hover-tint); color:var(--accent);}
+.tab.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
 .tab-about{margin-top:6px; border-top:1px solid var(--line-soft); border-radius:0 0 9px 9px; padding-top:14px;}
 .new-badge{
   font-family:'Archivo',sans-serif;
@@ -115,12 +171,12 @@ nav{
   font-size:9px;
   letter-spacing:.06em;
   text-transform:uppercase;
-  background:#2AA198; color:#fff;
+  background:#2AA198; color:var(--on-accent);
   border-radius:999px;
   padding:2px 7px;
   line-height:1.3;
 }
-.tab.active .new-badge{background:#fff; color:var(--accent);}
+.tab.active .new-badge{background:var(--on-accent); color:var(--accent);}
 
 @media (max-width:760px){
   .layout{flex-direction:column; gap:16px; padding-top:16px;}
@@ -146,9 +202,22 @@ nav{
 .about-inner p{
   font-size:15.5px;
   line-height:1.75;
-  color:#3A382F;
+  color:var(--text-warm);
   margin-bottom:18px;
 }
+.about-inner h2.method-title{
+  margin-top:48px;
+  padding-top:40px;
+  border-top:2px solid var(--line);
+}
+.about-inner ul.method-list{
+  margin:0 0 22px;
+  padding-left:20px;
+  color:var(--text-warm);
+  font-size:15.5px;
+  line-height:1.75;
+}
+.about-inner ul.method-list li{margin-bottom:6px;}
 
 /* ---------- SECTION HEADER ---------- */
 .section-head{
@@ -167,7 +236,7 @@ nav{
 .section-head .section-standfirst{
   font-size:15.5px;
   line-height:1.75;
-  color:#3A382F;
+  color:var(--text-warm);
   max-width:700px;
 }
 
@@ -205,7 +274,8 @@ main[hidden]{display:none;}
   max-width:720px;
 }
 
-.room-wrap{padding:4px 0 0;}
+.room-wrap{padding:4px 0 0; background:var(--room-card-bg); border:var(--room-card-border); border-radius:14px;}
+.room-wrap:not(:empty){padding:calc(4px + var(--room-card-pad)) var(--room-card-pad) var(--room-card-pad);}
 .room{width:100%; display:block;}
 
 .legend{
@@ -232,9 +302,9 @@ main[hidden]{display:none;}
   border-radius:999px;
   border:1px solid;
 }
-.badge-out{color:#6B675E; border-color:#C9CDD1; background:#EFEEE9;}
-.badge-in{color:#fff; border-color:var(--accent); background:var(--accent);}
-.badge-stay{color:#fff; border-color:#2AA198; background:#2AA198;}
+.badge-out{color:var(--badge-out-text); border-color:var(--badge-out-border); background:var(--badge-out-bg);}
+.badge-in{color:var(--on-accent); border-color:var(--accent); background:var(--accent);}
+.badge-stay{color:var(--on-accent); border-color:#2AA198; background:#2AA198;}
 .pair-name{
   font-family:'Archivo',sans-serif;
   font-weight:700;
@@ -268,7 +338,7 @@ main[hidden]{display:none;}
 }
 .dk-note .dk-key{
   width:9px; height:9px; flex-shrink:0;
-  border:1px solid #B9B4A8; background:#EDEBE4; opacity:.7;
+  border:1px solid var(--dk-border); background:var(--dk-bg); opacity:.7;
   transform:translateY(1px);
 }
 .dk-note strong{color:var(--ink); font-weight:700;}
@@ -336,7 +406,7 @@ main[hidden]{display:none;}
 .analysis{
   margin-top:26px;
   font-size:15.5px;
-  color:#3A382F;
+  color:var(--text-warm);
   line-height:1.75;
   max-width:700px;
 }
@@ -364,8 +434,8 @@ main[hidden]{display:none;}
   display:flex; align-items:center; gap:6px;
   transition:background .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
 }
-.react-btn:hover{background:#F7EDED; border-color:var(--accent); color:var(--accent);}
-.react-btn.picked{background:var(--accent); border-color:var(--accent); color:#fff;}
+.react-btn:hover{background:var(--hover-tint); border-color:var(--accent); color:var(--accent);}
+.react-btn.picked{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
 .react-btn.bump{animation:bump .35s ease;}
 @keyframes bump{
   0%{transform:scale(1);}
@@ -393,7 +463,13 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 <nav>
   <div class="nav-inner">
     <span class="brand">The 87</span>
-    <span class="nav-note">What Britain actually thinks, one double-decker at a time.</span>
+    <div class="nav-right">
+      <span class="nav-note">What Britain actually thinks, one double-decker at a time.</span>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -426,6 +502,23 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
         <p>Human beings aren't wired to understand large-scale statistics. In psychology, &ldquo;innumeracy&rdquo; and &ldquo;psychic numbing&rdquo; describe our evolutionary inability to emotionally register what numbers like &ldquo;4%&rdquo; or &ldquo;47%&rdquo; actually represent when applied to millions of citizens.</p>
         <p>When a poll says 4% of the country holds a view, it feels negligible. But when you map that to a standard British double-decker bus, that 4% represents over three seats. Imagine getting onto your morning commute and seeing three real people sitting right at the front, passionately holding that exact view &mdash; suddenly, the statistic becomes a social reality you can picture.</p>
         <p>Furthermore, 87 is a mathematically stubborn number. Unlike 100, it doesn't cleanly divide into neat, round intervals. This is a deliberate feature: because your brain cannot effortlessly convert 87 back into a clinical percentage, it forces you to look at the visual data for what it truly represents &mdash; an indivisible group of human beings sharing a single space.</p>
+
+        <h2 id="methodology" class="method-title">The methodology, briefly</h2>
+        <p>Every entry starts as a set of percentages from a single poll. Each percentage is converted to a seat count by multiplying by 87 and rounding to the nearest whole passenger &mdash; so 4% becomes roughly 3.5, which rounds up or down depending on what else is happening on the bus. Because real-world percentages rarely divide evenly into 87 seats, the rounded totals are then nudged, one seat at a time, from whichever group currently holds the most passengers, until the bus seats exactly 87 people.</p>
+        <p>No group that registered a genuine, non-zero share in the source polling is ever rounded down to zero. If 1% of respondents held a view, at least one person is on that bus holding it.</p>
+        <p>Where a poll reports a &ldquo;don't know&rdquo;, &ldquo;unsure&rdquo;, or &ldquo;undecided&rdquo; share, those passengers are drawn as flat, translucent grey figures and seated at the back of each deck &mdash; visually distinct, but still counted and still on the bus. Hiding or excluding undecided respondents would flatter the size of the &ldquo;real&rdquo; majority; The 87 keeps them in view instead.</p>
+        <p>Every figure on this site comes from a named, publicly available poll or official statistical release, drawn mainly from a short list of recognised sources:</p>
+        <ul class="method-list">
+          <li>YouGov</li>
+          <li>Ipsos</li>
+          <li>More in Common</li>
+          <li>The Office for National Statistics (ONS)</li>
+          <li>GOV.UK statistical releases</li>
+          <li>House of Commons Library briefings</li>
+        </ul>
+        <p>Each entry links directly to its original source. Nothing on this site is estimated, modelled, or invented &mdash; if a well-sourced, reasonably recent figure for a question can't be found, the entry simply doesn't get made.</p>
+        <p>Polls are not perfectly interchangeable. Different pollsters use different panels, question wording, and fieldwork dates, so figures from two different organisations on a related topic &mdash; most visibly in the Cabinet section, which mixes YouGov and Ipsos favourability data &mdash; should be read as two separate snapshots rather than one continuous trend. Where it materially affects how a result should be read, the entry's own analysis says so explicitly.</p>
+        <p>New entries are added as new, well-sourced UK polling becomes available, with the most recent questions and Society-category entries prioritised nearer the top of the feed so the newest thinking is the first thing you see. There's no fixed publishing schedule &mdash; this is an independent, personal project, updated as time and good data allow.</p>
       </div>
     </section>
   </div>
@@ -438,6 +531,28 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 </footer>
 
 <script>
+(function(){
+  var root = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  if(!toggle) return;
+  var iconSun = toggle.querySelector('.icon-sun');
+  var iconMoon = toggle.querySelector('.icon-moon');
+  function syncIcons(){
+    var isDark = root.getAttribute('data-theme') === 'dark';
+    iconSun.hidden = !isDark;
+    iconMoon.hidden = isDark;
+    toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    toggle.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  syncIcons();
+  toggle.addEventListener('click', function(){
+    var isDark = root.getAttribute('data-theme') === 'dark';
+    if(isDark){ root.removeAttribute('data-theme'); } else { root.setAttribute('data-theme','dark'); }
+    try{ localStorage.setItem('the87-theme', root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'); }catch(e){}
+    syncIcons();
+  });
+})();
+
 const ENTRIES = [
   {
     id: 'ai-safety',
@@ -451,6 +566,33 @@ const ENTRIES = [
     source: 'YouGov / TIME, Jan 2026',
     url: 'https://time.com/7213096/uk-public-ai-law-poll/'
   },
+
+  {
+    id: 'ai-jobs-automation',
+    cat: 'tech', catLabel: 'Technology & AI', date: 'May 2023',
+    question: 'Will AI and automation destroy more jobs than they create?',
+    groups: [
+      {label:'More jobs will be lost', pct:64, color:'#C93B32'},
+      {label:'More jobs will be created', pct:7, color:'#4C9A3F'},
+      {label:'About the same / unsure', pct:29, color:'#A9A69E'},
+    ],
+    analysis: "Fifty-six of the 87 people on this bus think artificial intelligence will destroy more jobs than it creates — nearly two-thirds, and comfortably outnumbering everyone else on board put together. Only six think the opposite: that AI nets out as a job creator. That's a strikingly one-sided verdict for a technology most people haven't used at work yet, and it holds up almost exactly among people currently in work, where a near-identical 62% expect the same net loss. The remaining twenty-five are either genuinely unsure or think it roughly balances out — the closest thing to hedging on offer, and still less than half the size of the pessimist camp alone.",
+    source: 'YouGov, 19 May 2023',
+    url: 'https://yougov.com/en-gb/articles/45730-britons-think-ai-will-cost-jobs-not-their-own'
+  },
+  {
+    id: 'facial-recognition-vans',
+    cat: 'tech', catLabel: 'Technology & AI', date: 'Feb 2026',
+    question: 'Should the government fund live facial recognition vans for policing?',
+    groups: [
+      {label:'Support', pct:64, color:'#2E5FB7'},
+      {label:'Oppose', pct:17, color:'#C93B32'},
+      {label:'Undecided', pct:19, color:'#A9A69E'},
+    ],
+    analysis: "Fifty-five passengers back government funding for forty new live facial recognition vans on Britain's streets — nearly two-thirds of the bus, at a time when police forces are already widening deployment despite sustained opposition from civil liberties campaigners. Fifteen are opposed outright. The other seventeen haven't made up their minds, which is a lot of people still weighing a technology that, by the time they decide, may already be parked on their high street.",
+    source: 'Ipsos / Daily Mail, 5 Feb 2026 (n=970, England & Wales, 18-75)',
+    url: 'https://www.ipsos.com/en-uk/public-back-use-facial-recognition-safer-streets-are-sceptical-about-ai-chatbots-ipsos-poll-finds'
+  },
   {
     id: 'ai-tax',
     cat: 'economy', catLabel: 'Economy', date: 'May 2026',
@@ -463,6 +605,20 @@ const ENTRIES = [
     analysis: "Nearly half the bus backs a levy on AI work — a striking number for a policy that barely exists as a mainstream proposal yet. But watch the undecided crowd in the middle of the bus: twenty-nine passengers still working out what fairness looks like once machines are doing paid work.",
     source: 'YouGov, May 2026',
     url: 'https://yougov.com/en-gb/articles/54709-how-do-britons-think-ai-will-impact-the-uk'
+  },
+
+  {
+    id: 'wealth-tax-oneoff',
+    cat: 'economy', catLabel: 'Economy', date: 'Jan 2023',
+    question: 'Should the UK introduce a one-off 1% wealth tax on wealth over £500,000?',
+    groups: [
+      {label:'Support', pct:53, color:'#4C9A3F'},
+      {label:'Oppose', pct:25, color:'#C93B32'},
+      {label:'Undecided / don\'t know', pct:22, color:'#A9A69E'},
+    ],
+    analysis: "A narrow but real majority — 46 of 87 — would back a one-off 1% tax on wealth over £500,000, paid in instalments over five years rather than as a single bill. Twenty-two are opposed, and nineteen sit undecided. What's striking is how sensitive support is to scale: the same YouGov polling found much stronger backing, well over 70%, for a permanent tax pitched only at multi-millionaires. Ask about a £500,000 threshold instead — clearable by plenty of ordinary homeowners with a paid-off house — and the bus splits far more evenly.",
+    source: "YouGov, 23 Jan 2023",
+    url: 'https://yougov.com/en-gb/articles/45044-three-quarters-britons-support-wealth-taxes-millio'
   },
   {
     id: 'assisted-dying',
