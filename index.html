@@ -57,9 +57,9 @@
   --badge-out-bg:#1F2327;
   --dk-border:#4A4E52;
   --dk-bg:#22262A;
-  --room-card-bg:#F9F9F6;
-  --room-card-pad:16px;
-  --room-card-border:1px solid #2E3338;
+  --room-card-bg:transparent;
+  --room-card-pad:0;
+  --room-card-border:transparent;
 }
 body{transition:background-color .18s ease, color .18s ease;}
 *{box-sizing:border-box; margin:0;}
@@ -218,6 +218,17 @@ nav{
   line-height:1.75;
 }
 .about-inner ul.method-list li{margin-bottom:6px;}
+.fleet-legend{display:flex; flex-wrap:wrap; gap:8px 18px; margin:6px 0 20px;}
+.fleet-legend .leg{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-soft);}
+.fleet-legend .leg-sw{width:11px; height:11px; border-radius:3px; flex-shrink:0;}
+.fleet{display:flex; flex-direction:column; gap:20px;}
+.fleet-group .fleet-group-head{display:flex; align-items:baseline; gap:8px; margin-bottom:9px;}
+.fleet-group .fleet-group-name{font-family:'Archivo',sans-serif; font-weight:600; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink);}
+.fleet-group .fleet-group-count{font-size:12px; color:var(--slate);}
+.fleet-row{display:flex; flex-wrap:wrap; gap:8px;}
+.busglyph{width:42px; height:24px; display:block;}
+.fleet-bus{line-height:0;}
+.fleet-bus:hover{opacity:.7;}
 
 /* ---------- SECTION HEADER ---------- */
 .section-head{
@@ -519,6 +530,11 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
         <p>Each entry links directly to its original source. Nothing on this site is estimated, modelled, or invented &mdash; if a well-sourced, reasonably recent figure for a question can't be found, the entry simply doesn't get made.</p>
         <p>Polls are not perfectly interchangeable. Different pollsters use different panels, question wording, and fieldwork dates, so figures from two different organisations on a related topic &mdash; most visibly in the Cabinet section, which mixes YouGov and Ipsos favourability data &mdash; should be read as two separate snapshots rather than one continuous trend. Where it materially affects how a result should be read, the entry's own analysis says so explicitly.</p>
         <p>New entries are added as new, well-sourced UK polling becomes available, with the most recent questions and Society-category entries prioritised nearer the top of the feed so the newest thinking is the first thing you see. There's no fixed publishing schedule &mdash; this is an independent, personal project, updated as time and good data allow.</p>
+
+        <h2 id="our-buses" class="method-title">Our buses</h2>
+        <p>Every poll on the site so far, one glyph per bus, grouped and colour-coded by section &mdash; the whole fleet at a glance.</p>
+        <div id="fleetLegend" class="fleet-legend"></div>
+        <div id="fleet" class="fleet"></div>
       </div>
     </section>
   </div>
@@ -1519,6 +1535,53 @@ tabs.forEach(tab=>{
     }
   });
 });
+
+// ----- "Our buses" fleet pictogram in the About section -----
+const CAT_ORDER = ['tech','health','economy','society','politics','cabinet'];
+const CAT_META = {
+  tech:    {label:'Technology & AI',  color:'#2E5FB7'},
+  health:  {label:'Health & Ethics',  color:'#2AA198'},
+  economy: {label:'Economy',          color:'#E28A2B'},
+  society: {label:'Society',          color:'#4C9A3F'},
+  politics:{label:'Politics',         color:'#C93B32'},
+  cabinet: {label:"Burnham's Cabinet",color:'#D9B417'},
+};
+function busGlyph(color){
+  return `<svg class="busglyph" viewBox="0 0 42 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`
+    + `<rect x="1.5" y="2.5" width="35" height="16" rx="3.5" fill="${color}"/>`
+    + `<g fill="#ffffff" opacity="0.92"><rect x="4" y="4.5" width="4.4" height="4" rx="1"/><rect x="9.8" y="4.5" width="4.4" height="4" rx="1"/><rect x="15.6" y="4.5" width="4.4" height="4" rx="1"/><rect x="21.4" y="4.5" width="4.4" height="4" rx="1"/><rect x="27.2" y="4.5" width="4.4" height="4" rx="1"/>`
+    + `<rect x="4" y="10.6" width="4.4" height="4" rx="1"/><rect x="9.8" y="10.6" width="4.4" height="4" rx="1"/><rect x="15.6" y="10.6" width="4.4" height="4" rx="1"/><rect x="21.4" y="10.6" width="4.4" height="4" rx="1"/></g>`
+    + `<circle cx="9" cy="19.5" r="2.6" fill="#2b2b2b"/><circle cx="27" cy="19.5" r="2.6" fill="#2b2b2b"/>`
+    + `</svg>`;
+}
+function buildFleet(){
+  const fleet = document.getElementById('fleet');
+  const legend = document.getElementById('fleetLegend');
+  if(!fleet || !legend) return;
+  const byCat = {};
+  ENTRIES.forEach(e => { (byCat[e.cat] = byCat[e.cat] || []).push(e); });
+  const cats = CAT_ORDER.filter(c => byCat[c] && byCat[c].length);
+  legend.innerHTML = cats.map(c =>
+    `<span class="leg"><span class="leg-sw" style="background:${CAT_META[c].color}"></span>${CAT_META[c].label} (${byCat[c].length})</span>`
+  ).join('');
+  fleet.innerHTML = cats.map(c => {
+    const meta = CAT_META[c];
+    const n = byCat[c].length;
+    const buses = byCat[c].map(e => {
+      const q = (e.question || '').replace(/"/g,'&quot;');
+      return `<span class="fleet-bus" data-cat="${c}" title="${q}" role="button" tabindex="0">${busGlyph(meta.color)}</span>`;
+    }).join('');
+    return `<div class="fleet-group"><div class="fleet-group-head"><span class="fleet-group-name">${meta.label}</span><span class="fleet-group-count">${n} ${n===1?'bus':'buses'}</span></div><div class="fleet-row">${buses}</div></div>`;
+  }).join('');
+  fleet.querySelectorAll('.fleet-bus').forEach(el => {
+    el.addEventListener('click', () => {
+      const cat = el.getAttribute('data-cat');
+      const tab = document.querySelector(`.tab[data-cat="${cat}"]`);
+      if(tab){ tab.click(); window.scrollTo({top:0, behavior:'smooth'}); }
+    });
+  });
+}
+buildFleet();
 
 render();
 </script>
