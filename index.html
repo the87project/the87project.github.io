@@ -986,6 +986,221 @@ const ENTRIES = [
     url: 'https://yougov.com/en-gb/articles/53758-how-has-political-opinion-changed-over-2025'
   },
   {
+    id: 'religion-2021',
+    cat: 'society', catLabel: 'Society', date: 'Census 2021',
+    question: 'What is your religion?',
+    groups: [
+      {label:'Christian', pct:46.2, color:'#2E5FB7'},
+      {label:'No religion', pct:37.2, color:'#4C9A3F'},
+      {label:'Muslim', pct:6.5, color:'#2AA198'},
+      {label:'Other religion', pct:4.1, color:'#E28A2B'},
+      {label:'Not stated', pct:6.0, color:'#A9A69E'},
+    ],
+    analysis: "For the first time in the history of the census, Christians are a minority on this bus: 40 of the 87 identify as Christian, down from 52 a decade earlier, while 32 now report no religion at all — the fastest-growing group in modern Britain. Six passengers are Muslim. The story here isn't any single faith rising to dominance; it's the steady drift of a third of the bus out of organised religion altogether.",
+    source: 'ONS, Religion, England and Wales: Census 2021',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/religion/bulletins/religionenglandandwales/census2021'
+  },
+  {
+    id: 'ethnicity-2021',
+    cat: 'society', catLabel: 'Society', date: 'Census 2021',
+    question: 'Which ethnic group do you belong to?',
+    groups: [
+      {label:'White', pct:81.7, color:'#2E5FB7'},
+      {label:'Asian', pct:9.3, color:'#E28A2B'},
+      {label:'Black', pct:4.0, color:'#4C9A3F'},
+      {label:'Mixed', pct:2.9, color:'#2AA198'},
+      {label:'Other', pct:2.1, color:'#D9B417'},
+    ],
+    analysis: "Seventy-one of the eighty-seven passengers are White, eight Asian, three Black, three of mixed heritage and two from another group. The figure that moves fastest between censuses is the White share — 86% in 2011, 81.7% here — which is less a story about any one group arriving than about a country slowly becoming more mixed, one census at a time.",
+    source: 'ONS, Ethnic group, England and Wales: Census 2021',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021'
+  },
+  {
+    id: 'housing-tenure-2021',
+    cat: 'economy', catLabel: 'Economy', date: 'Census 2021',
+    question: 'Do you own or rent the home you live in?',
+    groups: [
+      {label:'Owned outright', pct:33, color:'#4C9A3F'},
+      {label:'Owned with a mortgage', pct:30, color:'#2AA198'},
+      {label:'Private renting', pct:20, color:'#E28A2B'},
+      {label:'Social renting', pct:17, color:'#C93B32'},
+    ],
+    analysis: "Fifty-five of the eighty-seven passengers own the home they live in — 29 of them outright, with no mortgage left to pay, and 26 still paying the bank. Of the renters, 17 rent privately and 15 from a council or housing association. The quiet headline is that outright owners now outnumber mortgage-holders: Britain's homeowners are, increasingly, people who bought long ago rather than people buying now.",
+    source: 'ONS, Housing, England and Wales: Census 2021',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/housing/bulletins/housingenglandandwales/census2021'
+  },
+  {
+    id: 'general-health-2021',
+    cat: 'health', catLabel: 'Health & Ethics', date: 'Census 2021',
+    question: 'How is your health in general?',
+    groups: [
+      {label:'Very good', pct:48.4, color:'#4C9A3F'},
+      {label:'Good', pct:33.5, color:'#2AA198'},
+      {label:'Fair', pct:12.5, color:'#D9B417'},
+      {label:'Bad', pct:4.4, color:'#E28A2B'},
+      {label:'Very bad', pct:1.2, color:'#C93B32'},
+    ],
+    analysis: "Asked to rate their own health, 42 of the 87 say it is 'very good' and another 29 'good' — seven in ten passengers in rude health by their own account. Eleven describe it as 'fair', four 'bad' and one 'very bad'. Self-reported health is famously rosier than the clinical picture, but the shape is real: most of the bus feels well, and a small, hard core does not.",
+    source: 'ONS, General health, England and Wales: Census 2021',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthandwellbeing/bulletins/generalhealthenglandandwales/census2021'
+  },
+  {
+    id: 'country-of-birth-2021',
+    cat: 'society', catLabel: 'Society', date: 'Census 2021',
+    question: 'Were you born in the United Kingdom?',
+    groups: [
+      {label:'Born in the UK', pct:83.2, color:'#2E5FB7'},
+      {label:'Born abroad', pct:16.8, color:'#E28A2B'},
+    ],
+    analysis: "Seventy-two of the eighty-seven passengers were born in the United Kingdom; fifteen were born abroad. That roughly one-in-six figure sits under almost every immigration debate — large enough to reshape a country's makeup over a generation, small enough that five of every six people on the bus have only ever known Britain as home.",
+    source: 'ONS, International migration, England and Wales: Census 2021',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/bulletins/internationalmigrationenglandandwales/census2021'
+  },
+  {
+    id: 'nhs-satisfaction-2024',
+    cat: 'health', catLabel: 'Health & Ethics', date: 'Apr 2025',
+    question: 'How satisfied are you with the way the NHS runs nowadays?',
+    groups: [
+      {label:'Satisfied', pct:21, color:'#4C9A3F'},
+      {label:'Neither', pct:20, color:'#A9A69E'},
+      {label:'Dissatisfied', pct:59, color:'#C93B32'},
+    ],
+    analysis: "Just 18 of the 87 are satisfied with how the NHS is run — the lowest reading in four decades of this survey — while 52 are actively dissatisfied. This is the gold-standard British Social Attitudes measure, and its collapse since 2019 is one of the steepest shifts in any bus on this site. Dissatisfaction here is not the same as wanting the model scrapped: the same public remains fiercely attached to the idea of the NHS, even as it despairs of the reality.",
+    source: 'British Social Attitudes / The King\'s Fund & Nuffield Trust, 2024',
+    url: 'https://www.kingsfund.org.uk/insight-and-analysis/reports/public-satisfaction-nhs-social-care-in-2024-bsa'
+  },
+  {
+    id: 'wealth-tax-2025',
+    cat: 'economy', catLabel: 'Economy', date: 'Jul 2025',
+    question: 'Would you support a 2% wealth tax on assets above £10 million?',
+    groups: [
+      {label:'Strongly support', pct:49, color:'#4C9A3F'},
+      {label:'Somewhat support', pct:26, color:'#2AA198'},
+      {label:'Oppose', pct:13, color:'#C93B32'},
+      {label:"Don't know", pct:12, color:'#A9A69E'},
+    ],
+    analysis: "Sixty-six of the eighty-seven back a 2% wealth tax on fortunes above £10 million — 43 of them strongly — against just 11 opposed. Few tax rises are this popular, and the reason is structural: almost nobody on the bus expects to pay it. A levy aimed at a tiny number of people the average passenger will never meet is, unsurprisingly, an easy thing to support.",
+    source: 'YouGov, July 2025',
+    url: 'https://yougov.co.uk/politics'
+  },
+  {
+    id: 'smoking-ban-2025',
+    cat: 'health', catLabel: 'Health & Ethics', date: 'Mar 2025',
+    question: 'Do you support a smoke-free generation — never selling tobacco to anyone born after 2009?',
+    groups: [
+      {label:'Support', pct:67, color:'#4C9A3F'},
+      {label:'Oppose', pct:14, color:'#C93B32'},
+      {label:"Neither / don't know", pct:19, color:'#A9A69E'},
+    ],
+    analysis: "Fifty-eight of the eighty-seven support a 'smoke-free generation' — the rolling ban that would stop tobacco ever being sold to anyone born after 2009 — with only 12 opposed. It is one of the rare public-health measures that unites voters of every party. The unusual thing about this policy is that most of the people backing it will never be affected by it: they are voting to close a door behind themselves.",
+    source: 'YouGov for Action on Smoking and Health (ASH), 2025',
+    url: 'https://ash.org.uk/resources/view/public-opinion-in-gb'
+  },
+  {
+    id: 'two-child-cap-2024',
+    cat: 'economy', catLabel: 'Economy', date: 'Jul 2024',
+    question: 'Should the two-child limit on benefits be kept or scrapped?',
+    groups: [
+      {label:'Keep the cap', pct:60, color:'#2E5FB7'},
+      {label:'Scrap it', pct:25, color:'#E28A2B'},
+      {label:"Don't know", pct:15, color:'#A9A69E'},
+    ],
+    analysis: "Against the campaign to abolish it, 52 of the 87 want the two-child benefit cap kept, and only 22 want it scrapped. It is one of the sharper gaps on this site between activist energy and public opinion: the cap is a totem for its opponents, but a clear majority of the bus — including most Labour voters — is content to leave it in place. Whether that survives contact with the child-poverty figures is the open question.",
+    source: 'YouGov, July 2024',
+    url: 'https://yougov.co.uk/politics/articles/50140-public-support-retaining-the-two-child-benefit-limit-as-starmer-gears-up-for-first-rebellion'
+  },
+  {
+    id: 'rail-ownership-2024',
+    cat: 'economy', catLabel: 'Economy', date: '2024',
+    question: 'Should the railways be run in the public sector?',
+    groups: [
+      {label:'Run in the public sector', pct:76, color:'#4C9A3F'},
+      {label:"Private / don't know", pct:24, color:'#A9A69E'},
+    ],
+    analysis: "Sixty-six of the eighty-seven want the railways run in the public sector — a majority that holds across voters of every major party. Read alongside the water bus elsewhere on this site, it points to something bigger than any single industry: public ownership of the essentials has quietly become a settled majority position, not a fringe one. (YouGov's headline doesn't publish a full oppose / don't-know split, so the remaining 21 passengers ride here as one grey group.)",
+    source: 'YouGov, 2024',
+    url: 'https://yougov.com/en-gb/articles/54846-most-britons-think-water-and-energy-companies-should-be-nationalised'
+  },
+  {
+    id: 'four-day-week-2024',
+    cat: 'economy', catLabel: 'Economy', date: 'May 2024',
+    question: 'Would you support a four-day working week on the same pay?',
+    groups: [
+      {label:'In favour', pct:67, color:'#4C9A3F'},
+      {label:'Opposed', pct:7, color:'#C93B32'},
+      {label:"Neither / don't know", pct:26, color:'#A9A69E'},
+    ],
+    analysis: "Fifty-eight of the eighty-seven favour a four-day week on the same pay; just six are opposed. Support this lopsided usually means the question is doing some of the work — 'same pay' is carrying real weight — but the direction is not in doubt, and it holds across the political spectrum. The gap between how popular the idea is and how rare it remains in practice is the story to watch.",
+    source: 'Survation for the 4 Day Week Campaign, May 2024',
+    url: 'https://autonomy.work/portfolio/new-polling-four-day-week-2024/'
+  },
+  {
+    id: 'death-penalty-2024',
+    cat: 'politics', catLabel: 'Politics', date: '2024',
+    question: 'Should the death penalty be available for some crimes?',
+    groups: [
+      {label:'Support', pct:50, color:'#C93B32'},
+      {label:'Oppose', pct:45, color:'#2E5FB7'},
+      {label:'Not sure', pct:5, color:'#A9A69E'},
+    ],
+    analysis: "Britain abolished capital punishment in 1965, but the bus has never quite agreed: 44 of the 87 would support the death penalty for at least some crimes, against 39 opposed. Support climbs steeply when the worst individual cases are named, and it splits hard by age — older passengers are more than twice as likely to back it as the youngest. It is one of the few questions where public opinion sits to the right of every party in Parliament.",
+    source: 'YouGov, 2024',
+    url: 'https://yougov.co.uk/politics/articles/53343-do-britons-support-the-return-of-corporal-and-capital-punishment'
+  },
+  {
+    id: 'cannabis-2025',
+    cat: 'society', catLabel: 'Society', date: 'Jan 2025',
+    question: 'What should the law on cannabis be?',
+    groups: [
+      {label:'Fully legalise', pct:33, color:'#4C9A3F'},
+      {label:'Decriminalise', pct:23, color:'#2AA198'},
+      {label:'Keep it a crime', pct:35, color:'#C93B32'},
+      {label:"Don't know", pct:9, color:'#A9A69E'},
+    ],
+    analysis: "Given three options rather than a straight yes or no, the bus fragments: 29 passengers want cannabis fully legalised, 20 would decriminalise it without full legalisation, and 30 want it kept a criminal offence. Add the first two together and a slim majority wants some form of liberalisation — but 'legalise' and 'decriminalise' are not the same policy, and the split between them is exactly why reform has stalled for decades.",
+    source: 'YouGov, January 2025',
+    url: 'https://yougov.co.uk/politics/articles/51415-how-do-mps-views-on-drugs-policy-compare-to-the-british-publics'
+  },
+  {
+    id: 'electoral-reform-2024',
+    cat: 'politics', catLabel: 'Politics', date: '2024',
+    question: 'Should the UK switch from first-past-the-post to proportional representation?',
+    groups: [
+      {label:'Switch to PR', pct:45, color:'#4C9A3F'},
+      {label:'Keep first-past-the-post', pct:25, color:'#2E5FB7'},
+      {label:"Don't know", pct:30, color:'#A9A69E'},
+    ],
+    analysis: "Thirty-nine of the eighty-seven would switch from first-past-the-post to proportional representation, against 22 who would keep the current system — but note the 26 grey seats, one of the largest don't-know blocs on this site. Electoral systems are abstract, and most people don't think about them until an election produces a result that feels unfair. Support for PR is real, but it is soft in a way that support for an NHS or wealth-tax bus is not.",
+    source: 'YouGov / Electoral Reform Society, 2024',
+    url: 'https://electoral-reform.org.uk/new-polling-finds-proportional-representation-still-much-more-popular-than-first-past-the-post/'
+  },
+  {
+    id: 'votes-at-16-2025',
+    cat: 'politics', catLabel: 'Politics', date: 'Jul 2025',
+    question: 'Should the voting age be lowered to 16?',
+    groups: [
+      {label:'Support', pct:32, color:'#4C9A3F'},
+      {label:'Oppose', pct:57, color:'#C93B32'},
+      {label:"Don't know", pct:11, color:'#A9A69E'},
+    ],
+    analysis: "Parliament has voted to lower the voting age to 16, but the bus never asked for it: only 28 of the 87 support the change, while 49 oppose it. Opposition runs across almost every age group and party — including, in some polls, among 16- and 17-year-olds themselves. It is an unusual reform in that the people it enfranchises are among the least enthusiastic about being enfranchised.",
+    source: 'YouGov, July 2025',
+    url: 'https://yougov.co.uk/politics'
+  },
+  {
+    id: 'brexit-hindsight-2025',
+    cat: 'politics', catLabel: 'Politics', date: 'Jan 2025',
+    question: 'In hindsight, was Britain right or wrong to vote to leave the EU?',
+    groups: [
+      {label:'Wrong to leave', pct:55, color:'#2E5FB7'},
+      {label:'Right to leave', pct:30, color:'#4C9A3F'},
+      {label:"Don't know", pct:15, color:'#A9A69E'},
+    ],
+    analysis: "A decade on, 48 of the 87 now say it was wrong to vote to leave the EU, against 26 who say it was right — a verdict that has held remarkably steady for years. This is the retrospective judgment, not a fresh referendum: it sits alongside the rejoin bus elsewhere on the site, and the two don't say the same thing. Regret that a decision was made is not the same as an appetite to reverse it — the gap British politics has spent ten years not resolving.",
+    source: 'YouGov Brexit tracker, January 2025',
+    url: 'https://yougov.co.uk/politics/articles/51484-how-do-britons-feel-about-brexit-five-years-on'
+  },
+  {
     id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Prime Minister',
