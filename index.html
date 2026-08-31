@@ -1757,12 +1757,6 @@ const CAT_META = {
   politics:{label:'Politics',         color:'#C93B32'},
   cabinet: {label:"Burnham's Cabinet",color:'#D9B417'},
 };
-function tinyBus(color){
-  // drawn centred on the origin so it can be rotated cleanly; faces +x
-  return `<rect x="-11" y="-5.4" width="22" height="10" rx="2.4" fill="${color}"/>`
-    + `<g fill="#ffffff" opacity="0.9"><rect x="-8.4" y="-3.6" width="3" height="2.6" rx="0.6"/><rect x="-4.4" y="-3.6" width="3" height="2.6" rx="0.6"/><rect x="-0.4" y="-3.6" width="3" height="2.6" rx="0.6"/><rect x="3.8" y="-3.6" width="4.2" height="2.6" rx="0.9"/></g>`
-    + `<circle cx="-5.2" cy="4.6" r="1.6" fill="#242424"/><circle cx="5.2" cy="4.6" r="1.6" fill="#242424"/>`;
-}
 function buildFleet(){
   const fleet = document.getElementById('fleet');
   const legend = document.getElementById('fleetLegend');
@@ -1779,25 +1773,39 @@ function buildFleet(){
   cats.forEach(c => byCat[c].forEach(e => ordered.push({e, cat:c, color:CAT_META[c].color})));
   const N = ordered.length;
 
-  const W = 680, H = 620, cx = 340, cy = 300, R = 208;
-  let s = `<svg class="roundabout" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A roundabout with ${N} tiny buses circling it, one per poll, coloured by section">`;
+  // one bus image is tinted per category via a multiply filter (keeps the line-drawing detail)
+  const BW = 40, BH = BW * 592 / 1792;   // bus.png is 1792x592
+  const filters = cats.map(c =>
+    `<filter id="tint-${c}" x="-5%" y="-5%" width="110%" height="110%">`
+    + `<feFlood flood-color="${CAT_META[c].color}" result="c"/>`
+    + `<feBlend in="c" in2="SourceGraphic" mode="multiply" result="m"/>`
+    + `<feComposite in="m" in2="SourceGraphic" operator="in"/>`
+    + `</filter>`
+  ).join('');
+
+  const W = 680, H = 600, cx = 340, cy = 300, Rin = 150, Rout = 212;
+  let s = `<svg class="roundabout" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A roundabout with ${N} tiny buses around it, one per poll, coloured by section">`;
+  s += `<defs>${filters}</defs>`;
   // approach roads (behind everything)
   s += `<rect x="0" y="${cy-26}" width="${W}" height="52" fill="var(--rule)"/>`;
   s += `<rect x="${cx-26}" y="0" width="52" height="${H}" fill="var(--rule)"/>`;
   // roundabout: road ring + grass island
-  s += `<circle cx="${cx}" cy="${cy}" r="86" fill="var(--rule)"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="70" fill="none" stroke="var(--bg)" stroke-width="2" stroke-dasharray="6 7"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="58" fill="#6FA463"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="58" fill="none" stroke="#5B8C50" stroke-width="2"/>`;
-  s += `<text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="30" fill="#ffffff">${N}</text>`;
-  s += `<text x="${cx}" y="${cy+16}" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="600" font-size="12" letter-spacing="1" fill="#eef4ea">BUSES</text>`;
-  // buses circling clockwise, tangent to the ring
+  s += `<circle cx="${cx}" cy="${cy}" r="82" fill="var(--rule)"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="66" fill="none" stroke="var(--bg)" stroke-width="2" stroke-dasharray="6 7"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="54" fill="#6FA463"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="54" fill="none" stroke="#5B8C50" stroke-width="2"/>`;
+  s += `<text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="28" fill="#ffffff">${N}</text>`;
+  s += `<text x="${cx}" y="${cy+16}" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="600" font-size="11" letter-spacing="1" fill="#eef4ea">BUSES</text>`;
+  // buses kept upright (roof up), staggered across two lanes so 54 fit without overlap
   ordered.forEach((o, i) => {
-    const a = (i / N) * Math.PI * 2 - Math.PI/2;      // start at top
+    const a = (i / N) * Math.PI * 2 - Math.PI/2;      // start at top, contiguous colour arcs
+    const R = (i % 2 === 0) ? Rout : Rin;
     const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
-    const rot = a * 180 / Math.PI + 90;                // tangent (clockwise)
     const q = (o.e.question || '').replace(/"/g,'&quot;');
-    s += `<g class="rbus" data-cat="${o.cat}" transform="translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${rot.toFixed(1)})" role="button" tabindex="0"><title>${q}</title>${tinyBus(o.color)}</g>`;
+    s += `<g class="rbus" data-cat="${o.cat}" transform="translate(${(x-BW/2).toFixed(1)},${(y-BH/2).toFixed(1)})" role="button" tabindex="0">`
+      + `<title>${q}</title>`
+      + `<image href="bus.png" x="0" y="0" width="${BW}" height="${BH.toFixed(1)}" filter="url(#tint-${o.cat})"/>`
+      + `</g>`;
   });
   s += `</svg>`;
   fleet.innerHTML = s;
