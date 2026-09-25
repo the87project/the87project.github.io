@@ -144,6 +144,13 @@ nav{
   padding:12px;
 }
 .content{ flex:1 1 auto; min-width:0; }
+.sortbar{display:flex; align-items:center; gap:8px; padding:4px 0 2px; margin-bottom:4px; flex-wrap:wrap;}
+.sortbar-label{font-family:'Archivo',sans-serif; font-weight:600; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--slate); margin-right:2px;}
+.sortbtn{font-family:'Archivo',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:.03em; text-transform:uppercase;
+  background:var(--bg); border:1px solid var(--line-soft); border-radius:999px; color:var(--ink-soft); padding:5px 12px; cursor:pointer; transition:all .15s ease;}
+.sortbtn:hover{border-color:var(--accent); color:var(--accent);}
+.sortbtn.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
+.sortbar[hidden]{display:none;}
 
 /* ---------- TABS ---------- */
 .tab{
@@ -506,6 +513,12 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   </aside>
 
   <div class="content">
+    <div class="sortbar" id="sortbar">
+      <span class="sortbar-label">Sort</span>
+      <button class="sortbtn active" data-sort="default" type="button">Featured</button>
+      <button class="sortbtn" data-sort="new" type="button">Newest first</button>
+      <button class="sortbtn" data-sort="old" type="button">Oldest first</button>
+    </div>
     <main id="entries"></main>
 
     <section id="about" class="about-section" hidden>
@@ -1442,6 +1455,18 @@ const container = document.getElementById('entries');
 const aboutSection = document.getElementById('about');
 const tabs = document.querySelectorAll('.tab');
 let currentFilter = 'all';
+let currentSort = 'default';
+
+// turn a free-text date label ('Aug 2026', 'Census 2021', 'Mar–Jun 2026', '2024 (published 2026)') into a sortable number
+const MONTHS = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,sept:9,oct:10,nov:11,dec:12};
+function entryDateValue(e){
+  const s = e.date || '';
+  const ym = s.match(/\d{4}/);
+  const year = ym ? parseInt(ym[0], 10) : 0;
+  const mm = s.toLowerCase().match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)/);
+  const month = mm ? MONTHS[mm[1]] : 6;   // undated/census entries sort to mid-year
+  return year * 100 + month;
+}
 
 // deterministic pseudo-random for stable jitter
 function seeded(seed){
@@ -1653,7 +1678,16 @@ const CABINET_STANDFIRST = "When Andy Burnham became prime minister on 20 July 2
 
 function render(){
   container.innerHTML = '';
-  const visible = ENTRIES.filter(e => currentFilter==='all' || e.cat===currentFilter);
+  let visible = ENTRIES.filter(e => currentFilter==='all' || e.cat===currentFilter);
+  if(currentSort !== 'default'){
+    // keep the Burnham's Cabinet block together at the end; sort the rest by date
+    const cab = visible.filter(e => e.cat === 'cabinet');
+    const rest = visible.filter(e => e.cat !== 'cabinet');
+    rest.sort((a,b) => currentSort === 'new'
+      ? entryDateValue(b) - entryDateValue(a)
+      : entryDateValue(a) - entryDateValue(b));
+    visible = rest.concat(cab);
+  }
   let cabinetHeaderAdded = false;
   for(let i=0;i<visible.length;i++){
     const e = visible[i];
@@ -1823,11 +1857,24 @@ tabs.forEach(tab=>{
     if(currentFilter === 'about'){
       container.hidden = true;
       aboutSection.hidden = false;
+      sortbar.hidden = true;
     } else {
       aboutSection.hidden = true;
       container.hidden = false;
+      sortbar.hidden = false;
       render();
     }
+  });
+});
+
+// ----- sort control (Featured / Newest / Oldest) -----
+const sortbar = document.getElementById('sortbar');
+sortbar.querySelectorAll('.sortbtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    sortbar.querySelectorAll('.sortbtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSort = btn.getAttribute('data-sort');
+    render();
   });
 });
 
