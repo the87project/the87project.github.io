@@ -1203,6 +1203,84 @@ const ENTRIES = [
     url: 'https://yougov.co.uk/politics/articles/51484-how-do-britons-feel-about-brexit-five-years-on'
   },
   {
+    id: 'government-approval-wording',
+    cat: 'politics', catLabel: 'Politics', date: 'Aug 2026',
+    question: "Do you approve of the government's record so far?",
+    groups: [
+      {label:'Approve', pct:22, color:'#4C9A3F'},
+      {label:'Disapprove', pct:55, color:'#C93B32'},
+      {label:"Neither / don't know", pct:23, color:'#A9A69E'},
+    ],
+    analysis: "Only 19 of the 87 approve of the government's record, against 48 who disapprove — a bleak net −33. But the number is half a mirage of wording: ask the same people about 'Burnham's government' rather than 'the government' and approval flips to net +6, a swing of more than forty points from a single change of label. It is the sharpest illustration on this site that a poll measures the question as much as the mood — the public is judging a brand, and the brand it dislikes is 'the government', not the man running it.",
+    source: 'YouGov, 28 August 2026',
+    url: 'https://yougov.com/en-gb/articles/55457-why-is-government-approval-so-low-when-andy-burnhams-personal-ratings-are-so-high'
+  },
+  {
+    id: 'prison-release-scheme',
+    cat: 'politics', catLabel: 'Politics', date: 'Aug 2026',
+    question: 'Do you support the early release of prisoners to ease overcrowding?',
+    groups: [
+      {label:'Support', pct:8, color:'#4C9A3F'},
+      {label:'Oppose', pct:69, color:'#C93B32'},
+      {label:"Neither / don't know", pct:23, color:'#A9A69E'},
+    ],
+    analysis: "Just 7 of the 87 support the early-release scheme, against 60 opposed — one of the most lopsided verdicts anywhere on this site. It rides alongside public confidence in the government's handling of crime and justice, which sits at barely a quarter. Early release is the policy governments reach for when the prisons are full and the options have run out; the public has plainly not been persuaded it is anything other than a retreat.",
+    source: 'Ipsos, 7–11 August 2026',
+    url: 'https://www.ipsos.com/en-uk/fewer-1-10-support-early-prison-release-scheme'
+  },
+  {
+    id: 'best-pm-burnham-farage',
+    cat: 'politics', catLabel: 'Politics', date: 'Sep 2026',
+    question: 'Who would make the better prime minister — Burnham or Farage?',
+    groups: [
+      {label:'Andy Burnham', pct:52, color:'#2E5FB7'},
+      {label:'Nigel Farage', pct:22, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:26, color:'#A9A69E'},
+    ],
+    analysis: "Asked to choose head-to-head, 45 of the 87 pick Andy Burnham as the better prime minister and just 19 pick Nigel Farage — better than two to one. It is the clearest read of the 'Burnham bounce': the same public that hands the government dismal approval scores gives its leader a commanding personal lead over the man Reform would install in his place. Whether that gap is really about Burnham, or simply about Farage, is the question every rival is now trying to answer.",
+    source: 'YouGov, 4 September 2026',
+    url: 'https://yougov.com/en-gb/articles/55496-who-would-make-the-best-prime-minister-august-2026'
+  },
+  {
+    id: 'tax-cuts-vs-spending',
+    cat: 'economy', catLabel: 'Economy', date: 'Jul 2026',
+    question: 'Would you rather have tax cuts or more public spending?',
+    groups: [
+      {label:'Prefer tax cuts', pct:45, color:'#E28A2B'},
+      {label:'Prefer more spending', pct:32, color:'#2E5FB7'},
+      {label:"Neither / don't know", pct:23, color:'#A9A69E'},
+    ],
+    analysis: "Thirty-nine of the 87 now want tax cuts even at the price of thinner public services, against 28 who would keep the spending — a lead that has widened sharply since the winter, when the two were level. The shift is concentrated among Conservative and Reform voters, but it points to a broader souring: seven in ten expect their own taxes to rise within the year, and the appetite to fund the state drains with the trust that it will spend the money well.",
+    source: 'Ipsos, 23–24 July 2026',
+    url: 'https://www.ipsos.com/en-uk/share-britons-backing-personal-tax-cuts-grows-particularly-among-conservative-and-reform-voters'
+  },
+  {
+    id: 'immigration-vs-growth',
+    cat: 'economy', catLabel: 'Economy', date: 'Aug 2026',
+    question: 'Strictly limit immigration, even if it slows economic growth?',
+    groups: [
+      {label:'Limit immigration regardless', pct:48, color:'#C93B32'},
+      {label:'Allow growth-driven immigration', pct:32, color:'#4C9A3F'},
+      {label:"Don't know", pct:20, color:'#A9A69E'},
+    ],
+    analysis: "Given the trade-off explicitly, 42 of the 87 would strictly limit immigration even if it costs the country growth, against 28 who would let the economy set the level. That is the whole argument in one bus: immigration is the public's single biggest concern, and it stays the biggest even when the price is spelled out in lost prosperity. Anyone assuming voters will follow the money has been reading the wrong deck.",
+    source: 'Ipsos, 31 July–4 August 2026',
+    url: 'https://www.ipsos.com/en-uk/nearly-half-favour-improving-economy-nationally-over-regional-development-most-brits-say-economy'
+  },
+  {
+    id: 'social-care-funding',
+    cat: 'health', catLabel: 'Health & Ethics', date: 'Aug 2026',
+    question: 'How should the cost of social care be met?',
+    groups: [
+      {label:'Through general taxation', pct:70, color:'#2AA198'},
+      {label:'Individuals pay their own', pct:15, color:'#E28A2B'},
+      {label:"Don't know", pct:15, color:'#A9A69E'},
+    ],
+    analysis: "Sixty-one of the 87 think social care should be paid for through general taxation, against just 13 who think people should meet their own costs — a rare near-consensus on one of the hardest questions in British politics. It is the ground on which Burnham has staked his flagship social-care levy: the public clearly wants care funded collectively. The harder sell, as ever, is the bill — support for the levy itself is real, but far softer than support for the principle behind it.",
+    source: 'More in Common, August 2026',
+    url: 'https://www.moreincommon.org.uk/research/where-britain-stands-on-burnhams-social-care-levy-proposal/'
+  },
+  {
     id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Prime Minister',
