@@ -507,7 +507,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 <div class="layout">
   <aside class="sidebar">
     <nav class="sidebar-box" id="tabs" aria-label="Sections">
-      <button class="tab" data-cat="cabinet">Burnham's Cabinet <span class="new-badge">New</span></button>
+      <button class="tab" data-cat="cabinet">Burnham's Cabinet</button>
       <button class="tab active" data-cat="all">All</button>
       <button class="tab" data-cat="tech">Technology &amp; AI</button>
       <button class="tab" data-cat="health">Health &amp; Ethics</button>
@@ -885,19 +885,19 @@ const ENTRIES = [
   },
   {
     id: 'voting-intention',
-    cat: 'politics', catLabel: 'Politics', date: 'Aug 2026',
+    cat: 'politics', catLabel: 'Politics', date: 'Oct 2026',
     question: 'If there were an election tomorrow?',
     groups: [
-      {label:'Labour', pct:23, color:'#DC241F'},
-      {label:'Reform UK', pct:23, color:'#12B6CF'},
+      {label:'Labour', pct:27, color:'#DC241F'},
+      {label:'Reform UK', pct:22, color:'#12B6CF'},
       {label:'Conservative', pct:20, color:'#0087DC'},
-      {label:'Green', pct:13, color:'#6AB023'},
-      {label:'Liberal Democrat', pct:12, color:'#FAA61A'},
-      {label:'Other parties', pct:8, color:'#A9A69E'},
+      {label:'Green', pct:11, color:'#6AB023'},
+      {label:'Liberal Democrat', pct:11, color:'#FAA61A'},
+      {label:'Other parties', pct:9, color:'#A9A69E'},
     ],
-    analysis: "For the first time in this run of trackers, no one leads outright: Labour and Reform UK are tied at 20 of 87 passengers each — not because Reform fell, but because Labour crept up a point to draw level, a shift YouGov itself calls within the margin of error of the previous wave. The Conservatives sit a step behind at 17, and across five parties none comes close to a majority of the bus.",
-    source: 'YouGov, 30–31 August 2026',
-    url: 'https://yougov.com/en-gb/articles/55475-voting-intention-30-31-august-2026-lab-23-ref-23-con-20-grn-13-ld-12'
+    analysis: "After months of ties and near-ties, someone finally leads: Labour takes 23 of the 87 seats against Reform UK's 19, a five-point gap that YouGov says is the first statistically significant lead for any party in its tracker in three months. It is Labour's best YouGov reading since January 2025, helped by a three-point rise in a week while Reform dropped three. The Conservatives hold 17, the Greens and Lib Dems 10 each, and no one is anywhere near a majority of the bus.",
+    source: 'YouGov for The Times and Sky News, 4–5 October 2026 (n=2,312)',
+    url: 'https://yougov.com/en-gb/articles/55688-voting-intention-4-5-october-2026-lab-27-ref-22-con-20-ld-11-grn-11'
   },
   {
     id: 'monarchy',
@@ -1337,6 +1337,76 @@ const ENTRIES = [
     analysis: "Burnham used his conference speech to trade one of British politics' great untouchables for another: drop the earnings leg of the triple lock from 2030 and put the money towards a National Care Service. The bus takes the deal, 42 passengers to 24, with 21 still staring out of the window. Ask about the care service alone and 64 of the 87 are on board, so the pension trim is what costs him riders. It's a lead, not a landslide, and the 21 undecideds will hear plenty from pensioners' groups before 2030.",
     source: 'YouGov: snap poll of 4,503 GB adults, 29 Sep 2026',
     url: 'https://yougov.com/en-gb/articles/55654-britons-support-changing-triple-lock-to-fund-care-service-by-48-to-28'
+  },
+  {
+    id: 'likely-pm-after-election',
+    cat: 'politics', catLabel: 'Politics', date: 'Oct 2026',
+    question: 'Who is most likely to be prime minister after the next general election?',
+    groups: [
+      {label:'Andy Burnham', pct:37, color:'#DC241F'},
+      {label:'Nigel Farage', pct:13, color:'#12B6CF'},
+      {label:'Kemi Badenoch', pct:10, color:'#0087DC'},
+      {label:'Someone else / a different leader', pct:9, color:'#6B7280'},
+      {label:"Don't know", pct:31, color:'#A9A69E'},
+    ],
+    analysis: "This is a bet rather than a preference: asked who will probably be in Number 10 after the next election, 32 of the 87 name Andy Burnham, 11 name Nigel Farage and 9 name Kemi Badenoch. A further 8 back someone else entirely, and 27 simply don't know. Burnham leads by almost three to one over his nearest rival, yet more than a quarter of the bus won't commit to anyone, which is a lot of open seats for a race still years from its start.",
+    source: 'YouGov daily question, 7 October 2026 (n=5,511)',
+    url: 'https://yougov.com/en-gb/daily-results/20261007-80161-1'
+  },
+  {
+    id: 'eu-rejoin-ten-years',
+    cat: 'politics', catLabel: 'Politics', date: 'Oct 2026',
+    question: 'Will the UK rejoin the EU within the next 10 years?',
+    groups: [
+      {label:'Likely', pct:44, color:'#2E5FB7'},
+      {label:'Unlikely', pct:37, color:'#C93B32'},
+      {label:"Don't know", pct:19, color:'#A9A69E'},
+    ],
+    analysis: "Wanting to rejoin and expecting to rejoin are different questions. Asked to forecast rather than vote, 38 of the 87 think the UK will be back in the EU within a decade, 32 think it won't, and 17 can't say. Only 10 are 'very likely' and 10 'very unlikely', so most of the bus is hedging. Set beside June's 55% who would vote to rejoin, the forecast is noticeably cooler than the wish.",
+    source: 'YouGov daily question, 2 October 2026 (n=5,367)',
+    url: 'https://yougov.com/en-gb/daily-results/20261002-1e97e-1'
+  },
+  {
+    id: 'most-effective-opposition',
+    cat: 'politics', catLabel: 'Politics', date: 'Oct 2026',
+    question: 'Which party is the most effective opposition to the Labour government?',
+    groups: [
+      {label:'Conservatives', pct:27, color:'#0087DC'},
+      {label:'Reform UK', pct:22, color:'#12B6CF'},
+      {label:'Greens', pct:9, color:'#6AB023'},
+      {label:'Liberal Democrats', pct:6, color:'#FAA61A'},
+      {label:'Some other party', pct:3, color:'#6B7280'},
+      {label:"Don't know", pct:32, color:'#A9A69E'},
+    ],
+    analysis: "Nobody owns the opposition. The Conservatives edge it with 23 of the 87 passengers, Reform UK is close behind on 19, and the Greens and Lib Dems manage 8 and 5. The biggest group by far is the 28 who can't name an effective opposition at all. That the party polling third in voting intention is still seen as the best opposition suggests Reform's recent slide has cost it more than votes.",
+    source: 'YouGov daily question, 5 October 2026 (n=5,125; figures sum to 99% as published)',
+    url: 'https://yougov.com/en-gb/daily-results/20261005-6ec94-1'
+  },
+  {
+    id: 'conservatives-ready-for-government',
+    cat: 'politics', catLabel: 'Politics', date: 'Sep 2026',
+    question: 'Are the Conservatives ready for government?',
+    groups: [
+      {label:'Ready', pct:20, color:'#0087DC'},
+      {label:'Not ready', pct:59, color:'#C93B32'},
+      {label:'Neither / not stated', pct:21, color:'#A9A69E'},
+    ],
+    analysis: "Seventeen of the 87 passengers think the Conservatives are ready to govern again, and 51 do not. That is still a clear thumbs-down, but it is nearly double the 11% who said so a year ago, one of several measures on which Kemi Badenoch's party has recovered ground. Her net favourability is still negative (32% favourable, 47% unfavourable), so it is a recovery from a very low base. The remaining 18 are the residual, since YouGov does not publish a don't-know figure for this question.",
+    source: 'YouGov, 31 August–1 September 2026 (n=2,008); residual calculated, not published',
+    url: 'https://yougov.com/en-gb/articles/55673-how-do-britons-see-the-conservatives-and-kemi-badenoch-ahead-of-the-partys-2026-conference'
+  },
+  {
+    id: 'rent-cap-three-years',
+    cat: 'economy', catLabel: 'Economy', date: 'Oct 2026',
+    question: 'Cap private rent rises at the lowest of inflation, wage growth or 2% for three years?',
+    groups: [
+      {label:'Support', pct:65, color:'#2AA198'},
+      {label:'Oppose', pct:19, color:'#E28A2B'},
+      {label:"Don't know", pct:17, color:'#A9A69E'},
+    ],
+    analysis: "Put a firm limit on what landlords can charge and 57 of the 87 say yes, against 17 who object. The support is not lukewarm either: 34 are 'strongly' for it, while only 8 are strongly against. Fifteen have no view. The groups here add to 101% as published because of rounding, but the message is clear: a rent cap is one of the least contested ideas on this bus, even if the details of any real policy would be far harder to agree.",
+    source: 'YouGov daily question, 2 October 2026 (n=5,367; sums to 101% from rounding)',
+    url: 'https://yougov.com/en-gb/daily-results/20261002-1e97e-2'
   },
   {
     id: 'cabinet-pm',
