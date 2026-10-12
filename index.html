@@ -774,6 +774,17 @@ nav[aria-label="Site header"] .nav-right{width:auto; margin-left:auto; gap:22px;
 .nav-link:hover{border-bottom-color:var(--ink);}
 nav[aria-label="Site header"].scrolled .nav-link{display:none;}
 nav[aria-label="Site header"].scrolled .nav-right{gap:8px;}
+.nav-menu-btn{background:none; border:0; border-bottom:1px solid transparent; cursor:pointer; margin:0; border-radius:0;}
+.nav-menu-btn[aria-expanded="true"]{border-bottom-color:var(--ink);}
+nav[aria-label="Site header"]{position:sticky;}
+.nav-menu{position:absolute; left:0; right:0; top:100%; background:var(--panel); border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); box-shadow:0 18px 40px rgba(0,0,0,.12); pointer-events:auto;}
+.nav-menu[hidden]{display:none;}
+.nav-menu a{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:22px 16px 20px; color:var(--ink); text-decoration:none; border-right:1px solid var(--ink); border-bottom:1px solid var(--ink); font-family:'Archivo',sans-serif; font-weight:700; font-size:clamp(18px,1.8vw,26px); letter-spacing:-.01em;}
+.nav-menu a:nth-child(4n){border-right:0;}
+.nav-menu a:hover,.nav-menu a:focus-visible{background:var(--ink); color:var(--bg); outline:none;}
+.nav-menu a i{font-style:normal; font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.08em;}
+@media (max-width:760px){ .nav-menu{grid-template-columns:repeat(2,minmax(0,1fr));} .nav-menu a:nth-child(4n){border-right:1px solid var(--ink);} .nav-menu a:nth-child(2n){border-right:0;} .nav-menu a{padding:16px 12px; font-size:17px;} }
+nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
 .tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
 .tunnel.live img{visibility:hidden}
 .tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; perspective-origin:50% 50%; overflow:hidden; background:#D9D8D2;}
@@ -946,7 +957,7 @@ body.has-tray{padding-bottom:110px;}
   <div class="nav-inner">
     <span class="brand">The <span class="brand-87">87</span></span>
     <div class="nav-right">
-      <a class="nav-link" href="#entries" id="navIndex">Index</a><a class="nav-link" href="#about" id="navAbout">About</a>
+      <button type="button" class="nav-link nav-menu-btn" id="navIndex" aria-expanded="false" aria-controls="navMenu">Index <span aria-hidden="true">&#9662;</span></button><a class="nav-link" href="#about" id="navAbout">About</a>
       <button id="navSearch" class="nav-search" type="button" aria-label="Jump to search" title="Search the polls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></button>
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -954,6 +965,7 @@ body.has-tray{padding-bottom:110px;}
       </button>
     </div>
   </div>
+<div id="navMenu" class="nav-menu" hidden></div>
 </nav>
 
 <figure class="tunnel"><img src="tunnel-1200.jpg" srcset="tunnel-1200.jpg 1200w, tunnel-2400.jpg 2400w" sizes="100vw" width="2400" height="1181" alt="Type receding into a tunnel towards a red 87: upper deck 40, lower deck 47, one double-decker, eighty-seven seats" fetchpriority="high" decoding="async"></figure>
@@ -4111,8 +4123,22 @@ openFromHash();
 (function(){
   const idx = document.getElementById('navIndex'), ab = document.getElementById('navAbout');
   const go = (t) => { const L = window.the87Lenis; if(L && L.scrollTo) L.scrollTo(t, {offset:-70}); else t.scrollIntoView({behavior:'smooth'}); };
-  if(idx) idx.addEventListener('click', e => { e.preventDefault(); const all = document.querySelector('.tab[data-cat="all"]'); if(all) all.click(); go(document.querySelector('.layout')); });
-  if(ab) ab.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector('.tab-about'); if(t) t.click(); const a = document.getElementById('about'); setTimeout(() => go(document.querySelector('.layout')), 30); });
+  const menu = document.getElementById('navMenu');
+  const closeMenu = () => { if(menu){ menu.hidden = true; if(idx) idx.setAttribute('aria-expanded','false'); } };
+  if(menu && idx){
+    document.querySelectorAll('#tabs .tab').forEach(t => {
+      const a = document.createElement('a'); a.href = '#entries';
+      const n = t.querySelector('.tab-n'); const name = t.childNodes[0] ? t.childNodes[0].textContent.trim() : t.textContent.trim();
+      a.innerHTML = '<span></span><i></i>'; a.firstChild.textContent = name; a.lastChild.textContent = n ? n.textContent : '';
+      a.addEventListener('click', e => { e.preventDefault(); t.click(); closeMenu(); setTimeout(() => go(document.querySelector('.layout')), 30); });
+      menu.appendChild(a);
+    });
+    idx.addEventListener('click', e => { e.preventDefault(); const open = menu.hidden; menu.hidden = !open; idx.setAttribute('aria-expanded', String(open)); if(open){ const f = menu.querySelector('a'); if(f) f.focus({preventScroll:true}); } });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && !menu.hidden){ closeMenu(); idx.focus(); } });
+    document.addEventListener('click', e => { if(!menu.hidden && !menu.contains(e.target) && !idx.contains(e.target)) closeMenu(); });
+    window.addEventListener('scroll', () => { if(!menu.hidden && window.scrollY > 80) closeMenu(); }, {passive:true});
+  }
+  if(ab) ab.addEventListener('click', e => { e.preventDefault(); closeMenu(); const t = document.querySelector('.tab-about'); if(t) t.click(); const a = document.getElementById('about'); setTimeout(() => go(document.querySelector('.layout')), 30); });
 })();
 </script>
 
