@@ -767,6 +767,14 @@ nav[aria-label="Site header"].scrolled .nav-right{width:auto; gap:8px;}
 /* giant wordmark */
 .tunnel{margin:0; border-bottom:1px solid var(--ink); background:#D9D8D2; line-height:0; overflow:hidden;}
 .tunnel img{display:block; width:100%; height:auto;}
+.tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
+.tunnel.live img{visibility:hidden}
+.tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; perspective-origin:50% 50%; overflow:hidden; background:#D9D8D2;}
+.tunnel .tun{position:absolute; left:50%; top:50%; width:0; height:0; transform-style:preserve-3d;}
+.tunnel .wall{position:absolute; left:0; top:0; backface-visibility:hidden;}
+.tunnel .ln{position:absolute; left:0; width:100%; display:flex; align-items:center; overflow:visible; font-family:'Archivo Black',sans-serif; color:#111; white-space:nowrap; line-height:1; text-transform:uppercase;}
+.tunnel .ln span{display:block; transform-origin:0 50%;}
+.tunnel .core{position:absolute; left:0; top:0; background:#E3342B; color:#D9D8D2; display:flex; align-items:center; justify-content:center; font-family:'Archivo Black',sans-serif;}
 .mega{font-family:'Archivo Black',sans-serif; font-size:26.4vw; line-height:.78; letter-spacing:-.05em; white-space:nowrap; padding:2vw 16px 0; margin-bottom:-1.2vw; color:var(--ink); user-select:none; overflow:hidden;}
 .mega .m87{color:var(--accent);}
 .hero{max-width:none; margin:0; padding:20px 16px 28px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink) !important; display:grid !important; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(170px,.55fr); gap:20px 40px; align-items:start;}
@@ -3996,6 +4004,80 @@ openFromHash();
     const n = c === 'all' ? ENTRIES.length : ENTRIES.filter(e => e.cat === c).length;
     const s = document.createElement('span'); s.className = 'tab-n'; s.textContent = n; t.appendChild(s);
   });
+})();
+
+/* ---------- live tunnel cover ---------- */
+(function(){
+  const host = document.querySelector('.tunnel'); if(!host) return;
+  const cnt = c => ENTRIES.filter(e => e.cat === c).length;
+  const N = ENTRIES.length;
+  // rings, outer to inner: [top, right, bottom, left]
+  const R = [
+    ['The 87','Lower deck 47','Eighty-seven seats','Upper deck 40'],
+    ['UK opinion','Standing 25','One double-decker','Seated'],
+    ['Official statistics','Seated 22', N+' questions','Forty upstairs'],
+    ['The 87','Forty-seven down','Ask them all','Front seat'],
+    ['Polls '+N,'Priority seat','Every answer counts','Upper deck 40'],
+    ['Technology & AI '+cnt('tech'),'Lower deck 47','Hold tight please','Window seat'],
+    ['Health & ethics '+cnt('health'),'Standing 25','One passenger 1.15%','Upper deck 40'],
+    ['Economy '+cnt('economy'),'Seated 22','Mind the gap','Forty upstairs'],
+    ['Society '+cnt('society'),'Priority seat','Ding ding','Front seat'],
+    ['Politics '+cnt('politics'),'Forty-seven down','Next stop','Window seat']
+  ];
+  const r = 0.8, P = 1000;
+  let stage = null, lastKey = '';
+  function mtx(x,y,z,t){ return 'matrix3d('+[x[0],x[1],x[2],0, y[0],y[1],y[2],0, z[0],z[1],z[2],0, t[0],t[1],t[2],1].join(',')+')'; }
+  function build(){
+    const w = host.clientWidth; if(!w) return;
+    const W = 1200, H = w < 640 ? 800 : 600;
+    const key = w+'x'+H; if(key === lastKey) return; lastKey = key;
+    host.style.aspectRatio = W+'/'+H;
+    if(stage) stage.remove();
+    stage = document.createElement('div'); stage.className = 'stage'; stage.setAttribute('aria-hidden','true');
+    stage.style.width = W+'px'; stage.style.height = H+'px'; stage.style.perspective = P+'px';
+    stage.style.transform = 'scale('+(w/W)+')';
+    const tun = document.createElement('div'); tun.className = 'tun'; stage.appendChild(tun);
+    const n = R.length;
+    // choose ring count so the far box is ~17% of full size
+    const rings = Math.min(n, 8);
+    const zs = []; for(let k=0;k<=rings;k++) zs.push(P*(Math.pow(1/r,k)-1));
+    const D = zs[rings];
+    const walls = [
+      {i:0, len:W, M:mtx([1,0,0],[0,0,-1],[0,1,0],[0,-H/2,-D/2])},   // top
+      {i:2, len:W, M:mtx([1,0,0],[0,0,1],[0,-1,0],[0,H/2,-D/2])},    // bottom
+      {i:3, len:H, M:mtx([0,-1,0],[0,0,-1],[1,0,0],[-W/2,0,-D/2])},  // left
+      {i:1, len:H, M:mtx([0,1,0],[0,0,-1],[-1,0,0],[W/2,0,-D/2])}    // right
+    ];
+    const items = [];
+    walls.forEach(wl => {
+      const el = document.createElement('div'); el.className = 'wall';
+      el.style.width = wl.len+'px'; el.style.height = D+'px';
+      el.style.margin = (-D/2)+'px 0 0 '+(-wl.len/2)+'px';
+      el.style.transform = wl.M;
+      // top & right walls: depth runs from local top (near) to bottom (far); bottom wall is flipped
+      for(let k=0;k<rings;k++){
+        const a = zs[k], b = zs[k+1];
+        const near = (wl.i === 2) ? D - b : a;       // local y of the strip's top edge
+        const h = b - a;
+        const ln = document.createElement('div'); ln.className = 'ln';
+        ln.style.top = near+'px'; ln.style.height = h+'px'; ln.style.fontSize = (h*1.02)+'px';
+        const s = document.createElement('span'); s.textContent = R[k][wl.i];
+        ln.appendChild(s); el.appendChild(ln); items.push([s, wl.len]);
+      }
+      tun.appendChild(el);
+    });
+    const core = document.createElement('div'); core.className = 'core';
+    core.style.width = W+'px'; core.style.height = H+'px'; core.style.margin = (-H/2)+'px 0 0 '+(-W/2)+'px';
+    core.style.transform = 'translateZ('+(-D)+'px)'; core.style.fontSize = (H*0.62)+'px';
+    core.textContent = '87'; tun.appendChild(core);
+    host.appendChild(stage);
+    const fit = () => { items.forEach(([s,len]) => { s.style.transform = 'none'; const tw = s.offsetWidth; s.style.transform = 'scaleX('+(len/tw)+')'; }); host.classList.add('live'); };
+    if(document.fonts && document.fonts.load){ document.fonts.load("100px 'Archivo Black'").then(fit, fit); } else fit();
+    host.setAttribute('role','img');
+    host.setAttribute('aria-label','Type receding into a tunnel towards a red 87: '+N+' polls on one double-decker bus');
+  }
+  build();
+  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 150); });
 })();
 </script>
 
