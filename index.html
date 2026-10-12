@@ -796,6 +796,20 @@ nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
 .entry .room{height:min(44vh,370px); width:100%; display:block;}
 .entry.open .entry-head{padding-bottom:10px;}
 .entry.open .entry-head h2{font-size:clamp(21px,2.6vw,34px);}
+.wk{border-bottom:1px solid var(--ink);}
+.wk-head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:14px 16px 10px; font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;}
+.wk-head b{font-weight:500; color:var(--ink);} .wk-head span{color:var(--slate);}
+.wk-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-top:1px solid var(--ink);}
+.wk-card{display:flex; flex-direction:column; gap:12px; padding:14px 16px 16px; color:var(--ink); text-decoration:none; border-right:1px solid var(--ink); transition:background .25s, color .25s;}
+.wk-card:last-child{border-right:0;}
+.wk-meta{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--slate);}
+.wk-q{font-family:'Archivo',sans-serif; font-weight:700; font-size:clamp(16px,1.35vw,20px); line-height:1.15; letter-spacing:-.015em; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex:1;}
+.wk-bar{display:flex; height:10px; border:1px solid var(--ink);}
+.wk-bar i{display:block; height:100%; min-width:2px;}
+.wk-card:hover,.wk-card:focus-visible{background:var(--ink); color:var(--bg); outline:none;}
+.wk-card:hover .wk-meta,.wk-card:focus-visible .wk-meta{color:var(--bg); opacity:.75;}
+.wk-card:hover .wk-bar,.wk-card:focus-visible .wk-bar{border-color:var(--bg);}
+@media (max-width:760px){ .wk-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .wk-card:nth-child(2n){border-right:0;} .wk-card:nth-child(-n+2){border-bottom:1px solid var(--ink);} .wk-q{-webkit-line-clamp:4;} }
 .tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
 .tunnel.live img{visibility:hidden}
 .tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; perspective-origin:50% 50%; overflow:hidden; background:#D9D8D2;}
@@ -987,6 +1001,8 @@ body.has-tray{padding-bottom:110px;}
 <p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
 
 </section>
+
+<section class="wk" id="weekly" aria-label="Polls of the week"></section>
 
 <nav class="stops" id="stops" aria-label="Jump to a section"></nav>
 
@@ -4181,6 +4197,29 @@ openFromHash();
     a.addEventListener('click', e => { e.preventDefault(); t.click(); setTimeout(() => go(document.querySelector('.layout')), 30); });
     box.appendChild(a);
   });
+})();
+
+/* ---------- polls of the week: the four most recent polls, pinned at the top ---------- */
+(function(){
+  const box = document.getElementById('weekly'); if(!box) return;
+  const recent = ENTRIES.map((e, i) => [e, i]).filter(x => x[0].cat !== 'cabinet')
+    .sort((a, b) => (entryDateValue(b[0]) - entryDateValue(a[0])) || (b[1] - a[1])).slice(0, 4).map(x => x[0]);
+  if(!recent.length) return;
+  const head = document.createElement('div'); head.className = 'wk-head';
+  head.innerHTML = '<b>Polls of the week</b><span>The four most recent</span>';
+  const grid = document.createElement('div'); grid.className = 'wk-grid';
+  recent.forEach(e => {
+    const a = document.createElement('a'); a.className = 'wk-card'; a.href = '#poll-' + e.id;
+    const m = document.createElement('span'); m.className = 'wk-meta'; m.textContent = e.date + ' \u00b7 ' + e.catLabel;
+    const q = document.createElement('span'); q.className = 'wk-q'; q.textContent = e.question;
+    const bar = document.createElement('span'); bar.className = 'wk-bar'; bar.setAttribute('aria-hidden', 'true');
+    const tot = e.groups.reduce((t, g) => t + g.pct, 0) || 1;
+    e.groups.forEach(g => { const i = document.createElement('i'); i.style.width = (g.pct / tot * 100) + '%'; i.style.background = g.color; bar.appendChild(i); });
+    a.appendChild(m); a.appendChild(q); a.appendChild(bar);
+    a.addEventListener('click', ev => { ev.preventDefault(); history.replaceState(null, '', location.pathname + location.search); location.hash = 'poll-' + e.id; });
+    grid.appendChild(a);
+  });
+  box.appendChild(head); box.appendChild(grid);
 })();
 </script>
 
