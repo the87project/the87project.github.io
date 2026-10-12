@@ -4016,6 +4016,9 @@ openFromHash();
 /* ---------- live tunnel cover ---------- */
 (function(){
   const host = document.querySelector('.tunnel'); if(!host) return;
+  // Safari/WebKit: the 3D walls vanish there, so keep the static cover image
+  const ua = navigator.userAgent, webkitOnly = /AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg|Android|OPR/.test(ua) || /CriOS|FxiOS|EdgiOS/.test(ua);
+  if(webkitOnly) return;
   const cnt = c => ENTRIES.filter(e => e.cat === c).length;
   const N = ENTRIES.length;
   // rings, outer to inner: [top, right, bottom, left]
