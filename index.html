@@ -3824,7 +3824,12 @@ async function saveBusImage(btn){
     await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
     const scale = 2;
     const out = document.createElement('canvas'); out.width = W * scale; out.height = H * scale;
-    const c2 = out.getContext('2d'); c2.scale(scale, scale); c2.drawImage(img, 0, 0, W, H);
+    const c2 = out.getContext('2d'); c2.scale(scale, scale);
+    // Safari/WebKit often leaves embedded pictures blank on the first draw of an SVG, so decode first and draw twice
+    if(img.decode) { try{ await img.decode(); }catch(_){} }
+    c2.drawImage(img, 0, 0, W, H);
+    await new Promise(r => setTimeout(r, 80));
+    c2.clearRect(0, 0, W, H); c2.drawImage(img, 0, 0, W, H);
     const blob = await new Promise(res => out.toBlob(res, 'image/png'));
     const file = new File([blob], 'the87-' + id + '.png', {type: 'image/png'});
     if(navigator.canShare && navigator.canShare({files: [file]}) && window.matchMedia('(pointer:coarse)').matches){
