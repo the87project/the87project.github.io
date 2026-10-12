@@ -4079,6 +4079,23 @@ openFromHash();
   build();
   let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 150); });
 })();
+
+/* ---------- tunnel ride: scroll moves you down the tunnel ---------- */
+(function(){
+  const host = document.querySelector('.tunnel'); if(!host) return;
+  if(!document.documentElement.classList.contains('motion')) return;
+  const MAX = 850; let cur = 0, target = 0, raf = 0, visible = true;
+  function aim(){ const h = host.offsetHeight || 1; target = Math.max(0, Math.min(1, (window.scrollY || 0) / (h * 0.95))) * MAX; if(!raf && visible) raf = requestAnimationFrame(step); }
+  function step(){
+    raf = 0; cur += (target - cur) * 0.12; if(Math.abs(target - cur) < 0.4) cur = target;
+    const tun = host.querySelector('.tun'); if(tun) tun.style.transform = 'translateZ('+cur.toFixed(1)+'px)';
+    if(cur !== target && visible) raf = requestAnimationFrame(step);
+  }
+  window.addEventListener('scroll', aim, {passive:true});
+  window.addEventListener('resize', () => { cur = target = 0; aim(); });
+  if('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; if(visible) aim(); }).observe(host);
+  aim();
+})();
 </script>
 
 </body>
