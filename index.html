@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The 87 — Public opinion, one full bus at a time</title>
-<meta name="theme-color" content="#FAF6EC" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#14171A" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#D9D8D2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E0D" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-title" content="The 87">
 <meta name="description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
 <link rel="canonical" href="https://the87project.github.io/">
@@ -726,6 +726,200 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   .card{flex:1 1 45%;}
   .card-num{font-size:26px;}
 }
+
+/* =====================================================================
+   REDESIGN "TIMETABLE"
+   Concept: a flat grey ground, black ink, one signal red. A giant cropped wordmark
+   opens the page; every poll is a hairline row in an index that opens into a panel
+   holding the bus. Labels are monospaced, like a timetable or a spec sheet.
+   Palette: ground #D9D8D2, ink #111, panel #F2F1EB, signal red #E3342B.
+   ===================================================================== */
+:root{
+  --bg:#D9D8D2; --paper:#D9D8D2; --panel:#F2F1EB;
+  --ink:#111111; --ink-soft:#33332F; --slate:#55554F;
+  --line:#111111; --rule:#111111; --line-soft:#B5B4AC;
+  --accent:#B01B15; --on-accent:#FFFFFF; --hover-tint:#CFCEC7; --text-warm:#222220;
+  --badge-out-text:#33332F; --badge-out-border:#8E8D86; --badge-out-bg:#E8E7E0;
+  --dk-border:#8E8D86; --dk-bg:#E8E7E0;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#0E0E0D; --paper:#0E0E0D; --panel:#1A1A18;
+  --ink:#ECEBE5; --ink-soft:#C9C8C0; --slate:#9A9990;
+  --line:#ECEBE5; --rule:#ECEBE5; --line-soft:#3A3A36;
+  --accent:#FF4A40; --on-accent:#0E0E0D; --hover-tint:#1F1F1C; --text-warm:#D9D8D0;
+  --badge-out-text:#C9C8C0; --badge-out-border:#55554F; --badge-out-bg:#222220;
+  --dk-border:#55554F; --dk-bg:#222220;
+}
+body{background:var(--bg); color:var(--ink);}
+.moquette,.footer-moq{display:none !important;}
+
+/* top bar */
+nav[aria-label="Site header"]{background:transparent; border-bottom:none;}
+nav[aria-label="Site header"] .nav-inner{max-width:none; padding:0 16px;}
+nav[aria-label="Site header"] .brand{display:none;}
+nav[aria-label="Site header"].scrolled .brand{display:inline;}
+.nav-right{width:100%; justify-content:space-between;}
+nav[aria-label="Site header"].scrolled .nav-right{width:auto; gap:8px;}
+.nav-note{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink);}
+.theme-toggle,.nav-search{border-color:var(--ink); color:var(--ink); background:transparent;}
+
+/* giant wordmark */
+.mega{font-family:'Archivo Black',sans-serif; font-size:26.4vw; line-height:.78; letter-spacing:-.05em; white-space:nowrap; padding:2vw 16px 0; margin-bottom:-1.2vw; color:var(--ink); user-select:none; overflow:hidden;}
+.mega .m87{color:var(--accent);}
+.hero{max-width:none; margin:0; padding:20px 16px 28px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink) !important; display:grid !important; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(170px,.55fr); gap:20px 40px; align-items:start;}
+.hero h1{font-family:'Archivo',sans-serif; font-weight:700; text-transform:none; font-size:clamp(22px,2.4vw,32px); line-height:1.12; letter-spacing:-.02em; max-width:none; grid-column:1; grid-row:1 / span 2;}
+.hero h1 .n87{color:var(--accent) !important;}
+.hero h1 span:not(.n87){color:var(--slate); font-family:'Archivo',sans-serif; font-weight:700;}
+.hero > p:not(.hero-updated){grid-column:2; grid-row:1; max-width:46ch; margin:0; font-size:15px; color:var(--text-warm);}
+.hero .hero-updated{grid-column:2; grid-row:2; margin:0; font-family:var(--mono); font-size:11px; letter-spacing:.03em; color:var(--slate); text-transform:uppercase;}
+.hero-spec{grid-column:3; grid-row:1 / span 2; margin:0; display:flex; flex-direction:column; border-top:1px solid var(--ink);}
+.hero-spec div{display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px solid var(--ink); font-family:var(--mono);}
+.hero-spec dt{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--slate);}
+.hero-spec dd{margin:0; font-size:18px; font-weight:500; font-variant-numeric:tabular-nums;}
+.hero-spec div:first-child dd{color:var(--accent);}
+@media (max-width:900px){ .hero{grid-template-columns:1fr; gap:16px;} .hero h1,.hero > p:not(.hero-updated),.hero .hero-updated,.hero-spec{grid-column:1; grid-row:auto;} }
+
+/* layout: sticky index sidebar + wide column */
+.layout{max-width:none; flex-direction:row; gap:48px; padding:0 16px; align-items:flex-start;}
+.sidebar{position:sticky; top:68px; flex:0 0 230px; width:230px; padding:22px 0 0; align-self:flex-start;}
+.sidebar-box{flex-direction:column !important; flex-wrap:nowrap; gap:0 !important; border:none !important; padding:0 !important; border-radius:0; background:transparent !important; border-top:1px solid var(--ink) !important;}
+.side-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--slate); margin:0 0 10px;}
+.tab{width:100%; font-family:var(--mono) !important; font-size:12px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; border:none !important; border-bottom:1px solid var(--ink) !important; border-radius:0; padding:12px 8px 12px 0; background:transparent; color:var(--ink); justify-content:space-between; gap:12px; transition:padding .3s ease-in-out, background-color .3s ease-in-out, color .3s ease-in-out;}
+.tab:hover{background:transparent; color:var(--accent); padding-left:8px; transform:none;}
+.tab.active,.tab.active:hover{background:var(--ink); color:var(--bg); padding-left:10px; padding-right:10px;}
+.tab .tab-n{font-variant-numeric:tabular-nums; opacity:.65; font-weight:400;}
+.tab-about{margin:0; border-top:none !important; border-radius:0; padding-top:12px;}
+.new-badge{background:var(--accent); color:var(--on-accent);}
+.layout > .content,.layout main{flex:1 1 auto; min-width:0; max-width:none !important; width:auto;}
+@media (max-width:860px){
+  .layout{flex-direction:column; gap:0;}
+  .sidebar{position:static; flex:0 0 auto; width:100%; padding:14px 0 4px;}
+  .side-label{display:none;}
+  .sidebar-box{flex-direction:row !important; flex-wrap:wrap; gap:8px !important; border-top:none !important;}
+  .tab{width:auto; border:1px solid var(--ink) !important; border-radius:999px; padding:7px 14px; justify-content:flex-start;}
+  .tab:hover{padding-left:14px; color:var(--bg); background:var(--ink);}
+  .tab.active,.tab.active:hover{padding-left:14px; padding-right:14px;}
+  .tab-about{border-top:1px solid var(--ink) !important; border-radius:999px; padding-top:7px;}
+}
+
+/* search */
+.searchbar .search-input{font-family:'Archivo',sans-serif !important; font-weight:600; font-size:clamp(22px,3.6vw,42px); letter-spacing:-.02em; background:transparent; border:none !important; border-bottom:2px solid var(--ink) !important; border-radius:0; padding:14px 40px 10px 0; box-shadow:none; color:var(--ink);}
+.searchbar .search-input::placeholder{color:var(--slate); opacity:1;}
+.searchbar svg{display:none;}
+.search-status{font-family:var(--mono); font-size:11.5px;}
+.sortbar{padding:12px 0 6px;}
+.sortbar-label,.sortbtn{font-family:var(--mono) !important; font-size:11px; letter-spacing:.07em; text-transform:uppercase;}
+.sortbtn{border:1px solid var(--ink); background:transparent; color:var(--ink); box-shadow:none;}
+.sortbtn:hover{background:var(--ink); color:var(--bg); transform:none;}
+.sortbtn.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
+
+/* the index */
+#entries{counter-reset:row;}
+.section-head{padding:36px 0 22px; border-top:1px solid var(--ink); margin-top:22px;}
+.section-title{font-family:'Archivo Black',sans-serif; font-size:clamp(32px,6vw,72px); line-height:.95; letter-spacing:-.03em; text-transform:none;}
+.section-standfirst{max-width:62ch; font-size:15px;}
+.section-head .entry-meta,.entry-meta{font-family:var(--mono);}
+.entry{padding:0 !important; margin:0 -14px; padding-inline:14px !important; border-top:1px solid var(--ink) !important; transform:none !important;}
+.entry::before{display:none !important;}
+.entry:first-child{border-top:1px solid var(--ink) !important;}
+.entry-head{display:grid !important; grid-template-columns:2rem minmax(0,1fr); column-gap:20px; align-items:center; max-width:none !important; margin:0 !important; padding:22px 0; cursor:pointer;}
+.entry-head::before{content:'+'; grid-column:1; grid-row:1 / span 2; font-family:var(--mono); font-size:26px; line-height:1; color:var(--ink); transition:transform .3s ease-in-out, color .3s ease-in-out;}
+.entry.open .entry-head::before{transform:rotate(45deg); color:var(--accent);}
+.entry-head h2{grid-column:2; grid-row:1; font-family:'Archivo',sans-serif !important; font-weight:700; font-size:clamp(21px,3.1vw,42px); line-height:1.05; letter-spacing:-.025em; margin:0; text-wrap:balance;}
+.entry-head .spec{grid-column:2; grid-row:2; margin:12px 0 0;}
+.entry-head .mini{display:none !important;}
+.entry:not(.open) .entry-head .spec{display:none;}
+.entry:not(.open) .entry-head{padding:26px 0;}
+.entry-head:hover h2{color:var(--accent);}
+.entry:hover:not(.open){background:var(--hover-tint);}
+.entry-head:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
+.entry:not(.open) > :not(.entry-head){display:none !important;}
+.entry.open{background:var(--panel); padding-bottom:36px !important;}
+.entry.open .entry-head{padding-bottom:18px;}
+.pill{border-color:var(--ink); color:var(--ink);}
+.pill-src{border-color:var(--line-soft); color:var(--slate);}
+.mini{display:flex; flex-direction:column; gap:6px; min-width:0;}
+.mini .bar{display:flex; height:16px; border:1px solid var(--ink); background:var(--panel);}
+.mini .bar i{display:block; height:100%; min-width:2px;}
+.mini .top{font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--slate); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.mini .top b{color:var(--ink); font-weight:500;}
+.hint{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--slate); padding:6px 0 14px;}
+@media (max-width:700px){
+  .entry-head{grid-template-columns:1.4rem minmax(0,1fr); column-gap:12px;}
+  .entry-head .mini{grid-column:2; grid-row:3; margin-top:12px;}
+  .mega{font-size:24vw;}
+}
+
+/* open panel contents */
+.entry.open .room-wrap{background:transparent;}
+.analysis{font-size:16px; max-width:64ch;}
+html.motion .entry:not(.open) .wipe{transform:scaleX(0) !important; transition:none !important;}
+html.motion .entry.open .wipe{transform:scaleX(1) !important; transition:transform 1.2s cubic-bezier(.45,.05,.2,1) .15s !important;}
+html.motion .entry{opacity:1 !important;}
+.card,.chips .chip,.legend{border-color:var(--ink);}
+.act-btn,.react-btn{border-color:var(--ink); color:var(--ink); font-family:var(--mono);}
+.footer-links,.footer-note{font-family:var(--mono);}
+footer{border-top:1px solid var(--ink);}
+
+
+/* ---------- CHOOSE YOUR ROUTE: pick up to two polls, ride them side by side ---------- */
+.entry:not(.open) .entry-head{padding:26px 0;}
+.entry-head::before{width:1.7rem; height:1.7rem; display:grid; place-items:center; font-size:22px; border:1px solid transparent; border-radius:50%; transition:background-color .3s ease-in-out, color .3s ease-in-out, border-color .3s ease-in-out;}
+.entry-head:hover::before{border-color:var(--ink);}
+.entry-head[data-slot]::before{content:attr(data-slot) !important; background:var(--accent); color:var(--on-accent); border-color:var(--accent); font-size:13px; font-weight:500; transform:none !important;}
+.entry.sel{background:var(--panel);}
+.entry.sel .entry-head h2{color:var(--accent);}
+.hint{display:flex; justify-content:space-between; gap:12px;}
+body.has-tray{padding-bottom:110px;}
+#tray{position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--ink); color:var(--bg); padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); display:flex; align-items:stretch; gap:12px; transform:translateY(110%); transition:transform .45s cubic-bezier(.2,.7,.2,1);}
+#tray.on{transform:none;}
+.tray-title{font-family:'Archivo Black',sans-serif; font-size:15px; line-height:1; letter-spacing:-.01em; display:flex; align-items:center; padding-right:6px; white-space:nowrap;}
+.tray-slot{flex:1 1 0; min-width:0; display:flex; align-items:center; gap:10px; border:1px solid color-mix(in srgb, var(--bg) 55%, transparent); border-radius:999px; padding:6px 8px 6px 6px; font-family:var(--mono); font-size:12px; letter-spacing:.02em;}
+.tray-slot .k{flex:0 0 auto; width:1.7rem; height:1.7rem; display:grid; place-items:center; border-radius:50%; background:var(--accent); color:var(--on-accent); font-size:12px; font-weight:500;}
+.tray-slot.empty .k{background:transparent; border:1px dashed color-mix(in srgb, var(--bg) 60%, transparent); color:var(--bg);}
+.tray-slot .q{flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.tray-slot.empty .q{opacity:.7;}
+.tray-slot .x{flex:0 0 auto; background:transparent; border:none; color:var(--bg); font-size:20px; line-height:1; width:1.7rem; height:1.7rem; border-radius:50%; cursor:pointer;}
+.tray-slot .x:hover{background:color-mix(in srgb, var(--bg) 20%, transparent);}
+#rideBtn{flex:0 0 auto; font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.08em; text-transform:uppercase; background:var(--accent); color:var(--on-accent); border:none; border-radius:999px; padding:0 22px; cursor:pointer; white-space:nowrap;}
+#rideBtn:hover{filter:brightness(1.08);}
+#tray button:focus-visible,#rideClose:focus-visible{outline:2px solid var(--bg); outline-offset:2px;}
+@media (max-width:760px){ .tray-title{display:none;} #tray{gap:8px; padding-left:12px; padding-right:12px;} .tray-slot .q{font-size:11px;} #rideBtn{padding:0 14px;} }
+
+#ride{position:fixed; inset:0; z-index:80; background:var(--bg); overflow-y:auto; overscroll-behavior:contain; padding:0 16px 48px; transform:translateY(100%); visibility:hidden; transition:transform .55s cubic-bezier(.2,.7,.2,1), visibility 0s linear .55s;}
+#ride.on{transform:none; visibility:visible; transition:transform .55s cubic-bezier(.2,.7,.2,1);}
+.ride-top{position:sticky; top:0; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:14px 0; background:var(--bg); border-bottom:1px solid var(--ink);}
+.ride-top h2{margin:0; font-family:'Archivo Black',sans-serif; font-size:clamp(20px,3vw,32px); letter-spacing:-.02em; text-transform:none;}
+#rideClose{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:transparent; border:1px solid var(--ink); border-radius:999px; padding:9px 18px; cursor:pointer;}
+#rideClose:hover{background:var(--ink); color:var(--bg);}
+#rideBody{display:grid; gap:0 40px; align-items:start;}
+#rideBody.two{grid-template-columns:1fr 1fr;}
+@media (max-width:1000px){ #rideBody.two{grid-template-columns:1fr;} }
+.route-card{padding:26px 0 8px; min-width:0;}
+#rideBody.two .route-card + .route-card{border-left:1px solid var(--ink); padding-left:40px; margin-left:-20px;}
+@media (max-width:1000px){ #rideBody.two .route-card + .route-card{border-left:none; padding-left:0; margin-left:0; border-top:1px solid var(--ink); margin-top:20px;} }
+.route-card header{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; align-items:center; margin-bottom:12px;}
+.route-card .slot{grid-row:1 / span 2; width:2.1rem; height:2.1rem; display:grid; place-items:center; border-radius:50%; background:var(--accent); color:var(--on-accent); font-family:var(--mono); font-size:14px; font-weight:500;}
+.route-card h3{margin:0; font-family:'Archivo',sans-serif; font-weight:700; font-size:clamp(20px,2.4vw,32px); line-height:1.08; letter-spacing:-.025em; text-wrap:balance;}
+.route-card .spec{margin:0;}
+.route-card .wipe{transform:scaleX(0); transition:none;}
+.route-card.go .wipe{transform:scaleX(1); transition:transform 1.2s cubic-bezier(.45,.05,.2,1) .35s;}
+.route-card .analysis{font-size:15px;}
+.route-card .cards,.route-card .chips{gap:10px;}
+
+/* one-at-a-time panel + compare button */
+.cmp-bar{padding:0 0 18px 3.4rem;}
+.cmp-btn{font-family:var(--mono); font-weight:500; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:transparent; border:1px solid var(--ink); border-radius:999px; padding:9px 18px; cursor:pointer;}
+.cmp-btn:hover{background:var(--ink); color:var(--bg);}
+.entry.open{background:var(--panel);}
+.entry.open .entry-head::before{transform:rotate(45deg); color:var(--accent);}
+.entry.open[data-x] .entry-head::before{transform:none;}
+.comparing .entry:not(.sel) .entry-head::before{content:'B'; font-size:13px; color:var(--slate); border:1px dashed var(--slate);}
+.comparing .entry:not(.sel):hover .entry-head::before{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+#rideBtn[hidden]{display:none;}
+@media (max-width:760px){ .cmp-bar{padding-left:0;} }
+
 </style>
 </head>
 <body>
@@ -745,9 +939,11 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   </div>
 </nav>
 
+<div class="mega" aria-hidden="true"><span>THE</span> <span class="m87">87</span></div>
 <section class="hero" aria-label="Introduction">
   <h1>Put <span class="n87" style="font-family:inherit;font-weight:inherit;text-transform:inherit">87</span> people on one double-decker <span>and ask them the big questions.</span></h1>
   <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.</p>
+<dl class="hero-spec" aria-label="The bus in numbers"><div><dt>Seats</dt><dd>87</dd></div><div><dt>Upper deck</dt><dd>40</dd></div><div><dt>Lower deck</dt><dd>47</dd></div><div><dt>Polls</dt><dd id="specPolls">&ndash;</dd></div></dl>
 <p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
 
 </section>
@@ -836,6 +1032,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
     </div>
     <strong>About the numbers.</strong> Figures are drawn from publicly reported polling. Each question is redrawn as one full double-decker bus of 87 people — the capacity of a New Routemaster (40 upper deck, 47 below) — so one passenger represents ~1.15% of respondents; rounding applies, and no group that registered in the source polling is ever rounded off the bus entirely. All commentary is original and independent, and every entry links to its source. Cabinet favourability figures mix YouGov and Ipsos polling, whose question wording differs — they are not directly comparable. Built as a personal data &amp; policy project.
   </div>
+  <p class="footer-note">Typefaces: Archivo, Archivo Black, IBM Plex Mono, Inter and Playfair Display, used under the SIL Open Font License. Smooth scrolling: Lenis (MIT licence).</p>
   <p class="footer-note" id="analyticsNote" hidden>This site counts visits with GoatCounter: anonymous, no cookies, nothing that identifies you.</p>
 </footer>
 
@@ -3658,6 +3855,145 @@ openFromHash();
   new MutationObserver(watch).observe(document.getElementById('entries'), {childList:true});
   // never leave content hidden if something stalls
   setTimeout(() => document.querySelectorAll('#entries .entry:not(.in)').forEach(el => { if(el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }), 2500);
+})();
+
+/* ---------- REDESIGN: one bus by default, compare on request ---------- */
+(function(){
+  const feed = document.getElementById('entries'); if(!feed) return;
+  const sp = document.getElementById('specPolls'); if(sp) sp.textContent = ENTRIES.length;
+  const byId = {}; ENTRIES.forEach(e => { byId['poll-' + e.id] = e; });
+  const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const strip = h => String(h).replace(/<[^>]*>/g, '');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let A = null, B = null;                       // compare state: A is the poll you started from
+  const tray = document.createElement('div'); tray.id = 'tray'; tray.setAttribute('role', 'region'); tray.setAttribute('aria-label', 'Compare two polls');
+  tray.innerHTML = '<div class="tray-title">Compare</div><div class="tray-slot" id="slotA"></div><div class="tray-slot" id="slotB"></div><button type="button" id="rideBtn">Ride both</button>';
+  document.body.appendChild(tray);
+  const ride = document.createElement('div'); ride.id = 'ride'; ride.setAttribute('role', 'dialog'); ride.setAttribute('aria-modal', 'true'); ride.setAttribute('aria-label', 'Two polls side by side'); ride.setAttribute('data-lenis-prevent', '');
+  ride.innerHTML = '<div class="ride-top"><h2>Side by side</h2><button type="button" id="rideClose">Back to the list</button></div><div id="rideBody"></div>';
+  document.body.appendChild(ride);
+  const rideBody = ride.querySelector('#rideBody'), rideClose = ride.querySelector('#rideClose'), rideBtn = tray.querySelector('#rideBtn');
+  let lastFocus = null;
+
+  const setHint = () => {
+    const h = document.getElementById('rowHint'); if(!h) return;
+    const n = feed.querySelectorAll('.entry').length;
+    h.innerHTML = '<span>Routes &middot; ' + n + '</span><span>' + (A ? 'Now pick a second poll' : 'Open a poll, then compare it with another') + '</span>';
+  };
+  const mark = () => {
+    feed.querySelectorAll('.entry').forEach(el => {
+      const head = el.querySelector('.entry-head'); if(!head) return;
+      const slot = el.id === A ? 'A' : el.id === B ? 'B' : null;
+      el.classList.toggle('sel', !!slot);
+      if(slot) head.setAttribute('data-slot', slot); else head.removeAttribute('data-slot');
+      head.setAttribute('aria-expanded', el.classList.contains('open') ? 'true' : 'false');
+    });
+    feed.classList.toggle('comparing', !!A);
+  };
+  const renderTray = () => {
+    [['A', A], ['B', B]].forEach(([k, id]) => {
+      const slot = tray.querySelector('#slot' + k);
+      if(id && byId[id]){
+        slot.className = 'tray-slot';
+        slot.innerHTML = '<span class="k">' + k + '</span><span class="q">' + esc(strip(byId[id].question || byId[id].catLabel)) + '</span><button type="button" class="x" data-k="' + k + '" aria-label="Remove ' + esc(strip(byId[id].question)) + '">&times;</button>';
+      } else {
+        slot.className = 'tray-slot empty';
+        slot.innerHTML = '<span class="k">' + k + '</span><span class="q">Pick a second poll below</span>';
+      }
+    });
+    rideBtn.hidden = !(A && B);
+    tray.classList.toggle('on', !!A);
+    document.body.classList.toggle('has-tray', !!A);
+    mark(); setHint();
+  };
+  tray.addEventListener('click', ev => {
+    const x = ev.target.closest('.x'); if(!x) return;
+    if(x.getAttribute('data-k') === 'A'){ A = B; B = null; } else { B = null; }
+    renderTray();
+  });
+
+  const closeInline = () => { feed.querySelectorAll('.entry.open').forEach(x => x.classList.remove('open')); };
+  const openInline = el => {
+    closeInline(); el.classList.add('open'); mark();
+    requestAnimationFrame(() => el.scrollIntoView({block: 'start', behavior: reduce ? 'auto' : 'smooth'}));
+  };
+
+  const openRide = () => {
+    if(!(A && B)) return;
+    lastFocus = document.activeElement;
+    rideBody.className = 'two'; rideBody.innerHTML = '';
+    [A, B].forEach((id, n) => {
+      const src = document.getElementById(id); if(!src) return;
+      const card = document.createElement('article'); card.className = 'route-card';
+      const head = src.querySelector('.entry-head'), spec = head && head.querySelector('.spec');
+      card.innerHTML = '<header><span class="slot">' + (n ? 'B' : 'A') + '</span><h3>' + (head && head.querySelector('h2') ? head.querySelector('h2').innerHTML : '') + '</h3><div class="spec-slot"></div></header>';
+      if(spec) card.querySelector('.spec-slot').appendChild(spec.cloneNode(true));
+      const body = document.createElement('div');
+      Array.from(src.children).forEach(c => { if(c !== head) body.appendChild(c.cloneNode(true)); });
+      body.querySelectorAll('.reactions,.entry-actions,.cmp-bar').forEach(x => x.remove());
+      body.innerHTML = body.innerHTML.replace(/(wp\d+f?)/g, '$1r' + n);
+      card.appendChild(body); rideBody.appendChild(card);
+    });
+    ride.classList.add('on'); document.documentElement.style.overflow = 'hidden'; if(window.the87Lenis) window.the87Lenis.stop(); ride.scrollTop = 0;
+    requestAnimationFrame(() => requestAnimationFrame(() => rideBody.querySelectorAll('.route-card').forEach(c => c.classList.add('go'))));
+    setTimeout(() => rideClose.focus(), 60);
+  };
+  const closeRide = () => {
+    ride.classList.remove('on'); document.documentElement.style.overflow = ''; if(window.the87Lenis) window.the87Lenis.start();
+    rideBody.querySelectorAll('.route-card').forEach(c => c.classList.remove('go'));
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  };
+  rideBtn.addEventListener('click', openRide);
+  rideClose.addEventListener('click', closeRide);
+  document.addEventListener('keydown', ev => { if(ev.key === 'Escape' && ride.classList.contains('on')) closeRide(); });
+
+  const onRow = el => {
+    if(A){                                       // compare mode: choose the second poll
+      if(el.id === A) return;
+      B = el.id; closeInline(); renderTray(); openRide();
+    } else {                                     // normal: one bus at a time
+      if(el.classList.contains('open')){ el.classList.remove('open'); mark(); } else openInline(el);
+    }
+  };
+  const decorate = () => {
+    feed.querySelectorAll('.entry:not([data-row])').forEach(el => {
+      el.setAttribute('data-row', '1');
+      const head = el.querySelector('.entry-head'); if(!head) return;
+      head.setAttribute('role', 'button'); head.setAttribute('tabindex', '0'); head.setAttribute('aria-expanded', 'false');
+      head.addEventListener('click', ev => { if(ev.target.closest('a,button')) return; onRow(el); });
+      head.addEventListener('keydown', ev => { if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); onRow(el); } });
+      const bar = document.createElement('div'); bar.className = 'cmp-bar';
+      bar.innerHTML = '<button type="button" class="cmp-btn">Compare with another poll</button>';
+      bar.querySelector('button').addEventListener('click', () => { A = el.id; B = null; closeInline(); renderTray(); });
+      head.insertAdjacentElement('afterend', bar);
+    });
+    if(!document.getElementById('rowHint') && feed.querySelector('.entry')){
+      const h = document.createElement('p'); h.id = 'rowHint'; h.className = 'hint';
+      const first = feed.querySelector('.entry'); first.parentNode.insertBefore(h, first);
+    }
+    mark(); setHint();
+    const hash = (location.hash || '').replace('#', '');
+    if(hash && !decorate.done){ const t = document.getElementById(hash); if(t && t.classList.contains('entry')){ decorate.done = true; t.classList.add('open'); mark(); } }
+  };
+  renderTray();
+  decorate();
+  new MutationObserver(decorate).observe(feed, {childList: true});
+  window.addEventListener('hashchange', () => {
+    const id = (location.hash || '').replace('#', ''); const t = id && document.getElementById(id);
+    if(t && t.classList && t.classList.contains('entry')){ setTimeout(() => { const t2 = document.getElementById(id); if(!t2) return; closeInline(); t2.classList.add('open'); mark(); t2.scrollIntoView({block: 'start'}); }, 60); }
+  });
+})();
+
+/* ---------- REDESIGN: sidebar counts ---------- */
+(function(){
+  const box = document.getElementById('tabs'); if(!box) return;
+  const lab = document.createElement('p'); lab.className = 'side-label'; lab.textContent = 'Browse by section';
+  box.parentNode.insertBefore(lab, box);
+  box.querySelectorAll('.tab').forEach(t => {
+    const c = t.getAttribute('data-cat'); if(c === 'about') return;
+    const n = c === 'all' ? ENTRIES.length : ENTRIES.filter(e => e.cat === c).length;
+    const s = document.createElement('span'); s.className = 'tab-n'; s.textContent = n; t.appendChild(s);
+  });
 })();
 </script>
 
