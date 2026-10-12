@@ -222,8 +222,16 @@ nav{
 .search-divider + .entry{border-top:none; padding-top:26px;}
 .search-rel-tag{color:var(--accent); font-weight:700;}
 
-:root{--map-green:#D3DFCB; --map-green-edge:#B7C9AD;}
-:root[data-theme="dark"]{--map-green:#2F3F33; --map-green-edge:#44594A;}
+:root{
+  --map-ground:#F1EEE6; --map-road:#4B4D54; --map-kerb:#E6BC3A;
+  --map-green:#D3DFCB; --map-green-edge:#B7C9AD; --map-tree:#9DBC8B; --map-tree-edge:#7EA06D; --map-water:#BBD6E6;
+  --map-bld1:#DDE4EB; --map-bld2:#EAE4D6; --map-bld3:#D9DDD0; --map-bld-edge:#A7ABB3; --map-roofA:#CC8D6D; --map-roofB:#8F99A6;
+}
+:root[data-theme="dark"]{
+  --map-ground:#17191C; --map-road:#2B2D32; --map-kerb:#B99A2E;
+  --map-green:#2F3F33; --map-green-edge:#44594A; --map-tree:#3F5A43; --map-tree-edge:#55745A; --map-water:#2E4558;
+  --map-bld1:#2B323A; --map-bld2:#33312C; --map-bld3:#2C332D; --map-bld-edge:#4A4F57; --map-roofA:#7A4B3A; --map-roofB:#4B5560;
+}
 .fleet .rbus{cursor:pointer; transition:opacity .12s ease;}
 .fleet .rbus:hover{opacity:.72;}
 .fleet .rbus:focus{outline:none;}
@@ -638,7 +646,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
         <p>New entries are added as new, well-sourced UK polling becomes available, with the most recent questions and Society-category entries prioritised nearer the top of the feed so the newest thinking is the first thing you see. There's no fixed publishing schedule &mdash; this is an independent, personal project, updated as time and good data allow.</p>
 
         <h2 id="our-buses" class="method-title">Our buses</h2>
-        <p>Every poll on the site so far, one bus per poll, parked by section and colour-coded to match &mdash; the whole fleet at a glance. Click any bus to jump to its section.</p>
+        <p>Every poll on the site so far, one bus per poll, parked by section and colour-coded to match &mdash; the whole fleet at a glance. The traffic on the roads is just for show. Click any parked bus to jump to its section.</p>
         <div id="fleetLegend" class="fleet-legend"></div>
         <div id="fleet" class="fleet"></div>
       </div>
@@ -2768,48 +2776,109 @@ function buildFleet(){
     + `</filter>`
   ).join('');
 
-  // ----- street-map layout: a depot per section (largest first), buses parked in bays, roads and roundabouts between -----
-  const W = 720, M = 22, G = 48, COLS = 2, PAD = 18, HEAD = 46, BAYGAP = 8, ROWH = BH + 16;
-  const bw = (W - 2*M - (COLS-1)*G) / COLS;
+  // the same map on every visit: a tiny seeded random generator places the traffic, trees and buildings
+  let seed = 87;
+  const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+  const between = (a, b) => a + rnd() * (b - a);
+  const pick = list => list[Math.floor(rnd() * list.length)];
+  const f1 = v => Math.round(v * 10) / 10;
+
+  // ----- layout: a ring road round the edge, a street grid inside it, a depot (or a depot and a park) in each block -----
+  const W = 800, F = 44, R = 36, G = 58, COLS = 2, PAD = 18, HEAD = 46, BAYGAP = 8, ROWH = BH + 16, RR = 38;
+  const X0 = F + R, Y0 = F + R;
+  const bw = (W - 2*X0 - (COLS-1)*G) / COLS;
   const perRow = Math.max(1, Math.floor((bw - 2*PAD + BAYGAP) / (BW + BAYGAP)));
   const districts = cats.slice().sort((a, b) => byCat[b].length - byCat[a].length || CAT_ORDER.indexOf(a) - CAT_ORDER.indexOf(b));
   const rows = [];
   for(let i = 0; i < districts.length; i += COLS) rows.push(districts.slice(i, i + COLS));
-  const rowH = rows.map(r => HEAD + Math.max(...r.map(c => Math.ceil(byCat[c].length / perRow))) * ROWH + 10);
-  const H = 2*M + rowH.reduce((a, b) => a + b, 0) + (rows.length - 1) * G;
-  const rowTop = []; { let yy = M; rows.forEach((r, ri) => { rowTop.push(yy); yy += rowH[ri] + G; }); }
-  const xMid = M + bw + G/2;
-  const lane = 'fill="none" stroke="var(--bg)" stroke-width="1.6" stroke-dasharray="9 8"';
+  const need = c => HEAD + Math.ceil(byCat[c].length / perRow) * ROWH + 10;   // height a depot needs
+  const rowH = rows.map(r => Math.max(...r.map(need)));
+  const rowTop = []; { let yy = Y0; rows.forEach((r, ri) => { rowTop.push(yy); yy += rowH[ri] + G; }); }
+  const H = rowTop[rows.length - 1] + rowH[rows.length - 1] + Y0;
+  const xMid = X0 + bw + G/2;
+  const crossY = []; for(let i = 1; i < rows.length; i++) crossY.push(rowTop[i] - G/2);
+  const yRingTop = F + R/2, yRingBot = H - F - R/2, xRingL = F + R/2, xRingR = W - F - R/2;
+  const CENTRE = 'stroke="#fff" stroke-opacity=".62" stroke-width="1.4" stroke-dasharray="10 9"';
+
+  const defs = filters
+    // top-down vehicle used for all the traffic (coloured through currentColor)
+    + '<symbol id="tv" viewBox="0 0 26 10">'
+    + '<rect x="0.3" y="0.3" width="25.4" height="9.4" rx="2.6" fill="currentColor" stroke="#000" stroke-opacity=".4" stroke-width=".6"/>'
+    + '<rect x="2" y="1.7" width="18.5" height="6.6" rx="1.3" fill="#fff" fill-opacity=".3"/>'
+    + '<rect x="21.6" y="1.4" width="3.2" height="7.2" rx=".9" fill="#000" fill-opacity=".42"/>'
+    + '</symbol>'
+    + '<pattern id="windows" width="7" height="7" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="3" height="3" fill="var(--map-bld-edge)" fill-opacity=".55"/></pattern>';
 
   let s = `<svg class="roundabout" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A street map of ${N} buses, one per poll, parked in a depot for each section and coloured by section">`;
-  s += `<defs>${filters}</defs>`;
-  // roads: the whole canvas is tarmac, the depots sit on top, and what is left between them is the street grid
-  s += `<rect width="${W}" height="${H}" rx="14" fill="var(--rule)"/>`;
-  s += `<rect x="${M/2}" y="${M/2}" width="${W-M}" height="${H-M}" rx="10" ${lane}/>`;
-  s += `<line x1="${xMid}" y1="${M/2}" x2="${xMid}" y2="${H-M/2}" ${lane}/>`;
-  for(let i = 1; i < rows.length; i++){
-    const yy = rowTop[i] - G/2;
-    s += `<line x1="${M/2}" y1="${yy}" x2="${W-M/2}" y2="${yy}" ${lane}/>`;
-  }
+  s += `<defs>${defs}</defs>`;
+  s += `<rect width="${W}" height="${H}" rx="14" fill="var(--map-ground)"/>`;
 
+  // ----- the city around the edge: offices, houses and a few factories -----
+  const THICK = F - 12;
+  const band = (len, skip) => {
+    let o = '', x = 6;
+    while(x < len - 14){
+      const kind = pick(['office', 'office', 'house', 'house', 'house', 'factory']);
+      let w = kind === 'office' ? between(22, 38) : kind === 'house' ? between(16, 26) : between(34, 52);
+      if(x + w > len - 6) w = len - 6 - x;
+      if(w < 14) break;
+      if(skip.some(([a, b]) => x + w > a && x < b)){ x += w + 4; continue; }
+      const h = kind === 'office' ? between(20, THICK) : kind === 'house' ? between(15, 24) : between(22, 30);
+      const y = THICK - h;
+      const fx = f1(x), fy = f1(y), fw = f1(w), fh = f1(h);
+      if(kind === 'office'){
+        o += `<rect x="${fx}" y="${fy}" width="${fw}" height="${fh}" rx="2" fill="${pick(['var(--map-bld1)', 'var(--map-bld2)', 'var(--map-bld3)'])}" stroke="var(--map-bld-edge)" stroke-width=".8"/>`
+          + `<rect x="${fx}" y="${fy}" width="${fw}" height="${fh}" rx="2" fill="url(#windows)"/>`
+          + `<rect x="${f1(x + w - 3)}" y="${fy}" width="3" height="${fh}" fill="#000" fill-opacity=".08"/>`;
+      } else if(kind === 'house'){
+        const roof = pick(['var(--map-roofA)', 'var(--map-roofB)']);
+        o += `<rect x="${fx}" y="${fy}" width="${fw}" height="${fh}" rx="1.5" fill="${roof}" stroke="var(--map-bld-edge)" stroke-width=".8"/>`
+          + `<rect x="${fx}" y="${fy}" width="${fw}" height="${f1(h / 2)}" rx="1.5" fill="#fff" fill-opacity=".14"/>`
+          + `<line x1="${fx}" y1="${f1(y + h / 2)}" x2="${f1(x + w)}" y2="${f1(y + h / 2)}" stroke="#000" stroke-opacity=".22" stroke-width=".8"/>`;
+      } else {
+        o += `<rect x="${fx}" y="${fy}" width="${fw}" height="${fh}" rx="2" fill="var(--map-bld3)" stroke="var(--map-bld-edge)" stroke-width=".8"/>`;
+        for(let k = 1; k < Math.floor(w / 9); k++) o += `<line x1="${f1(x + k * 9)}" y1="${f1(y + 2)}" x2="${f1(x + k * 9)}" y2="${f1(y + h - 2)}" stroke="var(--map-bld-edge)" stroke-opacity=".6" stroke-width="1"/>`;
+        o += `<circle cx="${f1(x + w - 6)}" cy="${f1(y + 6)}" r="3.2" fill="var(--map-bld-edge)"/>`;
+      }
+      x += w + between(3, 8);
+    }
+    return o;
+  };
+  const sideLen = H - 2*F - 8;
+  s += `<g transform="translate(0,4)">${band(W, [])}</g>`;
+  s += `<g transform="translate(0,${H - F + 4})">${band(W, [[6, 76], [W - 196, W - 6]])}</g>`;
+  s += `<g transform="translate(${F - 4},${F + 4}) rotate(90)">${band(sideLen, [])}</g>`;
+  s += `<g transform="translate(${W - F + 4},${F + 4}) rotate(90) scale(1,-1)">${band(sideLen, [])}</g>`;
+
+  // ----- roads: the whole inner area is tarmac with a yellow edge line, white dashes down the middle -----
+  s += `<rect x="${F}" y="${F}" width="${W - 2*F}" height="${H - 2*F}" rx="22" fill="var(--map-road)"/>`;
+  s += `<rect x="${F + 3.5}" y="${F + 3.5}" width="${W - 2*F - 7}" height="${H - 2*F - 7}" rx="19" fill="none" stroke="var(--map-kerb)" stroke-opacity=".85" stroke-width="1.3"/>`;
+  s += `<rect x="${xRingL}" y="${yRingTop}" width="${xRingR - xRingL}" height="${yRingBot - yRingTop}" rx="16" fill="none" ${CENTRE}/>`;
+  s += `<line x1="${xMid}" y1="${yRingTop}" x2="${xMid}" y2="${yRingBot}" ${CENTRE}/>`;
+  crossY.forEach(yy => { s += `<line x1="${xRingL}" y1="${yy}" x2="${xRingR}" y2="${yy}" ${CENTRE}/>`; });
+
+  // ----- the depots (one bus per poll) and, where a block has room to spare, a small park -----
   rows.forEach((r, ri) => {
     r.forEach((c, ci) => {
-      const bx = M + ci * (bw + G), by = rowTop[ri], bh = rowH[ri];
+      const bx = X0 + ci * (bw + G), by = rowTop[ri], bh = rowH[ri];
       const col = CAT_META[c].color, list = byCat[c], n = list.length;
       const label = escapeForHtml(CAT_META[c].label);
-      // depot: paper-coloured base, then a faint wash of the section colour
-      s += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="12" fill="var(--bg)"/>`;
-      s += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="12" fill="${col}" fill-opacity="0.09" stroke="${col}" stroke-opacity="0.45" stroke-width="1"/>`;
+      const slack = bh - need(c);
+      const dh = slack >= 52 ? need(c) : bh;
+      s += `<rect x="${bx - 4}" y="${by - 4}" width="${bw + 8}" height="${bh + 8}" rx="14" fill="none" stroke="var(--map-kerb)" stroke-opacity=".8" stroke-width="1.3"/>`;
+      // depot: paper-coloured base, then a wash of the section colour
+      s += `<rect x="${bx}" y="${by}" width="${bw}" height="${dh}" rx="10" fill="var(--bg)"/>`;
+      s += `<rect x="${bx}" y="${by}" width="${bw}" height="${dh}" rx="10" fill="${col}" fill-opacity="0.13" stroke="${col}" stroke-opacity="0.55" stroke-width="1"/>`;
       // depot sign (also a link to the section)
       s += `<g class="rbus" data-cat="${c}" role="button" tabindex="0">`
         + `<title>${label}: ${n} ${n === 1 ? 'poll' : 'polls'}</title>`
         + `<rect x="${bx}" y="${by}" width="${bw}" height="${HEAD}" fill="transparent"/>`
         + `<circle cx="${bx + PAD + 5}" cy="${by + 23}" r="5" fill="${col}"/>`
-        + `<text x="${bx + PAD + 18}" y="${by + 27.5}" font-family="Archivo, sans-serif" font-weight="700" font-size="13" letter-spacing="1" fill="var(--ink)">${label.toUpperCase()}</text>`
+        + `<text x="${bx + PAD + 18}" y="${by + 27.5}" font-family="Archivo, sans-serif" font-weight="800" font-size="13.5" letter-spacing="1" fill="var(--ink)">${label.toUpperCase()}</text>`
         + `<text x="${bx + bw - PAD}" y="${by + 27.5}" text-anchor="end" font-family="Archivo, sans-serif" font-weight="600" font-size="12" fill="var(--ink-soft)">${n} ${n === 1 ? 'poll' : 'polls'}</text>`
         + `</g>`;
-      s += `<line x1="${bx + PAD}" y1="${by + HEAD - 6}" x2="${bx + bw - PAD}" y2="${by + HEAD - 6}" stroke="${col}" stroke-opacity="0.3" stroke-width="1"/>`;
-      // bays: a baseline under each row and a divider between neighbours
+      s += `<line x1="${bx + PAD}" y1="${by + HEAD - 6}" x2="${bx + bw - PAD}" y2="${by + HEAD - 6}" stroke="${col}" stroke-opacity="0.45" stroke-width="1"/>`;
+      // bays: a baseline under each row and a divider between neighbours, in the section colour
       const full = perRow * BW + (perRow - 1) * BAYGAP;
       const x0 = bx + (bw - full) / 2;
       const nRows = Math.ceil(n / perRow);
@@ -2817,10 +2886,10 @@ function buildFleet(){
         const occ = Math.min(perRow, n - rr * perRow);
         const yb = by + HEAD + rr * ROWH + 4;
         const xr = x0 + occ * BW + (occ - 1) * BAYGAP;
-        s += `<line x1="${(x0 - 4).toFixed(1)}" y1="${(yb + BH + 5).toFixed(1)}" x2="${(xr + 4).toFixed(1)}" y2="${(yb + BH + 5).toFixed(1)}" stroke="var(--bg)" stroke-width="1.2"/>`;
+        s += `<line x1="${(x0 - 4).toFixed(1)}" y1="${(yb + BH + 5).toFixed(1)}" x2="${(xr + 4).toFixed(1)}" y2="${(yb + BH + 5).toFixed(1)}" stroke="${col}" stroke-opacity=".5" stroke-width="1"/>`;
         for(let k = 0; k <= occ; k++){
           const dx = x0 + k * (BW + BAYGAP) - BAYGAP / 2;
-          s += `<line x1="${dx.toFixed(1)}" y1="${(yb - 3).toFixed(1)}" x2="${dx.toFixed(1)}" y2="${(yb + BH + 5).toFixed(1)}" stroke="var(--bg)" stroke-width="1.2"/>`;
+          s += `<line x1="${dx.toFixed(1)}" y1="${(yb - 3).toFixed(1)}" x2="${dx.toFixed(1)}" y2="${(yb + BH + 5).toFixed(1)}" stroke="${col}" stroke-opacity=".5" stroke-width="1"/>`;
         }
       }
       // the buses themselves
@@ -2832,29 +2901,135 @@ function buildFleet(){
           + `<image href="bus.png" x="0" y="0" width="${BW}" height="${BH.toFixed(1)}" filter="url(#tint-${c})"/>`
           + `</g>`;
       });
+      // spare room in the block becomes a park
+      if(dh < bh){
+        const py = by + dh + 8, ph = bh - dh - 8;
+        s += `<rect x="${bx}" y="${py}" width="${bw}" height="${ph}" rx="10" fill="var(--map-green)" stroke="var(--map-green-edge)" stroke-width="1"/>`;
+        if(ph >= 74 && bw > 200){
+          s += `<ellipse cx="${f1(bx + bw * between(.3, .7))}" cy="${f1(py + ph / 2)}" rx="${f1(Math.min(46, bw * .16))}" ry="${f1(Math.min(18, ph * .22))}" fill="var(--map-water)" stroke="var(--map-green-edge)" stroke-width="1"/>`;
+        }
+        const trees = Math.floor(bw * ph / 1500) + 3;
+        for(let k = 0; k < trees; k++){
+          const tr = between(6, 10), tx = between(bx + 14, bx + bw - 14), ty = between(py + 12, py + ph - 12);
+          s += `<circle cx="${f1(tx + 1.5)}" cy="${f1(ty + 2.2)}" r="${f1(tr)}" fill="#000" fill-opacity=".12"/>`
+            + `<circle cx="${f1(tx)}" cy="${f1(ty)}" r="${f1(tr)}" fill="var(--map-tree)" stroke="var(--map-tree-edge)" stroke-width=".9"/>`
+            + `<circle cx="${f1(tx - tr * .3)}" cy="${f1(ty - tr * .3)}" r="${f1(tr * .42)}" fill="#fff" fill-opacity=".2"/>`;
+        }
+      }
     });
   });
 
-  // roundabouts where the streets cross (the first one carries the total)
-  for(let i = 1; i < rows.length; i++){
-    const yy = rowTop[i] - G/2;
-    s += `<circle cx="${xMid}" cy="${yy}" r="30" fill="var(--rule)"/>`;
-    s += `<circle cx="${xMid}" cy="${yy}" r="23" fill="none" stroke="var(--bg)" stroke-width="1.6" stroke-dasharray="5 6"/>`;
-    s += `<circle cx="${xMid}" cy="${yy}" r="14.5" fill="var(--map-green)" stroke="var(--map-green-edge)" stroke-width="1.5"/>`;
-    // zebra crossings on the four approaches
-    const zebra = (zx, zy, vertical) => {
-      let out = '';
-      for(let k = -2.5; k <= 2.5; k++){
-        const off = k * 6.4;
-        out += vertical
-          ? `<rect x="${(zx + off - 1.7).toFixed(1)}" y="${zy - 6}" width="3.4" height="12" rx="0.6" fill="var(--bg)" fill-opacity="0.85"/>`
-          : `<rect x="${zx - 6}" y="${(zy + off - 1.7).toFixed(1)}" width="12" height="3.4" rx="0.6" fill="var(--bg)" fill-opacity="0.85"/>`;
-      }
-      return out;
-    };
-    s += zebra(xMid, yy - 46, true) + zebra(xMid, yy + 46, true) + zebra(xMid - 46, yy, false) + zebra(xMid + 46, yy, false);
-    if(i === 1) s += `<text x="${xMid}" y="${yy + 5}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="14" fill="var(--ink)">${N}</text>`;
+  // ----- roundabouts where the streets cross (the first carries the total), with zebra crossings and a few pedestrians -----
+  const zebra = (zx, zy, vertical) => {
+    let out = '';
+    for(let k = -2.5; k <= 2.5; k++){
+      const off = k * 6.4;
+      out += vertical
+        ? `<rect x="${f1(zx + off - 1.7)}" y="${zy - 6}" width="3.4" height="12" rx="0.6" fill="#fff" fill-opacity="0.85"/>`
+        : `<rect x="${zx - 6}" y="${f1(zy + off - 1.7)}" width="12" height="3.4" rx="0.6" fill="#fff" fill-opacity="0.85"/>`;
+    }
+    return out;
+  };
+  let people = '', ringTraffic = '';
+  const SHIRTS = ['#D9534F', '#4C86C6', '#E8B93A', '#5FA36A', '#9A6BB5', '#F08A4B', '#E9E6DD'];
+  const person = (px, py) => {
+    const shirt = pick(SHIRTS);
+    return `<ellipse cx="${f1(px)}" cy="${f1(py)}" rx="3.3" ry="1.9" fill="${shirt}" stroke="#000" stroke-opacity=".3" stroke-width=".5" transform="rotate(${Math.round(between(0, 180))} ${f1(px)} ${f1(py)})"/>`
+      + `<circle cx="${f1(px)}" cy="${f1(py)}" r="1.6" fill="#E8C9A8" stroke="#000" stroke-opacity=".3" stroke-width=".4"/>`;
+  };
+  const TVCOL = cats.map(c => CAT_META[c].color).concat(['#9AA0A6', '#B8BCC2', '#7E858C']);
+  const vehicle = () => {
+    const q = rnd();
+    if(q < .56) return {w: 26, h: 10, c: pick(TVCOL)};
+    if(q < .76) return {w: 19, h: 9, c: pick(['#E9EAEC', '#C9CED4', '#AEB6BF', '#F2E7C7'])};
+    return {w: 15, h: 8, c: pick(['#8C6E5D', '#6F8FAF', '#B8B4A6', '#C9A98B', '#7C8C7A', '#9C6B7A', '#D2D5D8', '#4E5A66'])};
+  };
+  const place = (cx, cy, angle, v) =>
+    `<use href="#tv" width="${v.w}" height="${v.h}" x="${-v.w / 2}" y="${-v.h / 2}" transform="translate(${f1(cx)},${f1(cy)}) rotate(${angle})" color="${v.c}"/>`;
+
+  crossY.forEach((yy, i) => {
+    s += `<circle cx="${xMid}" cy="${yy}" r="${RR}" fill="var(--map-road)"/>`;
+    s += `<circle cx="${xMid}" cy="${yy}" r="${RR - 1.5}" fill="none" stroke="var(--map-kerb)" stroke-opacity=".85" stroke-width="1.3"/>`;
+    s += `<circle cx="${xMid}" cy="${yy}" r="${RR - 9}" fill="none" ${CENTRE}/>`;
+    s += `<circle cx="${xMid}" cy="${yy}" r="21.5" fill="none" stroke="var(--map-kerb)" stroke-opacity=".85" stroke-width="1.2"/>`;
+    s += `<circle cx="${xMid}" cy="${yy}" r="20" fill="var(--map-green)" stroke="var(--map-green-edge)" stroke-width="1.2"/>`;
+    if(i === 0){
+      s += `<text x="${xMid}" y="${yy + 3}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="17" fill="var(--ink)">${N}</text>`
+        + `<text x="${xMid}" y="${yy + 13}" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="700" font-size="6.5" letter-spacing="1" fill="var(--ink-soft)">POLLS</text>`;
+    } else {
+      s += `<circle cx="${xMid - 5}" cy="${yy - 4}" r="8" fill="var(--map-tree)" stroke="var(--map-tree-edge)" stroke-width=".9"/><circle cx="${xMid + 6}" cy="${yy + 4}" r="6" fill="var(--map-tree)" stroke="var(--map-tree-edge)" stroke-width=".9"/>`;
+    }
+    const Z = RR + 13;
+    s += zebra(xMid, yy - Z, true) + zebra(xMid, yy + Z, true) + zebra(xMid - Z, yy, false) + zebra(xMid + Z, yy, false);
+    [[xMid, yy - Z, true], [xMid, yy + Z, true], [xMid - Z, yy, false], [xMid + Z, yy, false]].forEach(([zx, zy, vert]) => {
+      if(rnd() < .75) people += vert ? person(zx + between(-13, 13), zy + between(-3, 3)) : person(zx + between(-3, 3), zy + between(-13, 13));
+    });
+    // vehicles going round the roundabout (clockwise)
+    const a0 = rnd() * 360;
+    for(let k = 0; k < 4; k++){
+      const th = (a0 + k * 90 + between(-18, 18)) * Math.PI / 180;
+      const v = vehicle();
+      ringTraffic += place(xMid + (RR - 9) * Math.cos(th), yy + (RR - 9) * Math.sin(th), Math.round(th * 180 / Math.PI + 90), {w: v.w * .8, h: v.h * .8, c: v.c});
+    }
+  });
+
+  // ----- road names, painted on the middle of the road -----
+  const roadName = (txt, x, y, rot) =>
+    `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${rot})"><rect x="-18" y="-4.8" width="36" height="9.6" rx="3" fill="var(--map-road)"/>`
+    + `<text y="3" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="700" font-size="8.5" letter-spacing=".8" fill="#fff" fill-opacity=".85">${txt}</text></g>`;
+  s += roadName('A87', 170, yRingTop, 0) + roadName('A87', W - 210, yRingBot, 0);
+  crossY.forEach((yy, i) => { s += roadName('B87', i % 2 ? W - 150 : 150, yy, 0); });
+  if(crossY.length){
+    if(crossY[0] - Y0 > 160) s += roadName('M87', xMid, (Y0 + crossY[0]) / 2 - 10, -90);
+    const last = crossY[crossY.length - 1];
+    if(H - Y0 - last > 160) s += roadName('M87', xMid, (H - Y0 + last) / 2 + 10, -90);
   }
+
+  // ----- traffic: drive on the left, so eastbound is the upper lane and southbound the right-hand lane -----
+  const lane = (t0, t1, pos, horizontal, angle, blocked) => {
+    let t = t0 + rnd() * 16, out = '';
+    while(t < t1){
+      const v = vehicle();
+      const mid = t + v.w / 2;
+      if(mid + v.w / 2 > t1) break;
+      if(!blocked.some(([a, b]) => mid + v.w / 2 > a && mid - v.w / 2 < b)) out += horizontal ? place(mid, pos, angle, v) : place(pos, mid, angle, v);
+      t += v.w + (rnd() < .12 ? between(28, 60) : between(3, 13));
+    }
+    return out;
+  };
+  const around = c => [c - RR - 18, c + RR + 18];
+  let traffic = '';
+  const hRoad = (yc, t0, t1, blocked, off) => {
+    traffic += lane(t0, t1, yc - off, true, 0, blocked) + lane(t0, t1, yc + off, true, 180, blocked);
+  };
+  const vRoad = (xc, t0, t1, blocked, off) => {
+    traffic += lane(t0, t1, xc + off, false, 90, blocked) + lane(t0, t1, xc - off, false, 270, blocked);
+  };
+  hRoad(yRingTop, X0 + 4, W - X0 - 4, [], 9);
+  hRoad(yRingBot, X0 + 4, W - X0 - 4, [], 9);
+  const sideBlocked = crossY.map(yy => [yy - G / 2 - 8, yy + G / 2 + 8]);
+  vRoad(xRingL, Y0 + 4, H - Y0 - 4, sideBlocked, 9);
+  vRoad(xRingR, Y0 + 4, H - Y0 - 4, sideBlocked, 9);
+  crossY.forEach(yy => hRoad(yy, X0 + 6, W - X0 - 6, [around(xMid)], 10));
+  vRoad(xMid, Y0 + 6, H - Y0 - 6, crossY.map(around), 10);
+
+  s += `<g aria-hidden="true" pointer-events="none">${traffic}${ringTraffic}${people}</g>`;
+
+  // ----- finishing touches: compass and scale bar in the city margin -----
+  const cy = H - 22;
+  s += `<g aria-hidden="true" transform="translate(36 ${cy})">`
+    + `<circle r="12.5" fill="var(--map-ground)" stroke="var(--ink-soft)" stroke-opacity=".7" stroke-width="1"/>`
+    + `<polygon points="0,-9.5 3.8,2 0,-0.5 -3.8,2" fill="var(--ink)"/>`
+    + `<polygon points="0,9.5 3.8,-2 0,0.5 -3.8,-2" fill="var(--ink-soft)" fill-opacity=".5"/>`
+    + `<text x="0" y="-16" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="800" font-size="9" fill="var(--ink)">N</text>`
+    + `</g>`;
+  const sbx = W - 150, sbw = 2 * (BW + BAYGAP);
+  s += `<g aria-hidden="true" font-family="Archivo, sans-serif" font-weight="700" font-size="8.5" fill="var(--ink-soft)">`
+    + `<line x1="${sbx}" y1="${cy + 2}" x2="${sbx + sbw}" y2="${cy + 2}" stroke="var(--ink)" stroke-width="1.6"/>`
+    + [0, 1, 2].map(k => `<line x1="${sbx + k * sbw / 2}" y1="${cy - 3}" x2="${sbx + k * sbw / 2}" y2="${cy + 7}" stroke="var(--ink)" stroke-width="1.4"/>`).join('')
+    + `<text x="${sbx}" y="${cy + 18}" text-anchor="middle">0</text>`
+    + `<text x="${sbx + sbw}" y="${cy + 18}" text-anchor="middle">2 polls</text>`
+    + `</g>`;
   s += `</svg>`;
   fleet.innerHTML = s;
 
