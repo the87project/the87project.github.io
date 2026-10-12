@@ -221,7 +221,7 @@ nav{height:64px;}
 .nav-search svg{width:15px; height:15px;}
 .nav-search:hover{border-color:var(--accent); color:var(--accent);}
 nav.scrolled{background:transparent; border-bottom-color:transparent; pointer-events:none;}
-nav.scrolled .nav-inner{pointer-events:auto; max-width:440px; height:50px; margin:7px auto 0; padding:0 8px 0 20px; border-radius:999px; background:color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border:1px solid var(--line); box-shadow:0 8px 28px rgba(20,23,26,.10);}
+nav.scrolled .nav-inner{pointer-events:auto; max-width:440px; height:50px; margin:7px auto 0; padding:0 8px 0 20px; border-radius:999px; background:color-mix(in srgb, var(--bg) 95%, transparent); border:1px solid var(--line); box-shadow:0 8px 28px rgba(20,23,26,.10);}
 nav.scrolled .nav-note{display:none;}
 nav.scrolled .nav-search{display:flex;}
 nav.scrolled .nav-right{gap:8px;}
@@ -233,8 +233,10 @@ a,button,.tab,.sortbtn,.act-btn,.theme-toggle,.nav-search{transition:color .3s e
 html.motion .entry-in-pending{}
 html.motion .entry{opacity:0; transform:translateY(22px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);}
 html.motion .entry.in{opacity:1; transform:none;}
-html.motion .entry .pax{opacity:0; transform:translateY(10px); transform-box:fill-box; transform-origin:50% 100%;}
-html.motion .entry.in .pax{opacity:1; transform:none; transition:opacity .35s ease-out, transform .5s cubic-bezier(.2,1.5,.4,1); transition-delay:calc(var(--pd, 0) * 1ms + 350ms);}
+.wipe{transform-box:fill-box; transform-origin:0 50%;}
+.wipe-r{transform-origin:100% 50%;}
+html.motion .entry:not(.in) .wipe{transform:scaleX(0);}
+html.motion .entry.in .wipe{transform:scaleX(1); transition:transform 1.2s cubic-bezier(.45,.05,.2,1) .35s;}
 @media (max-width:640px){ nav.scrolled .nav-inner{max-width:calc(100% - 24px);} }
 
 /* ---------- LAYOUT: fixed left sidebar + content ---------- */
@@ -2327,17 +2329,17 @@ function roomSvg(groups, seedNum, flipped){
     const jx = (rand() - .5) * (s.seated ? 8 : 12);
     const jy = (rand() - .5) * 7;
     const sc = SC * (0.95 + rand() * 0.1);
-    const pd = Math.round((flipped ? (W - s.x) : s.x) / W * 900);
-    svg += `<g class="pax" style="--pd:${pd}">`;
     if(s.seated) svg += chairSvg(s.x + jx, s.y + jy, sc);
     svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc, hollow);
-    svg += `</g>`;
   };
   const isHollow = i => /don'?t know|unsure|undecided/i.test(groups[assign[i]].label);
+  const wipeId = 'wp' + seedNum + (flipped ? 'f' : '');
+  svg += `<defs><clipPath id="${wipeId}"><rect class="wipe${flipped ? ' wipe-r' : ''}" x="0" y="-46" width="${W}" height="650"/></clipPath></defs><g clip-path="url(#${wipeId})">`;
   // unsure/don't-know first so they sit at the back, behind the coloured passengers
   seats.forEach((s, i) => { if(isHollow(i)) drawSeat(s, i); });
   seats.forEach((s, i) => { if(!isHollow(i)) drawSeat(s, i); });
 
+  svg += `</g>`;
   // bus artwork over the passengers (windows are transparent). Outgoing minister uses the
   // left-facing "departing" artwork — already correctly oriented, so no mirroring needed.
   svg += `<image href="${flipped ? 'bus-departing.png' : 'bus.png'}" x="0" y="0" width="${W}" height="${IMGH}"/>`;
