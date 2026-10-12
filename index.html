@@ -1472,6 +1472,59 @@ const ENTRIES = [
     url: 'https://yougov.com/en-gb/daily-results/20261009-8e776-1'
   },
   {
+    id: 'child-poverty-2025',
+    cat: 'society', catLabel: 'Society', date: 'Mar 2026',
+    question: 'How many children live in relative poverty?',
+    tags: 'children child kids poverty low income deprivation families housing costs',
+    groups: [
+      {label:'In relative low income (after housing costs)', pct:27, color:'#E28A2B'},
+      {label:'Not in relative low income', pct:73, color:'#2E5FB7'},
+    ],
+    analysis: "Fill the bus with children and 23 of the 87 are in relative poverty once housing costs are taken off, with the other 64 above the line. That is the government's own measure for 2024/25 (income below 60% of the median), and it is almost unchanged on the 28% of the year before; the DWP says neither year-on-year move is statistically significant. It is also a survey estimate, with a published range of 23% to 31%, which on this bus means anywhere from about 20 to 27 passengers. Before housing costs the picture is gentler, at 21%, which is a reminder that for many families the rent or mortgage is what tips them under.",
+    source: 'DWP: Households Below Average Income, FYE 1995 to FYE 2025 (published 26 March 2026); relative low income, children, after housing costs',
+    url: 'https://www.gov.uk/government/statistics/households-below-average-income-for-financial-years-ending-1995-to-2025/households-below-average-income-an-analysis-of-the-uk-income-distribution-fye-1995-to-fye-2025'
+  },
+  {
+    id: 'poverty-very-deep-2026',
+    cat: 'society', catLabel: 'Society', date: 'Jan 2026',
+    question: 'Of everyone in UK poverty, how many are in very deep poverty?',
+    tags: 'poverty poor deep poverty income cost of living hardship',
+    groups: [
+      {label:'Very deep poverty', pct:48, color:'#C93B32'},
+      {label:'In poverty, but not very deep', pct:52, color:'#E28A2B'},
+    ],
+    analysis: "This bus carries only the people in poverty: about 14.2 million of them, scaled down to 87 seats. Of those, 42 are in very deep poverty, meaning household income after housing costs below 40% of the median, and 45 are in poverty but above that line. The Joseph Rowntree Foundation says the 6.8 million in very deep poverty is the highest figure on record and close to half of everyone in poverty. Put the whole country on a bus and 'more than one in five' people in poverty would be over 17 passengers, so this is the group at the sharp end of that.",
+    source: 'Joseph Rowntree Foundation: UK Poverty 2026 (published 27 January 2026; data to 2023/24); shares calculated from the published 6.8m of 14.2m',
+    url: 'https://www.jrf.org.uk/news/progress-expected-to-stall-as-deep-poverty-and-child-poverty-reach-record-levels'
+  },
+  {
+    id: 'feminist-label-2025',
+    cat: 'society', catLabel: 'Society', date: 'Mar 2025',
+    question: 'Are you a feminist?',
+    tags: 'women womens gender equality feminism feminist sexism rights men and women',
+    groups: [
+      {label:'Yes', pct:35, color:'#2AA198'},
+      {label:'No', pct:45, color:'#E28A2B'},
+      {label:"Don't know", pct:20, color:'#A9A69E'},
+    ],
+    analysis: "Ask the bus the question cold and only 30 of the 87 say yes, with 40 saying no and 17 unsure. Then YouGov did something simple: it told people what the word means (men and women having equal rights and status) and asked again. This time 65% said yes, around 57 passengers. Asked about the principle on its own, 83% agreed that men and women should have equal rights and status, about 72 seats, against 11% (10) who disagreed. The labels are doing a lot of the work here: the idea is popular, the word is a much harder sell.",
+    source: 'YouGov: Are you a feminist? It depends how you ask (published 6 March 2025); sums to 100% as published',
+    url: 'https://yougov.com/en-gb/articles/51745-are-you-a-feminist-it-depends-how-you-ask'
+  },
+  {
+    id: 'race-hate-crime-2025',
+    cat: 'society', catLabel: 'Society', date: 'Oct 2025',
+    question: 'How many recorded hate crimes are racially motivated?',
+    tags: 'racism racist race racial hate crime discrimination ethnic minorities police prejudice',
+    groups: [
+      {label:'Race hate crime', pct:71, color:'#C93B32'},
+      {label:'Other hate crime', pct:29, color:'#2E5FB7'},
+    ],
+    analysis: "Take every hate crime offence recorded by police in England and Wales in the year to March 2025 and 62 of the 87 passengers are there because of race: 82,490 offences, up 6% on the year before. The other 25 are crimes with no racial motivation, covering religion, sexual orientation, disability and transgender hate. This bus counts crimes that were reported and recorded, not everything that happened, so a rise can reflect more reporting as well as more offending. The figures leave out the Metropolitan Police, which changed its recording system, and because an offence can carry more than one motivation (about 5% do), a crime can appear under more than one strand in the Home Office tables.",
+    source: 'Home Office: Hate crime, England and Wales, year ending March 2025 (published 9 October 2025; excludes the Met Police); Other hate crime = offences with no race strand, calculated',
+    url: 'https://www.gov.uk/government/statistics/hate-crime-england-and-wales-year-ending-march-2025/hate-crime-england-and-wales-year-ending-march-2025'
+  },
+  {
     id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Prime Minister',
@@ -2092,7 +2145,7 @@ function escapeForHtml(str){
 // one searchable string per poll: question, section, date, commentary, source and every group/person label
 const SEARCH_INDEX = new Map();
 ENTRIES.forEach(e => {
-  const parts = [e.question, e.catLabel, e.date, e.analysis, e.source, e.who, e.badge];
+  const parts = [e.question, e.catLabel, e.date, e.analysis, e.source, e.who, e.badge, e.tags];
   (e.groups || []).forEach(g => parts.push(g.label));
   (e.pairing || []).forEach(p => {
     parts.push(p.name, p.status);
