@@ -777,8 +777,8 @@ nav[aria-label="Site header"].scrolled .nav-right{gap:8px;}
 .tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
 .tunnel.live img{visibility:hidden}
 .tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; perspective-origin:50% 50%; overflow:hidden; background:#D9D8D2;}
-.tunnel .tun{position:absolute; left:50%; top:50%; width:0; height:0; transform-style:preserve-3d;}
-.tunnel .wall{position:absolute; left:0; top:0; backface-visibility:hidden;}
+.tunnel .tun{position:absolute; left:50%; top:50%; width:0; height:0; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+.tunnel .wall{position:absolute; left:0; top:0; -webkit-transform-style:preserve-3d; will-change:transform;}
 .tunnel .ln{position:absolute; left:0; width:100%; display:flex; align-items:center; overflow:visible; font-family:'Archivo Black',sans-serif; color:#111; white-space:nowrap; line-height:1; text-transform:uppercase;}
 .tunnel .ln span{display:block; transform-origin:0 50%;}
 .tunnel .core{position:absolute; left:0; top:0; background:#E3342B; color:#D9D8D2; display:flex; align-items:center; justify-content:center; font-family:'Archivo Black',sans-serif;}
@@ -4041,7 +4041,7 @@ openFromHash();
     host.style.aspectRatio = W+'/'+H;
     if(stage) stage.remove();
     stage = document.createElement('div'); stage.className = 'stage'; stage.setAttribute('aria-hidden','true');
-    stage.style.width = W+'px'; stage.style.height = H+'px'; stage.style.perspective = P+'px';
+    stage.style.width = W+'px'; stage.style.height = H+'px'; stage.style.perspective = P+'px'; stage.style.webkitPerspective = P+'px';
     stage.style.transform = 'scale('+(w/W)+')';
     const tun = document.createElement('div'); tun.className = 'tun'; stage.appendChild(tun);
     const n = R.length;
