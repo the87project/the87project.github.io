@@ -37,6 +37,9 @@
     if(!t){ t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
     if(t === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
   }catch(e){}
+  try{
+    if('IntersectionObserver' in window && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)){ document.documentElement.classList.add('motion'); }
+  }catch(e){}
 })();
 </script>
 <style>
@@ -206,6 +209,33 @@ nav{
 .ticker-track span{padding:0 22px;} .ticker-track span::after{content:'\25CF'; margin-left:44px; color:var(--dc);}
 @keyframes tick{to{transform:translateX(-50%);}}
 @media (max-width:860px){ .hero{grid-template-columns:1fr; gap:24px;} .hero-viz{grid-column:1; grid-row:auto; justify-self:start; max-width:300px;} .dots{gap:7px; padding:16px;} .hero{padding-top:36px;} .stat-row{grid-template-columns:repeat(2,1fr);} }
+
+
+/* ---------- MOTION ---------- */
+html.lenis,html.lenis body{height:auto;}
+.lenis.lenis-smooth{scroll-behavior:auto !important;}
+.lenis.lenis-stopped{overflow:hidden;}
+nav{height:64px;}
+.nav-inner{height:100%; align-items:center; transition:max-width .45s cubic-bezier(.2,.7,.2,1), margin .45s cubic-bezier(.2,.7,.2,1), padding .45s cubic-bezier(.2,.7,.2,1), border-radius .45s ease, background-color .3s ease-in-out, box-shadow .3s ease-in-out, height .45s cubic-bezier(.2,.7,.2,1);}
+.nav-search{width:32px; height:32px; flex-shrink:0; display:none; align-items:center; justify-content:center; border:1px solid var(--line-soft); background:var(--bg); border-radius:999px; color:var(--ink-soft); cursor:pointer;}
+.nav-search svg{width:15px; height:15px;}
+.nav-search:hover{border-color:var(--accent); color:var(--accent);}
+nav.scrolled{background:transparent; border-bottom-color:transparent; pointer-events:none;}
+nav.scrolled .nav-inner{pointer-events:auto; max-width:440px; height:50px; margin:7px auto 0; padding:0 8px 0 20px; border-radius:999px; background:color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border:1px solid var(--line); box-shadow:0 8px 28px rgba(20,23,26,.10);}
+nav.scrolled .nav-note{display:none;}
+nav.scrolled .nav-search{display:flex;}
+nav.scrolled .nav-right{gap:8px;}
+nav.scrolled .nav-inner{justify-content:space-between;}
+a,button,.tab,.sortbtn,.act-btn,.theme-toggle,.nav-search{transition:color .3s ease-in-out, background-color .3s ease-in-out, border-color .3s ease-in-out, transform .3s ease-in-out, opacity .3s ease-in-out, box-shadow .3s ease-in-out;}
+.act-btn:hover,.sortbtn:hover{transform:translateY(-1px);}
+.tab:hover{transform:translateX(2px);}
+.tab.active:hover{transform:none;}
+html.motion .entry-in-pending{}
+html.motion .entry{opacity:0; transform:translateY(22px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);}
+html.motion .entry.in{opacity:1; transform:none;}
+html.motion .entry .pax{opacity:0; transform:translateY(10px); transform-box:fill-box; transform-origin:50% 100%;}
+html.motion .entry.in .pax{opacity:1; transform:none; transition:opacity .35s ease-out, transform .5s cubic-bezier(.2,1.5,.4,1); transition-delay:calc(var(--pd, 0) * 1ms + 350ms);}
+@media (max-width:640px){ nav.scrolled .nav-inner{max-width:calc(100% - 24px);} }
 
 /* ---------- LAYOUT: fixed left sidebar + content ---------- */
 .layout{
@@ -682,6 +712,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
     <span class="brand">The <span class="brand-87">87</span></span>
     <div class="nav-right">
       <span class="nav-note">What Britain actually thinks, one double-decker at a time.</span>
+      <button id="navSearch" class="nav-search" type="button" aria-label="Jump to search" title="Search the polls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></button>
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -716,7 +747,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
       <input id="searchInput" class="search-input" type="search" placeholder="Search the polls, e.g. poverty, women, NHS, Farage" aria-label="Search polls" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="searchSuggest" aria-autocomplete="list">
       <button id="searchClear" class="search-clear" type="button" aria-label="Clear search" hidden>&times;</button>
-      <div class="search-suggest" id="searchSuggest" role="listbox" aria-label="Search suggestions" hidden></div>
+      <div class="search-suggest" data-lenis-prevent id="searchSuggest" role="listbox" aria-label="Search suggestions" hidden></div>
     </div>
     <p class="search-status" id="searchStatus" aria-live="polite" hidden></p>
     <div class="sortbar" id="sortbar" role="region" aria-label="Sort polls">
@@ -784,6 +815,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   <p class="footer-note" id="analyticsNote" hidden>This site counts visits with GoatCounter: anonymous, no cookies, nothing that identifies you.</p>
 </footer>
 
+<script src="lenis.min.js"></script>
 <script>
 // footer links that open the About tab
 document.querySelectorAll('[data-goto="about"]').forEach(function(a){
@@ -2295,8 +2327,11 @@ function roomSvg(groups, seedNum, flipped){
     const jx = (rand() - .5) * (s.seated ? 8 : 12);
     const jy = (rand() - .5) * 7;
     const sc = SC * (0.95 + rand() * 0.1);
+    const pd = Math.round((flipped ? (W - s.x) : s.x) / W * 900);
+    svg += `<g class="pax" style="--pd:${pd}">`;
     if(s.seated) svg += chairSvg(s.x + jx, s.y + jy, sc);
     svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc, hollow);
+    svg += `</g>`;
   };
   const isHollow = i => /don'?t know|unsure|undecided/i.test(groups[assign[i]].label);
   // unsure/don't-know first so they sit at the back, behind the coloured passengers
@@ -2519,7 +2554,7 @@ function render(){
 
     const cardsHtml = e.groups.map((g, gi) => `
       <div class="card">
-        <div class="card-num">${counts[gi]}</div>
+        <div class="card-num" data-count="${counts[gi]}">${counts[gi]}</div>
         <div class="card-desc"><span class="card-swatch" style="background:${g.color}"></span>${g.label} &middot; ${g.pct}%</div>
       </div>
     `).join('');
@@ -3537,6 +3572,58 @@ window.addEventListener('hashchange', openFromHash);
 
 render();
 openFromHash();
+
+/* ---------- MOTION: smooth scroll, reveals, count-up, pill bar ---------- */
+(function(){
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.documentElement;
+  let lenis = null;
+  if(!reduce && window.Lenis){
+    try{
+      lenis = new Lenis({lerp: 0.1, smoothWheel: true, anchors: false});
+      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+      window.the87Lenis = lenis;
+    }catch(e){ lenis = null; }
+  }
+  // pill bar
+  const navEl = document.querySelector('nav[aria-label="Site header"]');
+  const setScrolled = () => { if(navEl) navEl.classList.toggle('scrolled', (window.scrollY || 0) > 260); };
+  window.addEventListener('scroll', setScrolled, {passive:true}); setScrolled();
+  const ns = document.getElementById('navSearch'), si = document.getElementById('searchInput');
+  if(ns && si) ns.addEventListener('click', () => {
+    const y = si.getBoundingClientRect().top + window.scrollY - 90;
+    if(lenis) lenis.scrollTo(Math.max(0,y), {duration:1.1}); else window.scrollTo({top:Math.max(0,y), behavior: reduce ? 'auto' : 'smooth'});
+    setTimeout(() => si.focus({preventScroll:true}), 450);
+  });
+  // reveals + count-up
+  if(!root.classList.contains('motion') || !('IntersectionObserver' in window)) return;
+  const countUp = el => {
+    const to = parseInt(el.getAttribute('data-count'), 10); if(isNaN(to)) return;
+    const t0 = performance.now(), dur = 900;
+    const step = now => {
+      const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(to * e);
+      if(p < 1) requestAnimationFrame(step); else el.textContent = to;
+    };
+    requestAnimationFrame(step);
+  };
+  const io = new IntersectionObserver(list => {
+    list.forEach(en => {
+      if(!en.isIntersecting) return;
+      const el = en.target; io.unobserve(el);
+      el.classList.add('in');
+      el.querySelectorAll('.card-num[data-count]').forEach(n => { n.textContent = '0'; setTimeout(() => countUp(n), 450); });
+    });
+  }, {rootMargin: '0px 0px -8% 0px', threshold: 0.08});
+  const watch = () => {
+    document.querySelectorAll('#entries .entry:not([data-m])').forEach(el => { el.setAttribute('data-m','1'); io.observe(el); });
+  };
+  watch();
+  new MutationObserver(watch).observe(document.getElementById('entries'), {childList:true});
+  // never leave content hidden if something stalls
+  setTimeout(() => document.querySelectorAll('#entries .entry:not(.in)').forEach(el => { if(el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }), 2500);
+})();
 </script>
 
 </body>
