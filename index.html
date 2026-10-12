@@ -7,6 +7,21 @@
 <meta name="theme-color" content="#FAF6EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#14171A" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-title" content="The 87">
+<meta name="description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
+<link rel="canonical" href="https://the87project.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The 87 Project">
+<meta property="og:title" content="The 87 Project: public opinion, one full bus at a time">
+<meta property="og:description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
+<meta property="og:url" content="https://the87project.github.io/">
+<meta property="og:image" content="https://the87project.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="THE 87 PROJECT in bold cream letters on London-bus red, above a double-decker bus">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The 87 Project: public opinion, one full bus at a time">
+<meta name="twitter:description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
+<meta name="twitter:image" content="https://the87project.github.io/og-image.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -572,6 +587,17 @@ main[hidden]{display:none;}
 .react-count{font-weight:700;}
 
 
+
+/* sharing, estimate tags, last-updated */
+.entry-actions{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:14px;}
+.act-btn{font-family:'Archivo',sans-serif; font-weight:600; font-size:12px; letter-spacing:.04em; text-transform:uppercase; padding:8px 14px; border-radius:999px; border:1px solid var(--line-soft); background:var(--bg); color:var(--ink); cursor:pointer;}
+.act-btn:hover{border-color:var(--accent); color:var(--accent);}
+.act-status{font-size:13px; color:var(--ink-soft);}
+.est-badge{display:inline-block; margin-left:8px; padding:2px 8px; border-radius:999px; border:1px solid var(--dk-border); background:var(--dk-bg); color:var(--ink-soft); font-family:'Archivo',sans-serif; font-weight:700; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; cursor:help;}
+.poll-flash{animation:pollflash 2.4s ease-out;}
+@keyframes pollflash{0%{box-shadow:0 0 0 6px var(--hover-tint), 0 0 0 7px var(--accent);} 100%{box-shadow:0 0 0 6px transparent, 0 0 0 7px transparent;}}
+.entry{scroll-margin-top:84px;}
+.hero-updated{margin-top:14px; font-size:13px; color:var(--slate);}
 /* accessibility */
 .skip-link{position:absolute; left:12px; top:-60px; z-index:100; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-family:'Archivo',sans-serif; font-weight:700; font-size:14px; text-decoration:none;}
 .skip-link:focus{top:12px;}
@@ -614,6 +640,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 <section class="hero" aria-label="Introduction">
   <h1>Put 87 people on one double-decker <span>and ask them the big questions.</span></h1>
   <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.</p>
+<p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
 </section>
 
 <div class="layout">
@@ -657,6 +684,10 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
         <h2 id="methodology" class="method-title">The methodology, briefly</h2>
         <p>Every entry starts as a set of percentages from a single poll. Each percentage is converted to a seat count by multiplying by 87 and rounding to the nearest whole passenger &mdash; so 4% becomes roughly 3.5, which rounds up or down depending on what else is happening on the bus. Because real-world percentages rarely divide evenly into 87 seats, the rounded totals are then nudged, one seat at a time, from whichever group currently holds the most passengers, until the bus seats exactly 87 people.</p>
         <p>No group that registered a genuine, non-zero share in the source polling is ever rounded down to zero. If 1% of respondents held a view, at least one person is on that bus holding it.</p>
+        <p><strong>Why the percentages don't always add up to 100.</strong> Pollsters round each figure to a whole number, so a published set can sum to 99 or 101. Where a source's figures sum to exactly 100, they are used as published. Where they don't, the figures are used as published, and the bus is still built to seat exactly 87 people using the rounding rule above.</p>
+        <p><strong>Polls and official statistics.</strong> Most buses are opinion polls: a sample of people asked a question. Some are not. A few are counts of who actually holds a role or was admitted somewhere, such as the share of MPs who are women or who went to private school. Those come from official releases and published research, and the source line says which kind each one is. They are drawn the same way, but they describe a group of people rather than what people think.</p>
+        <p><strong>Estimates.</strong> Where no official count exists and the figure rests on a published estimate or a think tank's own tally, the entry carries an <em>Estimate</em> tag, and its commentary explains how the number was reached and how firm it is.</p>
+        <p><strong>Corrections.</strong> If a figure looks wrong, or a source has been updated, please say so: use <em>Report a correction</em> in the footer. Fixes are made to the entry itself, and a note is added to its commentary when the change is more than a typo.</p>
         <p>Where a poll reports a &ldquo;don't know&rdquo;, &ldquo;unsure&rdquo;, or &ldquo;undecided&rdquo; share, those passengers are drawn as flat, translucent grey figures and seated at the back of each deck &mdash; visually distinct, but still counted and still on the bus. Hiding or excluding undecided respondents would flatter the size of the &ldquo;real&rdquo; majority; The 87 keeps them in view instead.</p>
         <p>Every figure on this site comes from a named, publicly available poll, official statistical release or published research, drawn mainly from a short list of recognised sources:</p>
         <ul class="method-list">
@@ -1695,6 +1726,7 @@ const ENTRIES = [
   },
   {
     id: 'rep-mps-ethnic-minority',
+    estimate: true,
     cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
     question: 'How many MPs are from an ethnic minority background?',
     tags: 'who runs britain representation diversity ethnic minority minorities race racism black asian politicians mps parliament commons',
@@ -1708,6 +1740,7 @@ const ENTRIES = [
   },
   {
     id: 'rep-mps-black',
+    estimate: true,
     cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
     question: 'How many MPs are Black?',
     tags: 'who runs britain representation diversity black race racism african caribbean ethnic minority politicians mps parliament commons',
@@ -1721,6 +1754,7 @@ const ENTRIES = [
   },
   {
     id: 'rep-mps-working-class',
+    estimate: true,
     cat: 'politics', catLabel: 'Politics', date: '2024',
     question: 'How many MPs worked in working-class jobs before politics?',
     tags: 'who runs britain representation class working class low income poor background social mobility manual jobs politicians mps parliament commons',
@@ -2315,6 +2349,7 @@ function render(){
     }
     const wrap = document.createElement('article');
     wrap.className = 'entry';
+    wrap.id = 'poll-' + e.id;
 
     const netStr = gs => {
       const n = gs[0].pct - gs[1].pct;
@@ -2339,6 +2374,11 @@ function render(){
           <button class="react-btn" data-kind="surprised">😮 Surprised <span class="react-count">0</span></button>
           <button class="react-btn" data-kind="expected">🤝 Figured <span class="react-count">0</span></button>
         </div>
+        <div class="entry-actions" style="flex-basis:100%">
+          <button type="button" class="act-btn" data-act="share" data-id="${e.id}">Share link</button>
+          ${(e.video || e.pairing) ? '' : `<button type="button" class="act-btn" data-act="image" data-id="${e.id}">Save as image</button>`}
+          <span class="act-status" role="status" aria-live="polite"></span>
+        </div>
       </div>
     `;
 
@@ -2356,7 +2396,7 @@ function render(){
 
       wrap.innerHTML = `
         <div class="entry-head">
-          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span></span>
+          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span>${e.estimate ? '<span class="est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : ''}</span>
           <h2>${e.question}</h2>
         </div>
         <div class="room-wrap"><video src="${e.video}" poster="videos/bus-voting-swing-poster.jpg" autoplay muted loop playsinline controls style="width:100%;display:block;"></video></div>
@@ -2387,7 +2427,7 @@ function render(){
 
       wrap.innerHTML = `
         <div class="entry-head">
-          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span></span>
+          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span>${e.estimate ? '<span class="est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : ''}</span>
           <h2>${e.question}</h2>
         </div>
         ${rendered.map((r, ri) => `
@@ -2438,7 +2478,7 @@ function render(){
 
     wrap.innerHTML = `
       <div class="entry-head">
-        <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span></span>
+        <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span>${e.estimate ? '<span class="est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : ''}</span>
         <h2>${e.question}</h2>
       </div>
       ${badgeHtml}
@@ -3282,7 +3322,150 @@ function buildFleet(){
 }
 buildFleet();
 
+// update these two when the site changes or the polls have been re-checked
+const SITE_LAST_UPDATED = '12 October 2026';
+const SITE_LAST_CHECKED = '12 October 2026';
+document.getElementById('lastUpdated').textContent = SITE_LAST_UPDATED;
+document.getElementById('lastChecked').textContent = SITE_LAST_CHECKED;
+
+// ----- sharing: link to one poll, and save one bus as an image -----
+const SITE_HOME = 'https://the87project.github.io/';
+function pollUrl(id){ return SITE_HOME + '#poll-' + id; }
+function actStatus(btn, msg){
+  const el = btn.parentElement && btn.parentElement.querySelector('.act-status');
+  if(!el) return;
+  el.textContent = msg;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.textContent = ''; }, 3500);
+}
+async function sharePoll(btn){
+  const id = btn.getAttribute('data-id');
+  const e = ENTRIES.find(x => x.id === id);
+  const url = pollUrl(id);
+  try{
+    if(navigator.share && window.matchMedia && window.matchMedia('(pointer:coarse)').matches){
+      await navigator.share({title: e ? e.question : 'The 87 Project', url});
+      return;
+    }
+    await navigator.clipboard.writeText(url);
+    actStatus(btn, 'Link copied');
+  }catch(err){
+    if(err && err.name === 'AbortError') return;
+    window.prompt('Copy this link', url);
+  }
+}
+let _assetCache = {};
+function dataUri(path, mime){
+  if(!_assetCache[path]) _assetCache[path] = fetch(path).then(r => { if(!r.ok) throw new Error(path); return r.blob(); }).then(b => new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(b); }));
+  return _assetCache[path];
+}
+function wrapLines(text, ctx, maxW){
+  const words = text.split(/\s+/), lines = [];
+  let cur = '';
+  words.forEach(w => {
+    const t = cur ? cur + ' ' + w : w;
+    if(ctx.measureText(t).width > maxW && cur){ lines.push(cur); cur = w; } else cur = t;
+  });
+  if(cur) lines.push(cur);
+  return lines;
+}
+const xmlEsc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+async function saveBusImage(btn){
+  const id = btn.getAttribute('data-id');
+  const art = document.getElementById('poll-' + id);
+  const e = ENTRIES.find(x => x.id === id);
+  const room = art && art.querySelector('svg.room');
+  if(!room || !e){ actStatus(btn, 'Not available for this one'); return; }
+  actStatus(btn, 'Making image…');
+  try{
+    const [busPng, fBlack, fArch] = await Promise.all([
+      dataUri('bus.png'), dataUri('fonts/archivo-black-latin-400-normal.woff2'), dataUri('fonts/archivo-latin-wght-normal.woff2')
+    ]);
+    await document.fonts.ready;
+    const W = 1200, PAD = 56;
+    const cv = document.createElement('canvas'); const ctx = cv.getContext('2d');
+    ctx.font = '700 40px "Playfair Display", Georgia, serif';
+    const qLines = wrapLines(e.question, ctx, W - PAD * 2);
+    ctx.font = '500 20px Inter, Arial, sans-serif';
+    const legend = Array.from(art.querySelectorAll('.legend .legend-item')).map(li => ({
+      color: li.querySelector('.legend-swatch').style.background, text: li.textContent.replace(/\s+/g, ' ').trim()
+    }));
+    // legend rows
+    let lx = PAD, ly = 0, legendRows = [[]];
+    legend.forEach(l => {
+      const w = ctx.measureText(l.text).width + 44;
+      if(lx + w > W - PAD && legendRows[legendRows.length - 1].length){ legendRows.push([]); lx = PAD; }
+      legendRows[legendRows.length - 1].push({...l, x: lx}); lx += w;
+    });
+    const srcText = 'Source: ' + e.source;
+    ctx.font = '500 17px Inter, Arial, sans-serif';
+    const srcLines = wrapLines(srcText, ctx, W - PAD * 2);
+    const qH = qLines.length * 50;
+    const busH = Math.round((W - PAD * 2) * 650 / 1792);
+    let y = 78 + 34;                    // below the red band + meta line
+    const metaY = y; y += 18;
+    const qY = y + 38; y += qH + 14;
+    const busY = y; y += busH + 10;
+    const legY = y + 20; y += legendRows.length * 36 + 14;
+    const srcY = y + 18; y += srcLines.length * 24 + 24;
+    const footY = y + 22; const H = footY + 40;
+    const busSvg = room.outerHTML.replace(/href="(bus|bus-departing)\.png"/g, (m, n) => n === 'bus' ? `href="${busPng}"` : `href="${busPng}"`);
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`
+      + `<defs><style>@font-face{font-family:'Archivo Black';src:url(${fBlack}) format('woff2');}@font-face{font-family:'Archivo';font-weight:100 900;src:url(${fArch}) format('woff2');}</style></defs>`
+      + `<rect width="${W}" height="${H}" fill="#FAF6EC"/>`
+      + `<rect width="${W}" height="78" fill="#DC241F"/>`
+      + `<text x="${PAD}" y="53" font-family="'Archivo Black',Arial Black,sans-serif" font-size="30" fill="#FFF6E0" letter-spacing="1">THE 87 PROJECT</text>`
+      + `<text x="${W - PAD}" y="52" text-anchor="end" font-family="Archivo,Arial,sans-serif" font-weight="600" font-size="18" fill="#FFF6E0">UK public opinion, one double-decker at a time</text>`
+      + `<text x="${PAD}" y="${metaY}" font-family="Archivo,Arial,sans-serif" font-weight="700" font-size="16" letter-spacing="2" fill="#6A7077">${xmlEsc((e.catLabel + ' · ' + e.date + (e.estimate ? ' · ESTIMATE' : '')).toUpperCase())}</text>`
+      + qLines.map((l, i) => `<text x="${PAD}" y="${qY + i * 50}" font-family="'Playfair Display',Georgia,serif" font-weight="700" font-size="40" fill="#1A1A1A">${xmlEsc(l)}</text>`).join('')
+      + busSvg.replace('<svg ', `<svg x="${PAD}" y="${busY}" width="${W - PAD * 2}" height="${busH}" `)
+      + legendRows.map((row, ri) => row.map(l => `<rect x="${l.x}" y="${legY + ri * 36 - 14}" width="18" height="18" rx="3" fill="${xmlEsc(l.color)}"/><text x="${l.x + 26}" y="${legY + ri * 36 + 1}" font-family="Inter,Arial,sans-serif" font-weight="500" font-size="20" fill="#1A1A1A">${xmlEsc(l.text)}</text>`).join('')).join('')
+      + srcLines.map((l, i) => `<text x="${PAD}" y="${srcY + i * 24}" font-family="Inter,Arial,sans-serif" font-size="17" fill="#6A7077">${xmlEsc(l)}</text>`).join('')
+      + `<text x="${PAD}" y="${footY}" font-family="Archivo,Arial,sans-serif" font-weight="700" font-size="18" fill="#DC241F">the87project.github.io</text>`
+      + `</svg>`;
+    const img = new Image();
+    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
+    const scale = 2;
+    const out = document.createElement('canvas'); out.width = W * scale; out.height = H * scale;
+    const c2 = out.getContext('2d'); c2.scale(scale, scale); c2.drawImage(img, 0, 0, W, H);
+    const blob = await new Promise(res => out.toBlob(res, 'image/png'));
+    const file = new File([blob], 'the87-' + id + '.png', {type: 'image/png'});
+    if(navigator.canShare && navigator.canShare({files: [file]}) && window.matchMedia('(pointer:coarse)').matches){
+      await navigator.share({files: [file], title: e.question});
+    } else {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name;
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    }
+    actStatus(btn, 'Image saved');
+  }catch(err){
+    if(err && err.name === 'AbortError'){ actStatus(btn, ''); return; }
+    console.error(err);
+    actStatus(btn, 'Could not make the image here');
+  }
+}
+container.addEventListener('click', ev => {
+  const b = ev.target.closest ? ev.target.closest('[data-act]') : null;
+  if(!b) return;
+  if(b.getAttribute('data-act') === 'share') sharePoll(b);
+  else if(b.getAttribute('data-act') === 'image') saveBusImage(b);
+});
+// open a poll straight from a shared link such as ...#poll-rep-mps-women
+function openFromHash(){
+  const m = location.hash.match(/^#poll-(.+)$/);
+  if(!m) return;
+  const id = decodeURIComponent(m[1]);
+  if(!ENTRIES.some(e => e.id === id)) return;
+  if(currentFilter !== 'all') document.querySelector('.tab[data-cat="all"]').click();
+  else if(aboutSection && !aboutSection.hidden) document.querySelector('.tab[data-cat="all"]').click();
+  if(searchInput.value) resetSearchQuietly();
+  render();
+  const el = document.getElementById('poll-' + id);
+  if(el){ el.scrollIntoView({block: 'start'}); el.classList.add('poll-flash'); setTimeout(() => el.classList.remove('poll-flash'), 2600); }
+}
+window.addEventListener('hashchange', openFromHash);
+
 render();
+openFromHash();
 </script>
 
 </body>
