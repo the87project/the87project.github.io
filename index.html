@@ -812,10 +812,10 @@ nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
 @media (max-width:760px){ .wk-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .wk-card:nth-child(2n){border-right:0;} .wk-card:nth-child(-n+2){border-bottom:1px solid var(--ink);} .wk-q{-webkit-line-clamp:4;} }
 .tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
 .tunnel.live img{visibility:hidden}
-.tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; perspective-origin:50% 50%; overflow:hidden; background:#D9D8D2;}
+.tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; overflow:hidden; background:#D9D8D2;}
 .tunnel .tun{position:absolute; left:50%; top:50%; width:0; height:0; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
 .tunnel .wall{position:absolute; left:0; top:0; -webkit-transform-style:preserve-3d; will-change:transform;}
-.tunnel .ln{position:absolute; left:0; width:100%; display:flex; align-items:center; overflow:visible; font-family:'Archivo Black',sans-serif; color:#111; white-space:nowrap; line-height:1; text-transform:uppercase;}
+.tunnel .ln{position:absolute; display:flex; align-items:center; overflow:visible; font-family:'Archivo Black',sans-serif; color:#111; white-space:nowrap; line-height:1; text-transform:uppercase;}
 .tunnel .ln span{display:block; transform-origin:0 50%;}
 .tunnel .core{position:absolute; left:0; top:0; background:#E3342B; color:#D9D8D2; display:flex; align-items:center; justify-content:center; font-family:'Archivo Black',sans-serif;}
 .mega{font-family:'Archivo Black',sans-serif; font-size:26.4vw; line-height:.78; letter-spacing:-.05em; white-space:nowrap; padding:2vw 16px 0; margin-bottom:-1.2vw; color:var(--ink); user-select:none; overflow:hidden;}
@@ -4091,8 +4091,24 @@ openFromHash();
     ['Politics '+cnt('politics'),'Forty-seven down','Next stop','Window seat']
   ];
   const r = 0.8, P = 1000;
-  let stage = null, lastKey = '';
-  function mtx(x,y,z,t){ return 'matrix3d('+[x[0],x[1],x[2],0, y[0],y[1],y[2],0, z[0],z[1],z[2],0, t[0],t[1],t[2],1].join(',')+')'; }
+  let stage = null, lastKey = '', layoutFn = null;
+  // homography mapping the rect (0,0),(w,0),(w,h),(0,h) onto four target points -> CSS matrix3d
+  function homography(w, h, q){
+    const src = [[0,0],[w,0],[w,h],[0,h]], A = [], B = [];
+    for(let i=0;i<4;i++){
+      const x = src[i][0], y = src[i][1], u = q[i][0], v = q[i][1];
+      A.push([x,y,1,0,0,0,-u*x,-u*y]); B.push(u);
+      A.push([0,0,0,x,y,1,-v*x,-v*y]); B.push(v);
+    }
+    for(let i=0;i<8;i++){
+      let m = i; for(let j=i+1;j<8;j++) if(Math.abs(A[j][i]) > Math.abs(A[m][i])) m = j;
+      [A[i],A[m]] = [A[m],A[i]]; [B[i],B[m]] = [B[m],B[i]];
+      for(let j=i+1;j<8;j++){ const f = A[j][i] / A[i][i]; for(let k=i;k<8;k++) A[j][k] -= f * A[i][k]; B[j] -= f * B[i]; }
+    }
+    const x = new Array(8);
+    for(let i=7;i>=0;i--){ let t = B[i]; for(let j=i+1;j<8;j++) t -= A[i][j] * x[j]; x[i] = t / A[i][i]; }
+    return 'matrix3d('+[x[0],x[3],0,x[6], x[1],x[4],0,x[7], 0,0,1,0, x[2],x[5],0,1].map(n => +n.toFixed(6)).join(',')+')';
+  }
   function build(){
     const w = host.clientWidth; if(!w) return;
     const W = 1200, H = w < 640 ? 800 : 600;
@@ -4100,44 +4116,49 @@ openFromHash();
     host.style.aspectRatio = W+'/'+H;
     if(stage) stage.remove();
     stage = document.createElement('div'); stage.className = 'stage'; stage.setAttribute('aria-hidden','true');
-    stage.style.width = W+'px'; stage.style.height = H+'px'; stage.style.perspective = P+'px'; stage.style.webkitPerspective = P+'px';
+    stage.style.width = W+'px'; stage.style.height = H+'px';
     stage.style.transform = 'scale('+(w/W)+')';
-    const tun = document.createElement('div'); tun.className = 'tun'; stage.appendChild(tun);
-    const n = R.length;
-    // choose ring count so the far box is ~17% of full size
-    const rings = Math.min(n, 8);
+    const rings = Math.min(R.length, 8);
     const zs = []; for(let k=0;k<=rings;k++) zs.push(P*(Math.pow(1/r,k)-1));
     const D = zs[rings];
-    const walls = [
-      {i:0, len:W, M:mtx([1,0,0],[0,0,-1],[0,1,0],[0,-H/2,-D/2])},   // top
-      {i:2, len:W, M:mtx([1,0,0],[0,0,1],[0,-1,0],[0,H/2,-D/2])},    // bottom
-      {i:3, len:H, M:mtx([0,-1,0],[0,0,-1],[1,0,0],[-W/2,0,-D/2])},  // left
-      {i:1, len:H, M:mtx([0,1,0],[0,0,-1],[-1,0,0],[W/2,0,-D/2])}    // right
-    ];
+    const sc = z => P / (P + z);                       // screen scale at depth z
+    const cx = W/2, cy = H/2;
+    const pt = (X, Y, z) => [cx + X * sc(z), cy + Y * sc(z)];
+    // corners (local rect order) of a strip on wall i between depths a and b, camera moved forward by dz
+    const quad = (i, a, b, dz) => {
+      const za = a - dz, zb = b - dz, hw = W/2, hh = H/2;
+      if(i === 0) return [pt(-hw,-hh,za), pt(hw,-hh,za), pt(hw,-hh,zb), pt(-hw,-hh,zb)];     // top: tops of letters toward you
+      if(i === 2) return [pt(-hw,hh,zb), pt(hw,hh,zb), pt(hw,hh,za), pt(-hw,hh,za)];        // bottom: tops toward the far end
+      if(i === 3) return [pt(-hw,hh,za), pt(-hw,-hh,za), pt(-hw,-hh,zb), pt(-hw,hh,zb)];    // left: reads upwards
+      return [pt(hw,-hh,za), pt(hw,hh,za), pt(hw,hh,zb), pt(hw,-hh,zb)];                     // right: reads downwards
+    };
     const items = [];
-    walls.forEach(wl => {
-      const el = document.createElement('div'); el.className = 'wall';
-      el.style.width = wl.len+'px'; el.style.height = D+'px';
-      el.style.margin = (-D/2)+'px 0 0 '+(-wl.len/2)+'px';
-      el.style.transform = wl.M;
-      // top & right walls: depth runs from local top (near) to bottom (far); bottom wall is flipped
-      for(let k=0;k<rings;k++){
+    for(let wi = 0; wi < 4; wi++){
+      for(let k = 0; k < rings; k++){
         const a = zs[k], b = zs[k+1];
-        const near = (wl.i === 2) ? D - b : a;       // local y of the strip's top edge
-        const h = b - a;
-        const ln = document.createElement('div'); ln.className = 'ln';
-        ln.style.top = near+'px'; ln.style.height = h+'px'; ln.style.fontSize = (h*1.02)+'px';
-        const s = document.createElement('span'); s.textContent = R[k][wl.i];
-        ln.appendChild(s); el.appendChild(ln); items.push([s, wl.len]);
+        const q0 = quad(wi, a, b, 0);
+        const len = Math.hypot(q0[1][0]-q0[0][0], q0[1][1]-q0[0][1]);                       // along the text
+        const thick = Math.hypot(q0[3][0]-q0[0][0], q0[3][1]-q0[0][1]) || 1;                 // across the text
+        const side = (wi === 1 || wi === 3);
+        const bw = Math.max(40, (side ? Math.abs(q0[1][1]-q0[0][1]) : len)) * 2.2;
+        const bh = Math.max(10, (side ? Math.abs(q0[3][0]-q0[0][0]) : Math.abs(q0[3][1]-q0[0][1]))) * 2.2;
+        const el = document.createElement('div'); el.className = 'ln';
+        el.style.cssText = 'left:0;top:0;width:'+bw+'px;height:'+bh+'px;font-size:'+(bh*1.02)+'px;transform-origin:0 0;';
+        const sp = document.createElement('span'); sp.textContent = R[k][wi]; el.appendChild(sp);
+        stage.appendChild(el); items.push({el, sp, wi, a, b, bw, bh});
       }
-      tun.appendChild(el);
-    });
+    }
     const core = document.createElement('div'); core.className = 'core';
-    core.style.width = W+'px'; core.style.height = H+'px'; core.style.margin = (-H/2)+'px 0 0 '+(-W/2)+'px';
-    core.style.transform = 'translateZ('+(-D)+'px)'; core.style.fontSize = (H*0.62)+'px';
-    core.textContent = '87'; tun.appendChild(core);
+    stage.appendChild(core); core.textContent = '87';
+    layoutFn = dz => {
+      items.forEach(it => { it.el.style.transform = homography(it.bw, it.bh, quad(it.wi, it.a, it.b, dz)); });
+      const s = sc(D - dz), cw = W * s, ch = H * s;
+      core.style.cssText = 'width:'+cw+'px;height:'+ch+'px;left:'+(cx - cw/2)+'px;top:'+(cy - ch/2)+'px;font-size:'+(ch*0.62)+'px;';
+    };
+    layoutFn(0);
     host.appendChild(stage);
-    const fit = () => { items.forEach(([s,len]) => { s.style.transform = 'none'; const tw = s.offsetWidth; s.style.transform = 'scaleX('+(len/tw)+')'; }); host.classList.add('live'); };
+    host.__ride = layoutFn;
+    const fit = () => { items.forEach(it => { it.sp.style.transform = 'none'; const tw = it.sp.offsetWidth || 1; it.sp.style.transform = 'scaleX('+(it.bw/tw)+')'; }); host.classList.add('live'); };
     if(document.fonts && document.fonts.load){ document.fonts.load("100px 'Archivo Black'").then(fit, fit); } else fit();
     host.setAttribute('role','img');
     host.setAttribute('aria-label','Type receding into a tunnel towards a red 87: '+N+' polls on one double-decker bus');
@@ -4154,7 +4175,7 @@ openFromHash();
   function aim(){ const h = host.offsetHeight || 1; target = Math.max(0, Math.min(1, (window.scrollY || 0) / (h * 0.95))) * MAX; if(!raf && visible) raf = requestAnimationFrame(step); }
   function step(){
     raf = 0; cur += (target - cur) * 0.12; if(Math.abs(target - cur) < 0.4) cur = target;
-    const tun = host.querySelector('.tun'); if(tun) tun.style.transform = 'translateZ('+cur.toFixed(1)+'px)';
+    if(host.__ride) host.__ride(cur);
     if(cur !== target && visible) raf = requestAnimationFrame(step);
   }
   window.addEventListener('scroll', aim, {passive:true});
