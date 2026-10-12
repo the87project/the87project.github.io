@@ -184,7 +184,7 @@ nav{
 
 
 /* ---------- WEB-DESIGN PASS: dot-matrix hero, stat tiles, ticker, chunky controls ---------- */
-.hero{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,.9fr); column-gap:40px; row-gap:0; align-content:center; align-items:start; border-bottom:none !important; padding-bottom:36px;}
+.hero{display:grid; grid-template-columns:minmax(0,1fr); column-gap:40px; row-gap:0; align-content:center; align-items:start; border-bottom:none !important; padding-bottom:36px;}
 .hero > h1{margin-top:0;}
 .hero > .route-tag,.hero > h1,.hero > p{grid-column:1;}
 .hero-viz{grid-column:2; grid-row:1 / span 5; align-self:center; justify-self:end; width:100%; max-width:300px;}
@@ -693,7 +693,6 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   <p class="route-tag"><span class="route-no">87</span> UK public opinion, by the busload</p>
   <h1>Put <span class="n87" style="font-family:inherit;font-weight:inherit;text-transform:inherit">87</span> people on one double-decker <span>and ask them the big questions.</span></h1>
   <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.</p>
-<div class="hero-viz" aria-hidden="true"><div class="dots" id="heroDots"></div><p class="dots-cap">87 passengers &middot; every dot is one person</p></div>
 <p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
 
 </section>
@@ -3389,7 +3388,7 @@ const SITE_LAST_CHECKED = '12 October 2026';
 (function(){
   const C=['#DC241F','#2E5FB7','#2AA198','#E28A2B','#4C9A3F','#D9B417','#A9A69E'], N=[24,20,14,11,9,5,4];
   let h='',n=0; N.forEach((k,ci)=>{for(let i=0;i<k;i++){h+=`<i style="--d:${C[ci]};--n:${n++}"></i>`;}});
-  const d=document.getElementById('heroDots'); if(d) d.innerHTML=h;
+  
   const cats=new Set(ENTRIES.map(e=>e.cat)); cats.delete('cabinet');
   const st=[[ENTRIES.length,'poll buses','#DC241F'],[87,'seats on every bus','#2E5FB7'],[40,'upper deck','#2AA198'],[47,'lower deck','#E28A2B']];
   const sr=document.getElementById('statRow');
