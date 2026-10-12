@@ -1,0 +1,22 @@
+{
+  "name": "The 87",
+  "short_name": "The 87",
+  "description": "UK opinion polls as an 87-passenger London bus.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#15171B",
+  "theme_color": "#15171B",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
