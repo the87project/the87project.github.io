@@ -785,6 +785,16 @@ nav[aria-label="Site header"]{position:sticky;}
 .nav-menu a i{font-style:normal; font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.08em;}
 @media (max-width:760px){ .nav-menu{grid-template-columns:repeat(2,minmax(0,1fr));} .nav-menu a:nth-child(4n){border-right:1px solid var(--ink);} .nav-menu a:nth-child(2n){border-right:0;} .nav-menu a{padding:16px 12px; font-size:17px;} }
 nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
+.stops{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-bottom:1px solid var(--ink);}
+.stops a{position:relative; display:flex; flex-direction:column; justify-content:space-between; gap:26px; min-height:150px; padding:16px 16px 18px; color:var(--ink); text-decoration:none; border-right:1px solid var(--ink); border-top:1px solid var(--ink); transition:background .3s, color .3s;}
+.stops a:nth-child(4n){border-right:0;}
+.stops a:nth-child(-n+4){border-top:0;}
+.stops .st-top{display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;}
+.stops .st-name{font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(22px,2.4vw,34px); line-height:1.05; letter-spacing:-.02em;}
+.stops .st-arrow{transition:transform .3s;}
+.stops a:hover,.stops a:focus-visible{background:var(--ink); color:var(--bg); outline:none;}
+.stops a:hover .st-arrow{transform:translateY(4px);}
+@media (max-width:760px){ .stops{grid-template-columns:repeat(2,minmax(0,1fr));} .stops a{min-height:120px;} .stops a:nth-child(4n){border-right:1px solid var(--ink);} .stops a:nth-child(2n){border-right:0;} .stops a:nth-child(-n+4){border-top:1px solid var(--ink);} .stops a:nth-child(-n+2){border-top:0;} }
 .tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
 .tunnel.live img{visibility:hidden}
 .tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; perspective-origin:50% 50%; overflow:hidden; background:#D9D8D2;}
@@ -976,6 +986,8 @@ body.has-tray{padding-bottom:110px;}
 <p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
 
 </section>
+
+<nav class="stops" id="stops" aria-label="Jump to a section"></nav>
 
 <div class="layout">
   <aside class="sidebar">
@@ -4139,6 +4151,27 @@ openFromHash();
     window.addEventListener('scroll', () => { if(!menu.hidden && window.scrollY > 80) closeMenu(); }, {passive:true});
   }
   if(ab) ab.addEventListener('click', e => { e.preventDefault(); closeMenu(); const t = document.querySelector('.tab-about'); if(t) t.click(); const a = document.getElementById('about'); setTimeout(() => go(document.querySelector('.layout')), 30); });
+})();
+
+/* ---------- front-page section stops ---------- */
+(function(){
+  const box = document.getElementById('stops'); if(!box) return;
+  const go = (t) => { const L = window.the87Lenis; if(L && L.scrollTo) L.scrollTo(t, {offset:-70}); else t.scrollIntoView({behavior:'smooth'}); };
+  let i = 0;
+  document.querySelectorAll('#tabs .tab').forEach(t => {
+    const c = t.getAttribute('data-cat');
+    const n = t.querySelector('.tab-n'); const name = t.childNodes[0].textContent.trim();
+    const a = document.createElement('a'); a.href = '#entries'; i++;
+    const top = document.createElement('span'); top.className = 'st-top';
+    const l = document.createElement('span'); l.textContent = 'Stop ' + String(i).padStart(2,'0');
+    const r = document.createElement('span'); r.textContent = n ? n.textContent + ' polls' : 'Read';
+    top.appendChild(l); top.appendChild(r);
+    const nm = document.createElement('span'); nm.className = 'st-name'; nm.textContent = c === 'about' ? 'About the project' : c === 'all' ? 'Every poll' : name;
+    const ar = document.createElement('span'); ar.className = 'st-top'; ar.innerHTML = '<span></span><span class="st-arrow" aria-hidden="true">&darr;</span>';
+    a.appendChild(top); a.appendChild(nm); a.appendChild(ar);
+    a.addEventListener('click', e => { e.preventDefault(); t.click(); setTimeout(() => go(document.querySelector('.layout')), 30); });
+    box.appendChild(a);
+  });
 })();
 </script>
 
