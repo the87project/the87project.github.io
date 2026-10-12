@@ -4157,15 +4157,14 @@ openFromHash();
 (function(){
   const box = document.getElementById('stops'); if(!box) return;
   const go = (t) => { const L = window.the87Lenis; if(L && L.scrollTo) L.scrollTo(t, {offset:-70}); else t.scrollIntoView({behavior:'smooth'}); };
-  let i = 0;
-  document.querySelectorAll('#tabs .tab').forEach(t => {
+  const num = t => { const n = t.querySelector('.tab-n'); return n ? parseInt(n.textContent, 10) || 0 : -1; };
+  Array.from(document.querySelectorAll('#tabs .tab')).sort((x, y) => num(y) - num(x)).forEach(t => {
     const c = t.getAttribute('data-cat');
     const n = t.querySelector('.tab-n'); const name = t.childNodes[0].textContent.trim();
-    const a = document.createElement('a'); a.href = '#entries'; i++;
+    const a = document.createElement('a'); a.href = '#entries';
     const top = document.createElement('span'); top.className = 'st-top';
-    const l = document.createElement('span'); l.textContent = 'Stop ' + String(i).padStart(2,'0');
-    const r = document.createElement('span'); r.textContent = n ? n.textContent + ' polls' : 'Read';
-    top.appendChild(l); top.appendChild(r);
+    const l = document.createElement('span'); l.textContent = n ? n.textContent + ' polls' : 'Read';
+    top.appendChild(l);
     const nm = document.createElement('span'); nm.className = 'st-name'; nm.textContent = c === 'about' ? 'About the project' : c === 'all' ? 'Every poll' : name;
     const ar = document.createElement('span'); ar.className = 'st-top'; ar.innerHTML = '<span></span><span class="st-arrow" aria-hidden="true">&darr;</span>';
     a.appendChild(top); a.appendChild(nm); a.appendChild(ar);
