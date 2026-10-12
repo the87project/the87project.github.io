@@ -1630,6 +1630,180 @@ const ENTRIES = [
     url: 'https://www.gov.uk/government/statistics/hate-crime-england-and-wales-year-ending-march-2025/hate-crime-england-and-wales-year-ending-march-2025'
   },
   {
+    id: 'rep-mps-women',
+    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
+    question: 'How many MPs are women?',
+    tags: 'who runs britain representation diversity women female gender men equality politicians mps parliament commons',
+    groups: [
+      {label:'Women', pct:40.5, color:'#2AA198'},
+      {label:'Men', pct:59.5, color:'#2E5FB7'},
+    ],
+    analysis: "Thirty-five of the eighty-seven seats belong to women and fifty-two to men: 263 women among the 650 MPs elected in July 2024, a record high and the first time women have made up 40% of the Commons. A bus that matched the population, which is just over half women, would seat about forty-four. These are the figures from the election itself; by-elections and changes of MP since then move the numbers by a seat or two at a time.",
+    source: 'House of Commons Library, General election 2024 results (263 of 650 MPs elected in July 2024); this is a count of people, not a poll',
+    url: 'https://commonslibrary.parliament.uk/research-briefings/cbp-10009/'
+  },
+  {
+    id: 'rep-mps-ethnic-minority',
+    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
+    question: 'How many MPs are from an ethnic minority background?',
+    tags: 'who runs britain representation diversity ethnic minority minorities race racism black asian politicians mps parliament commons',
+    groups: [
+      {label:'Ethnic minority', pct:14, color:'#E28A2B'},
+      {label:'White', pct:86, color:'#2E5FB7'},
+    ],
+    analysis: "Twelve of the eighty-seven seats are held by MPs from an ethnic minority background and seventy-five by White MPs: around 90 of the 650 MPs, or 13.8%, a record and up from 66 in 2019. There is no official count, so this is British Future's tally (early counts said 87 or 89). Whether that is 'representative' depends on the yardstick. An estimate of the electorate puts the ethnic minority share at about 14%, which makes this almost exactly level, while the Commons Library gives about 16% of the UK population in 2024/25 and 19% of England at the 2021 census, which would be fourteen to seventeen seats.",
+    source: 'British Future analysis of the 2024 general election (5 July 2024); House of Commons Library, Ethnic diversity in politics and public life (October 2025); no official count exists',
+    url: 'https://commonslibrary.parliament.uk/research-briefings/sn01156/'
+  },
+  {
+    id: 'rep-mps-black',
+    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
+    question: 'How many MPs are Black?',
+    tags: 'who runs britain representation diversity black race racism african caribbean ethnic minority politicians mps parliament commons',
+    groups: [
+      {label:'Black', pct:4.3, color:'#4C9A3F'},
+      {label:'All other MPs', pct:95.7, color:'#2E5FB7'},
+    ],
+    analysis: "Four of the eighty-seven seats are Black MPs. British Future counted 28 Black MPs among the 650 elected in July 2024, 16 of African-Caribbean heritage (counting mixed heritage) and 12 of African heritage, up from 11 in 2019. That is about 4.3% of the Commons. The 2021 census counts 4.0% of people in England and Wales as Black (see the Census ethnicity bus), so on this count Black MPs are roughly in proportion. Treat the figure with care: there is no official count of MPs by ethnic group, this one comes from a press report of British Future's analysis, and where mixed-heritage MPs are placed changes the answer.",
+    source: 'British Future analysis of the 2024 general election, as reported by The Gleaner (9 July 2024); no official count exists',
+    url: 'https://jamaica-gleaner.com/article/news/20240709/largest-number-black-mps-elected-labours-win'
+  },
+  {
+    id: 'rep-mps-working-class',
+    cat: 'politics', catLabel: 'Politics', date: '2024',
+    question: 'How many MPs worked in working-class jobs before politics?',
+    tags: 'who runs britain representation class working class low income poor background social mobility manual jobs politicians mps parliament commons',
+    groups: [
+      {label:'Working-class job before politics', pct:5, color:'#E28A2B'},
+      {label:'Other backgrounds', pct:95, color:'#2E5FB7'},
+    ],
+    analysis: "Four of the eighty-seven are here because they worked in working-class jobs before politics. Nobody records MPs' family incomes, so researchers use the job someone held before entering politics as the closest measure. On that measure Britain sits in the middle of the pack, at about 5% of MPs, against around 18% in Denmark and Sweden. Across the countries studied, working-class occupations make up around 60% of the workforce, which on this bus would be about fifty-two seats. The estimate rests on research published in 2023, so it describes recent parliaments in general, not a count of the 2024 intake.",
+    source: 'Wang Leung Ting, University of Reading / The Conversation (July 2024), drawing on Carnes and Lupu, Working-Class Officeholding in the OECD (2023); an estimate, not an official count',
+    url: 'https://research.reading.ac.uk/research-blog/2024/07/26/what-a-house-of-commons-with-fewer-privately-educated-mps-could-mean-for-the-uk/'
+  },
+  {
+    id: 'rep-mps-school',
+    cat: 'politics', catLabel: 'Politics', date: 'Sep 2025',
+    question: 'What type of school did MPs go to?',
+    tags: 'who runs britain representation class privilege elite private school public school state school comprehensive grammar social mobility politicians mps parliament commons',
+    groups: [
+      {label:'Comprehensive', pct:62, color:'#2E5FB7'},
+      {label:'Grammar', pct:12, color:'#2AA198'},
+      {label:'Private (independent)', pct:24, color:'#C93B32'},
+      {label:'Other / not recorded', pct:2, color:'#A9A69E'},
+    ],
+    analysis: "Twenty-one of the eighty-seven seats are MPs who went to an independent school, in a country where about 7% of people do, which would be about six seats. Fifty-four went to a comprehensive and ten to a grammar school. It is a large change in a short time: 29% of MPs were privately educated in 2019. Much of the change is between the parties: among the MPs elected in 2024 it was 46% of Conservatives and 15% of Labour MPs. At the top the contrast was sharpest: 7% of the Cabinet in 2025 had been to private school, against 52% of the shadow cabinet.",
+    source: 'Sutton Trust, Elitist Britain 2025 (published 18 September 2025); party split from Sutton Trust, Parliamentary Privilege 2024',
+    url: 'https://www.suttontrust.com/our-research/elitist-britain-2025/'
+  },
+  {
+    id: 'rep-mps-university',
+    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
+    question: 'Which university did MPs go to?',
+    tags: 'who runs britain representation class privilege elite oxbridge oxford cambridge russell group university universities graduates degree education politicians mps parliament commons',
+    groups: [
+      {label:'Oxford or Cambridge', pct:20, color:'#C93B32'},
+      {label:'Another Russell Group', pct:34, color:'#E28A2B'},
+      {label:'Other university', pct:36, color:'#2E5FB7'},
+      {label:'No university', pct:10, color:'#A9A69E'},
+    ],
+    analysis: "Seventeen of the eighty-seven seats are MPs who went to Oxford or Cambridge, thirty went to another Russell Group university, thirty-one to some other university and nine did not go at all. Add the first three and nine in ten MPs went to university. In England and Wales 33.8% of adults hold a degree-level qualification (2021 census), which on this bus would be about twenty-nine people, not seventy-eight. The Oxbridge share is uneven between the parties too: 29% of Conservative MPs and 19% of Labour MPs. (Attending a university and holding a degree-level qualification are not quite the same thing.)",
+    source: 'Sutton Trust, Parliamentary Privilege 2024 (July 2024); Other university = the remainder, calculated; population figure from ONS, Census 2021',
+    url: 'https://www.suttontrust.com/our-research/parliamentary-privilege-2024/'
+  },
+  {
+    id: 'rep-ceo-women',
+    cat: 'society', catLabel: 'Society', date: 'Feb 2026',
+    question: 'How many FTSE 350 chief executives are women?',
+    tags: 'who runs britain representation diversity women female gender equality ceo ceos chief executives bosses business ftse 350 boardroom board',
+    groups: [
+      {label:'Women', pct:8, color:'#2AA198'},
+      {label:'Men', pct:92, color:'#2E5FB7'},
+    ],
+    analysis: "Seven of the eighty-seven chief executives in the FTSE 350 are women and eighty are men. The boardroom looks very different: women hold 43% of FTSE 350 board seats, about thirty-seven on this bus and up from roughly 10% in 2011, and 36% of senior leadership roles, but only 17% of chairs. The review names executive roles as the main gap: the 40% board target has largely been met, while the top executive jobs are where women are still scarce.",
+    source: 'FTSE Women Leaders Review 2026 (published 24 February 2026), FTSE 350 companies; figures as summarised by Freshfields',
+    url: 'https://riskandcompliance.freshfields.com/post/102mkno/ftse-women-leaders-review-2026-achieving-gender-balance-five-years-on'
+  },
+  {
+    id: 'rep-ceo-ethnic-minority',
+    cat: 'society', catLabel: 'Society', date: 'Mar 2026',
+    question: 'How many FTSE 100 chief executives are from an ethnic minority background?',
+    tags: 'who runs britain representation diversity ethnic minority minorities race black asian ceo ceos chief executives bosses business ftse 100 boardroom board',
+    groups: [
+      {label:'Ethnic minority', pct:14, color:'#E28A2B'},
+      {label:'Not an ethnic minority', pct:86, color:'#2E5FB7'},
+    ],
+    analysis: "Twelve of the eighty-seven chief executives are from an ethnic minority background: 14 of the 100 FTSE 100 companies, the most the Parker Review has recorded. Directors from an ethnic minority background hold 20% of FTSE 100 board seats (208 of 1,063) and 16% in the FTSE 250, and 98 of the FTSE 100 have at least one, up from 47 in 2016. Among senior managers the share is lower, 11% in the FTSE 100 against a target of 15% by 2027. About 16% of the UK population is from an ethnic minority, which on this bus would be fourteen seats. Figures are as at 31 December 2025.",
+    source: 'The Parker Review, March 2026 (data at 31 December 2025)',
+    url: 'https://parkerreview.co.uk/wp-content/uploads/2026/03/Parker-Review-2026-Press-Release.pdf'
+  },
+  {
+    id: 'rep-ceo-school',
+    cat: 'society', catLabel: 'Society', date: 'Sep 2025',
+    question: 'Where did FTSE 100 chief executives go to school?',
+    tags: 'who runs britain representation class privilege elite private school public school state school ceo ceos chief executives bosses business ftse 100 social mobility',
+    groups: [
+      {label:'Private school', pct:37, color:'#C93B32'},
+      {label:'State school', pct:63, color:'#2E5FB7'},
+    ],
+    analysis: "Thirty-two of the eighty-seven chief executives went to a private school, against about six if the bus matched a country where 7% of people do. This counts only the UK-educated: 53% of FTSE 100 chief executives were schooled abroad, and a quarter of the UK-educated ones went to Oxford or Cambridge. The chairs above them are more privileged still: 68% of the UK-educated FTSE 100 chairs went to private school.",
+    source: 'Sutton Trust, Elitist Britain 2025 (published 18 September 2025); UK-educated FTSE 100 chief executives only',
+    url: 'https://www.suttontrust.com/our-research/elitist-britain-2025/'
+  },
+  {
+    id: 'rep-judges-school',
+    cat: 'society', catLabel: 'Society', date: 'Sep 2025',
+    question: 'Where did senior judges go to school?',
+    tags: 'who runs britain representation class privilege elite private school public school state school oxbridge judges judiciary courts law justice social mobility',
+    groups: [
+      {label:'Private school', pct:62, color:'#C93B32'},
+      {label:'State school', pct:38, color:'#2E5FB7'},
+    ],
+    analysis: "Fifty-four of the eighty-seven senior judges went to a private school, against about six if the bench matched a country where 7% of people do. Three in four of them (75%) went to Oxford or Cambridge, four points more than in the Sutton Trust's last count. It is among the highest private-school shares in the survey, close to the top ranks of the armed forces (63%) and well above MPs (24%).",
+    source: 'Sutton Trust, Elitist Britain 2025 (published 18 September 2025)',
+    url: 'https://www.suttontrust.com/our-research/elitist-britain-2025/'
+  },
+  {
+    id: 'rep-judges-ethnic-minority',
+    cat: 'society', catLabel: 'Society', date: 'Jul 2026',
+    question: 'How many judges are from an ethnic minority background?',
+    tags: 'who runs britain representation diversity ethnic minority minorities race black women female judges judiciary courts law justice',
+    groups: [
+      {label:'Ethnic minority', pct:13, color:'#E28A2B'},
+      {label:'Not an ethnic minority', pct:87, color:'#2E5FB7'},
+    ],
+    analysis: "Eleven of the eighty-seven judges are from an ethnic minority background: 13% of all judges in post on 1 April 2026, up from 6% in 2016. The population aged 25 to 74 is 17% ethnic minority (fifteen seats), or 11% for ages 50 to 74, the age group nearer to most of the bench (about ten seats). Black judges are the widest gap: 1.6% of all judges against about 4% of that population, one seat where three or four would match. Women are 45% of all judges (40% of court judges and 54% of tribunal judges). Court and tribunal judges are counted together.",
+    source: 'Ministry of Justice, Diversity of the judiciary: 2026 Statistics (published 9 July 2026; judges in post at 1 April 2026)',
+    url: 'https://www.gov.uk/government/statistics/diversity-of-the-judiciary-2026-statistics/diversity-of-the-judiciary-legal-professions-new-appointments-and-current-post-holders-2026-statistics'
+  },
+  {
+    id: 'rep-oxford-intake',
+    cat: 'society', catLabel: 'Society', date: 'Jun 2026',
+    question: 'Which type of school did Oxford undergraduates go to?',
+    tags: 'who runs britain representation class privilege elite oxford oxbridge university universities students admissions state school private school free school meals ethnic minority access social mobility',
+    groups: [
+      {label:'State school', pct:66.5, color:'#2E5FB7'},
+      {label:'Independent school or other', pct:33.5, color:'#C93B32'},
+    ],
+    analysis: "Fifty-eight of the eighty-seven places went to students from state schools (66.5% of the UK-domiciled undergraduates admitted for 2025 entry) and twenty-nine to students from independent schools or other backgrounds. About 93% of UK pupils go to state schools, which would be about eighty-one seats. Oxford's other figures for the same intake: 30.0% from an ethnic minority background (twenty-six seats) and 6.6% eligible for free school meals (about six), down from 8.1% for 2024 entry. Oxford is one university, not the whole of higher education, but Oxford and Cambridge graduates fill many of the seats on the other buses.",
+    source: 'University of Oxford, Undergraduate Admissions Report 2026 (UK-domiciled students admitted, 2025 cycle); 2024 free-school-meals figure from Oxford admissions statistics',
+    url: 'https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students'
+  },
+  {
+    id: 'rep-adults-degree',
+    cat: 'society', catLabel: 'Society', date: 'Census 2021',
+    question: 'What is the highest qualification you hold?',
+    tags: 'who runs britain representation university graduates graduate degree degrees qualifications education census',
+    groups: [
+      {label:'Degree level or above', pct:33.8, color:'#2E5FB7'},
+      {label:'Other qualifications', pct:48, color:'#2AA198'},
+      {label:'No qualifications', pct:18.2, color:'#A9A69E'},
+    ],
+    analysis: "Twenty-nine of the eighty-seven adults in England and Wales hold a degree-level qualification (Level 4 or above): 33.8% of everyone aged 16 and over, or about 16.4 million people. Forty-two hold some other qualification and sixteen have none at all (18.2%). Set it beside the MPs bus, where nine in ten went to university. The 2011 and 2021 censuses asked about qualifications differently, so the change between them is not a clean comparison.",
+    source: 'ONS, Education, England and Wales: Census 2021 (usual residents aged 16 and over); Other qualifications = the remainder, calculated',
+    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/educationandchildcare/bulletins/educationenglandandwales/census2021'
+  },
+  {
     id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Prime Minister',
@@ -2312,6 +2486,11 @@ const SEARCH_THESAURUS_RAW = [
   ['national identity','english identity','british identity','englishness','britishness','patriotism','patriotic','nationalism','flag','english','england','?identity','?culture','?heritage'],
   ['immigration','immigrant','immigrants','migrants','migration','asylum','refugees','borders','border','small boats','net migration','visa','visas','deportation','country of birth','foreign born','?foreigners'],
   ['education','university','universities','graduates','graduate','students','student','degree','degrees','schools','school','pupils','teachers','tuition','skills','apprenticeships'],
+  // who runs Britain: class, schools and universities, business leaders, the bench, Parliament
+  ['elite','elites','privilege','privileged','establishment','social mobility','private school','public school','state school','comprehensive','grammar','oxbridge','oxford','cambridge','russell group','working class','low income','poor background','?class'],
+  ['ceo','ceos','chief executive','chief executives','boss','bosses','ftse','ftse 100','ftse 350','boardroom','board','directors','business leaders'],
+  ['judge','judges','judiciary','bench','magistrates','barristers','courts','?law'],
+  ['mps','mp','member of parliament','parliament','house of commons','commons','westminster','legislators','lawmakers','?politicians'],
   // health and care
   ['nhs','health','healthcare','hospital','hospitals','doctors','doctor','nurses','gp','gps','waiting lists','waiting times','patients','national health service','medical','illness','sick','disability','disabled','general health','wellbeing','?ambulance'],
   ['social care','care','carers','carer','unpaid care','care homes','national care service','elderly','older people','old age','dementia','ageing','disabled','?caring'],
@@ -2347,7 +2526,7 @@ const THESAURUS = SEARCH_THESAURUS_RAW.map(list => {
 });
 // topics offered when the box is empty
 const SEARCH_TOPICS = [
-  {label:'Poverty', q:'poverty'}, {label:"Women's equality", q:'women'}, {label:'Racism', q:'racism'}, {label:'Children', q:'children'},
+  {label:'Poverty', q:'poverty'}, {label:"Women's equality", q:'women'}, {label:'Racism', q:'racism'}, {label:'Children', q:'children'}, {label:'Who runs Britain', q:'who runs britain'},
   {label:'NHS & health', q:'nhs'}, {label:'Tax & wealth', q:'tax'}, {label:'Immigration', q:'immigration'}, {label:'AI & technology', q:'ai'},
   {label:'Housing & rent', q:'housing'}, {label:'Europe & Brexit', q:'brexit'}, {label:'Monarchy', q:'monarchy'}, {label:'Climate', q:'climate'}
 ];
@@ -2601,7 +2780,7 @@ function refreshSuggest(){
   const counter = {n: 0};
   let html = '';
   if(!tokens.length){
-    const chips = topicChipsHtml(12, counter);
+    const chips = topicChipsHtml(13, counter);
     if(chips) html = '<div class="sg-title">Try searching for</div>' + chips;
   } else {
     const plan = planFor(raw, true);
