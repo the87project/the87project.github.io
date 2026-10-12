@@ -2651,15 +2651,16 @@ function render(){
     return !!m;
   });
   {
-    // the Burnham's Cabinet block always comes first and stays together; the rest follow in the chosen order
-    const cab = visible.filter(e => e.cat === 'cabinet');
-    const rest = visible.filter(e => e.cat !== 'cabinet');
+    // polls are grouped by section, in the same order as the section list (biggest first); the chosen sort applies within each section
+    const counts = {}; ENTRIES.forEach(e => { counts[e.cat] = (counts[e.cat] || 0) + 1; });
+    const cats = Object.keys(counts).sort((x, y) => counts[y] - counts[x]);
+    const rank = c => cats.indexOf(c);
     if(currentSort !== 'default'){
-      rest.sort((a,b) => currentSort === 'new'
+      visible.sort((a,b) => currentSort === 'new'
         ? entryDateValue(b) - entryDateValue(a)
         : entryDateValue(a) - entryDateValue(b));
     }
-    visible = cab.concat(rest);
+    visible = visible.map((e, i) => [e, i]).sort((x, y) => (rank(x[0].cat) - rank(y[0].cat)) || (x[1] - y[1])).map(x => x[0]);
   }
   let directCount = visible.length;
   if(searchPlan){
@@ -2683,7 +2684,7 @@ function render(){
   }
   let cabinetHeaderAdded = false;
   let relatedHeaderAdded = false;
-  let restHeaderAdded = false;
+  let restHeaderAdded = true; // no "More polls" divider now that sections follow the section list
   for(let i=0;i<visible.length;i++){
     const e = visible[i];
     if(searchPlan && !relatedHeaderAdded && directCount > 0 && !matchInfo.get(e.id).direct){
