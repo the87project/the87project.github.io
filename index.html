@@ -4,33 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The 87 — Public opinion, one full bus at a time</title>
-<meta name="theme-color" content="#D9D8D2" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0E0E0D" media="(prefers-color-scheme: dark)">
-<meta name="apple-mobile-web-app-title" content="The 87">
-<meta name="description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
-<link rel="canonical" href="https://the87project.github.io/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="The 87 Project">
-<meta property="og:title" content="The 87 Project: public opinion, one full bus at a time">
-<meta property="og:description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
-<meta property="og:url" content="https://the87project.github.io/">
-<meta property="og:image" content="https://the87project.github.io/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="THE 87 PROJECT in bold cream letters on London-bus red, above a double-decker bus">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The 87 Project: public opinion, one full bus at a time">
-<meta name="twitter:description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
-<meta name="twitter:image" content="https://the87project.github.io/og-image.png">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="manifest" href="site.webmanifest">
-<link rel="preload" href="fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>
 (function(){
   try{
@@ -38,37 +11,29 @@
     if(!t){ t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
     if(t === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
   }catch(e){}
-  try{
-    if('IntersectionObserver' in window && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)){ document.documentElement.classList.add('motion'); }
-  }catch(e){}
 })();
 </script>
 <style>
-@font-face{font-family:'Archivo Black'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/archivo-black-latin-400-normal.woff2') format('woff2');}
-@font-face{font-family:'Archivo'; font-style:normal; font-weight:100 900; font-display:swap; src:url('fonts/archivo-latin-wght-normal.woff2') format('woff2');}
-@font-face{font-family:'IBM Plex Mono'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2');}
-@font-face{font-family:'IBM Plex Mono'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');}
-@font-face{font-family:'Inter'; font-style:normal; font-weight:100 900; font-display:swap; src:url('fonts/inter-latin-wght-normal.woff2') format('woff2');}
-@font-face{font-family:'Playfair Display'; font-style:normal; font-weight:400 900; font-display:swap; src:url('fonts/playfair-display-latin-wght-normal.woff2') format('woff2');}
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Archivo+Black&family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root{
-  --bg:#FAF6EC;
-  --paper:#FAF6EC;
+  --bg:#F9F9F6;
+  --paper:#F9F9F6;
   --line:#1A1A1A;
-  --rule:#E6DFCC;
-  --line-soft:#E6DFCC;
+  --rule:#E5E5E0;
+  --line-soft:#E5E5E0;
   --ink:#1A1A1A;
   --ink-soft:#6B675E;
-  --slate:#6A7077;
-  --accent:#DC241F;
-  --hover-tint:#F8E8DC;
+  --slate:#83898F;
+  --accent:#AF272F;
+  --hover-tint:#F7EDED;
   --on-accent:#fff;
   --text-warm:#3A382F;
   --badge-out-text:#6B675E;
   --badge-out-border:#C9CDD1;
-  --badge-out-bg:#F0EADA;
+  --badge-out-bg:#EFEEE9;
   --dk-border:#B9B4A8;
-  --dk-bg:#EFE9D9;
+  --dk-bg:#EDEBE4;
   --room-card-bg:transparent;
   --room-card-pad:0;
   --room-card-border:transparent;
@@ -83,9 +48,9 @@
   --ink:#F2F1EA;
   --ink-soft:#B3AFA2;
   --slate:#9CA2A8;
-  --accent:#EF4A43;
+  --accent:#E2574F;
   --hover-tint:#271A1A;
-  --on-accent:#14171A;
+  --on-accent:#fff;
   --text-warm:#D8D4C8;
   --badge-out-text:#B3AFA2;
   --badge-out-border:#3A3F44;
@@ -117,9 +82,7 @@ nav{
   padding:16px 24px;
   display:flex; justify-content:space-between; align-items:baseline; gap:16px;
 }
-.brand-87{color:var(--accent);}
 .brand{
-  white-space:nowrap;
   font-family:'Archivo Black',sans-serif;
   font-size:18px;
   letter-spacing:.01em;
@@ -161,105 +124,6 @@ nav{
   color:var(--ink-soft);
   max-width:640px;
 }
-
-
-/* ---------- HERO BAND + SECTION COLOURS ---------- */
-:root{--c-tech:#2E5FB7; --c-health:#2AA198; --c-economy:#E28A2B; --c-society:#4C9A3F; --c-politics:#D9B417; --c-cabinet:#DC241F; --hero-bg:#B91C18; --hero-ink:#FFF8EA;}
-:root[data-theme="dark"]{--hero-bg:#8F1713; --c-cabinet:#EF4A43;}
-.tab::before{content:''; width:9px; height:9px; border-radius:50%; flex-shrink:0; background:var(--tc, transparent);}
-.tab[data-cat="tech"]{--tc:var(--c-tech);} .tab[data-cat="health"]{--tc:var(--c-health);} .tab[data-cat="economy"]{--tc:var(--c-economy);}
-.tab[data-cat="society"]{--tc:var(--c-society);} .tab[data-cat="politics"]{--tc:var(--c-politics);} .tab[data-cat="cabinet"]{--tc:var(--c-cabinet);}
-.tab[data-cat="all"]::before,.tab-about::before{display:none;}
-.tab.active::before{box-shadow:0 0 0 2px var(--on-accent);}
-.entry{position:relative;}
-.entry[data-cat]::before{content:''; position:absolute; top:-8px; left:0; width:9px; height:9px; border:3px solid var(--cc); border-radius:50%; background:var(--bg); box-sizing:content-box;}
-.entry:first-child[data-cat]::before{display:none;}
-.entry[data-cat="tech"]{--cc:var(--c-tech);} .entry[data-cat="health"]{--cc:var(--c-health);} .entry[data-cat="economy"]{--cc:var(--c-economy);}
-.entry[data-cat="society"]{--cc:var(--c-society);} .entry[data-cat="politics"]{--cc:var(--c-politics);} .entry[data-cat="cabinet"]{--cc:var(--c-cabinet);}
-.entry-meta::before{content:''; display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--cc, var(--slate)); margin-right:8px; vertical-align:baseline;}
-.entry-meta{display:inline-flex; align-items:center;}
-
-
-/* ---------- TRIMMINGS ---------- */
-.route-tag{display:inline-flex; align-items:center; gap:10px; margin:0 0 18px !important; font-family:'Archivo',sans-serif; font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft) !important;}
-.route-no{background:var(--accent); color:var(--on-accent); font-family:'Archivo Black',sans-serif; font-size:15px; letter-spacing:.02em; padding:4px 12px; border-radius:6px 6px 6px 0;}
-.hero h1 .n87{color:var(--accent);}
-.moquette{height:14px; background-color:var(--bg);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='14'%3E%3Crect width='42' height='14' fill='%232E5FB7'/%3E%3Cpath d='M0 14L7 0l7 14zM14 0l7 14 7-14zM28 14l7-14 7 14z' fill='%23DC241F'/%3E%3Ccircle cx='7' cy='10' r='2' fill='%23D9B417'/%3E%3Ccircle cx='21' cy='4' r='2' fill='%232AA198'/%3E%3Ccircle cx='35' cy='10' r='2' fill='%23E28A2B'/%3E%3C/svg%3E");
-  background-size:42px 14px; border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-.footer-moq{margin-top:48px;}
-
-
-/* ---------- WEB-DESIGN PASS: dot-matrix hero, stat tiles, ticker, chunky controls ---------- */
-.hero{display:grid; grid-template-columns:minmax(0,1fr); column-gap:40px; row-gap:0; align-content:start; align-items:start; border-bottom:none !important; padding-bottom:36px;}
-.hero > h1{margin-top:0;}
-.hero > .route-tag,.hero > h1,.hero > p{grid-column:1;}
-.hero-viz{grid-column:2; grid-row:1 / span 5; align-self:center; justify-self:end; width:100%; max-width:300px;}
-.dots{display:grid; grid-template-columns:repeat(10,1fr); gap:9px; padding:22px; background:#fff; border:1px solid var(--line); border-radius:16px;}
-:root[data-theme="dark"] .dots{background:var(--card, #1d2125);}
-.dots i{aspect-ratio:1; border-radius:50%; background:var(--d); transform:scale(0); animation:dotpop .5s cubic-bezier(.2,1.6,.4,1) forwards; animation-delay:calc(var(--n) * 14ms + 150ms);}
-@keyframes dotpop{to{transform:scale(1);}}
-.dots-cap{margin-top:18px; font-family:'Archivo',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--slate); text-align:center;}
-.stat-row{max-width:1100px; margin:0 auto; padding:0 24px 40px; display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
-.stat{border:2.5px solid var(--ink); border-radius:16px; padding:16px 18px; background:var(--bg); box-shadow:4px 4px 0 var(--ink); transition:transform .15s ease, box-shadow .15s ease;}
-.stat:hover{transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--ink);}
-.stat b{display:block; font-family:'Archivo Black',sans-serif; font-size:clamp(30px,4vw,44px); line-height:1; color:var(--ink);}
-.stat::before{content:''; display:block; width:34px; height:7px; border-radius:4px; background:var(--sc); margin-bottom:12px;}
-.stat span{display:block; margin-top:8px; font-family:'Archivo',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);}
-.ticker{background:var(--ink); color:var(--bg); overflow:hidden; white-space:nowrap; padding:11px 0; font-family:'Archivo Black',sans-serif; font-size:13px; letter-spacing:.06em; text-transform:uppercase;}
-.ticker-track{display:inline-flex; animation:tick 90s linear infinite;}
-.ticker:hover .ticker-track{animation-play-state:paused;}
-.ticker-track span{padding:0 22px;} .ticker-track span::after{content:'\25CF'; margin-left:44px; color:var(--dc);}
-@keyframes tick{to{transform:translateX(-50%);}}
-@media (max-width:860px){ .hero{grid-template-columns:1fr; gap:24px;} .hero-viz{grid-column:1; grid-row:auto; justify-self:start; max-width:300px;} .dots{gap:7px; padding:16px;} .hero{padding-top:36px;} .stat-row{grid-template-columns:repeat(2,1fr);} }
-
-
-/* ---------- MOTION ---------- */
-html.lenis,html.lenis body{height:auto;}
-.lenis.lenis-smooth{scroll-behavior:auto !important;}
-.lenis.lenis-stopped{overflow:hidden;}
-nav[aria-label="Site header"]{height:64px;}
-.nav-inner{height:100%; align-items:center; transition:max-width .45s cubic-bezier(.2,.7,.2,1), margin .45s cubic-bezier(.2,.7,.2,1), padding .45s cubic-bezier(.2,.7,.2,1), border-radius .45s ease, background-color .3s ease-in-out, box-shadow .3s ease-in-out, height .45s cubic-bezier(.2,.7,.2,1);}
-.nav-search{width:32px; height:32px; flex-shrink:0; display:none; align-items:center; justify-content:center; border:1px solid var(--line-soft); background:var(--bg); border-radius:999px; color:var(--ink-soft); cursor:pointer;}
-.nav-search svg{width:15px; height:15px;}
-.nav-search:hover{border-color:var(--accent); color:var(--accent);}
-nav[aria-label="Site header"].scrolled{background:transparent; border-bottom-color:transparent; pointer-events:none;}
-nav[aria-label="Site header"].scrolled .nav-inner{pointer-events:auto; max-width:440px; height:50px; margin:7px auto 0; padding:0 8px 0 20px; border-radius:999px; background:color-mix(in srgb, var(--bg) 95%, transparent); border:1px solid var(--line); box-shadow:0 8px 28px rgba(20,23,26,.10);}
-nav[aria-label="Site header"].scrolled .nav-note{display:none;}
-nav[aria-label="Site header"].scrolled .nav-search{display:flex;}
-nav[aria-label="Site header"].scrolled .nav-right{gap:8px;}
-nav[aria-label="Site header"].scrolled .nav-inner{justify-content:space-between;}
-a,button,.tab,.sortbtn,.act-btn,.theme-toggle,.nav-search{transition:color .3s ease-in-out, background-color .3s ease-in-out, border-color .3s ease-in-out, transform .3s ease-in-out, opacity .3s ease-in-out, box-shadow .3s ease-in-out;}
-.act-btn:hover,.sortbtn:hover{transform:translateY(-1px);}
-.tab:hover{transform:translateX(2px);}
-.tab.active:hover{transform:none;}
-html.motion .entry-in-pending{}
-html.motion .entry{opacity:0; transform:translateY(22px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);}
-html.motion .entry.in{opacity:1; transform:none;}
-.wipe{transform-box:fill-box; transform-origin:0 50%;}
-.wipe-r{transform-origin:100% 50%;}
-html.motion .entry:not(.in) .wipe{transform:scaleX(0);}
-html.motion .entry.in .wipe{transform:scaleX(1); transition:transform 1.2s cubic-bezier(.45,.05,.2,1) .35s;}
-@media (max-width:640px){ nav[aria-label="Site header"].scrolled .nav-inner{max-width:calc(100% - 24px);} }
-
-
-/* ---------- MOCKUP: mono labels, spec pills, monochrome UI, big 87 ---------- */
-:root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;}
-.mono,.tab,.sortbtn,.sortbar-label,.legend,.legend-item,.card-desc,.search-status,.hero-updated,.footer-links,.nav-note,.entry-footer,.est-badge,.new-badge,.section-head .entry-meta{font-family:var(--mono) !important; letter-spacing:.02em;}
-.tab,.sortbtn{font-weight:500; font-size:11px; letter-spacing:.06em;}
-.legend,.legend-item{font-size:11.5px;}
-.hero-updated{font-size:12px; letter-spacing:.02em;}
-.spec{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;}
-.spec::before{display:none !important;}
-.pill{font-family:var(--mono); font-weight:500; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); border:1px solid var(--ink); border-radius:999px; padding:4px 11px; background:transparent; line-height:1.2; white-space:nowrap;}
-.pill-src{border-color:var(--line); color:var(--slate); max-width:100%; overflow:hidden; text-overflow:ellipsis;}
-.pill-est{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
-/* monochrome UI: the buses carry the only colour */
-.tab::before{display:none !important;}
-.entry[data-cat]::before{border-color:var(--ink) !important;}
-.entry-meta::before{display:none !important;}
-.tab:hover{transform:none;}
-@media (max-width:760px){ .nav-note{display:none;} .tab{font-size:10px; padding:6px 10px;} .sidebar-box{padding:8px; gap:4px;} }
 
 /* ---------- LAYOUT: fixed left sidebar + content ---------- */
 .layout{
@@ -490,7 +354,7 @@ main{
 main[hidden]{display:none;}
 .entry{
   padding:56px 0;
-  border-top:2px dashed var(--rule);
+  border-top:1px solid var(--rule);
 }
 .entry:first-child{border-top:none; padding-top:32px;}
 .entry-head{
@@ -552,7 +416,7 @@ main[hidden]{display:none;}
 }
 .badge-out{color:var(--badge-out-text); border-color:var(--badge-out-border); background:var(--badge-out-bg);}
 .badge-in{color:var(--on-accent); border-color:var(--accent); background:var(--accent);}
-.badge-stay{color:#fff; border-color:#1F7F78; background:#1F7F78;}
+.badge-stay{color:var(--on-accent); border-color:#2AA198; background:#2AA198;}
 .pair-name{
   font-family:'Archivo',sans-serif;
   font-weight:700;
@@ -693,28 +557,6 @@ main[hidden]{display:none;}
 .react-btn:disabled{opacity:.85; cursor:default;}
 .react-count{font-weight:700;}
 
-
-
-/* sharing, estimate tags, last-updated */
-.entry-actions{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:14px;}
-.act-btn{font-family:'Archivo',sans-serif; font-weight:600; font-size:12px; letter-spacing:.04em; text-transform:uppercase; padding:8px 14px; border-radius:999px; border:1px solid var(--line-soft); background:var(--bg); color:var(--ink); cursor:pointer;}
-.act-btn:hover{border-color:var(--accent); color:var(--accent);}
-.act-status{font-size:13px; color:var(--ink-soft);}
-.est-badge{display:inline-block; margin-left:8px; padding:2px 8px; border-radius:999px; border:1px solid var(--dk-border); background:var(--dk-bg); color:var(--ink-soft); font-family:'Archivo',sans-serif; font-weight:700; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; cursor:help;}
-.poll-flash{animation:pollflash 2.4s ease-out;}
-@keyframes pollflash{0%{box-shadow:0 0 0 6px var(--hover-tint), 0 0 0 7px var(--accent);} 100%{box-shadow:0 0 0 6px transparent, 0 0 0 7px transparent;}}
-.entry{scroll-margin-top:84px;}
-.hero-updated{margin-top:14px; font-size:13px; color:var(--slate);}
-/* accessibility */
-.skip-link{position:absolute; left:12px; top:-60px; z-index:100; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-family:'Archivo',sans-serif; font-weight:700; font-size:14px; text-decoration:none;}
-.skip-link:focus{top:12px;}
-:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
-.search-input:focus-visible{outline:none;}
-.footer-links{display:flex; flex-wrap:wrap; gap:6px 18px; margin:0 0 14px; font-family:'Archivo',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:.04em; text-transform:uppercase;}
-.footer-links a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line-soft); padding:2px 0;}
-.footer-links a:hover{color:var(--accent); border-color:var(--accent);}
-.footer-note{margin-top:10px;}
-@media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none !important; transition:none !important; scroll-behavior:auto !important;} }
 footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 .footer-inner{
   max-width:1100px; margin:0 auto;
@@ -726,298 +568,38 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   .card{flex:1 1 45%;}
   .card-num{font-size:26px;}
 }
-
-/* =====================================================================
-   REDESIGN "TIMETABLE"
-   Concept: a flat grey ground, black ink, one signal red. A giant cropped wordmark
-   opens the page; every poll is a hairline row in an index that opens into a panel
-   holding the bus. Labels are monospaced, like a timetable or a spec sheet.
-   Palette: ground #D9D8D2, ink #111, panel #F2F1EB, signal red #E3342B.
-   ===================================================================== */
-:root{
-  --bg:#D9D8D2; --paper:#D9D8D2; --panel:#D9D8D2;
-  --ink:#111111; --ink-soft:#33332F; --slate:#55554F;
-  --line:#111111; --rule:#111111; --line-soft:#B5B4AC;
-  --accent:#B01B15; --on-accent:#FFFFFF; --hover-tint:#CFCEC7; --text-warm:#222220;
-  --badge-out-text:#33332F; --badge-out-border:#8E8D86; --badge-out-bg:#E8E7E0;
-  --dk-border:#8E8D86; --dk-bg:#E8E7E0;
-  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
-}
-:root[data-theme="dark"]{
-  --bg:#0E0E0D; --paper:#0E0E0D; --panel:#0E0E0D;
-  --ink:#ECEBE5; --ink-soft:#C9C8C0; --slate:#9A9990;
-  --line:#ECEBE5; --rule:#ECEBE5; --line-soft:#3A3A36;
-  --accent:#FF4A40; --on-accent:#0E0E0D; --hover-tint:#1F1F1C; --text-warm:#D9D8D0;
-  --badge-out-text:#C9C8C0; --badge-out-border:#55554F; --badge-out-bg:#222220;
-  --dk-border:#55554F; --dk-bg:#222220;
-}
-body{background:var(--bg); color:var(--ink);}
-.moquette,.footer-moq{display:none !important;}
-
-/* top bar */
-nav[aria-label="Site header"]{background:transparent; border-bottom:none;}
-nav[aria-label="Site header"] .nav-inner{max-width:none; padding:0 16px;}
-nav[aria-label="Site header"] .brand{display:none;}
-nav[aria-label="Site header"].scrolled .brand{display:inline;}
-.nav-right{width:100%; justify-content:space-between;}
-nav[aria-label="Site header"].scrolled .nav-right{width:auto; gap:8px;}
-.nav-note{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink);}
-.theme-toggle,.nav-search{border-color:var(--ink); color:var(--ink); background:transparent;}
-
-/* giant wordmark */
-.tunnel{margin:0; border-bottom:1px solid var(--ink); background:#D9D8D2; line-height:0; overflow:hidden;}
-.tunnel img{display:block; width:100%; height:auto;}
-nav[aria-label="Site header"] .brand{display:inline; font-family:var(--mono); font-weight:500; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); text-decoration:none;}
-nav[aria-label="Site header"] .nav-inner{justify-content:space-between;}
-nav[aria-label="Site header"] .nav-right{width:auto; margin-left:auto; gap:22px;}
-.nav-link{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); text-decoration:none; padding:6px 0; border-bottom:1px solid transparent;}
-.nav-link:hover{border-bottom-color:var(--ink);}
-nav[aria-label="Site header"].scrolled .nav-link{display:none;}
-nav[aria-label="Site header"].scrolled .nav-right{gap:8px;}
-.nav-menu-btn{background:none; border:0; border-bottom:1px solid transparent; cursor:pointer; margin:0; border-radius:0;}
-.nav-menu-btn[aria-expanded="true"]{border-bottom-color:var(--ink);}
-nav[aria-label="Site header"]{position:sticky;}
-.nav-menu{position:absolute; left:0; right:0; top:100%; background:var(--panel); border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); box-shadow:0 18px 40px rgba(0,0,0,.12); pointer-events:auto;}
-.nav-menu[hidden]{display:none;}
-.nav-menu a{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:22px 16px 20px; color:var(--ink); text-decoration:none; border-right:1px solid var(--ink); border-bottom:1px solid var(--ink); font-family:'Archivo',sans-serif; font-weight:700; font-size:clamp(18px,1.8vw,26px); letter-spacing:-.01em;}
-.nav-menu a:nth-child(4n){border-right:0;}
-.nav-menu a:hover,.nav-menu a:focus-visible{background:var(--ink); color:var(--bg); outline:none;}
-.nav-menu a i{font-style:normal; font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.08em;}
-@media (max-width:760px){ .nav-menu{grid-template-columns:repeat(2,minmax(0,1fr));} .nav-menu a:nth-child(4n){border-right:1px solid var(--ink);} .nav-menu a:nth-child(2n){border-right:0;} .nav-menu a{padding:16px 12px; font-size:17px;} }
-nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
-.stops{display:flex; flex-wrap:wrap; align-items:center; gap:2px 22px; padding:11px 16px; border-bottom:1px solid var(--ink); font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;}
-.stops::before{content:'Jump to'; color:var(--slate); margin-right:4px;}
-.stops a{display:inline-flex; align-items:baseline; gap:6px; padding:5px 0; color:var(--ink); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .2s, color .2s;}
-.stops a:hover,.stops a:focus-visible{border-bottom-color:var(--ink); outline:none;}
-.stops .st-name{font:inherit;}
-.stops .st-top{color:var(--slate); order:2;}
-.stops .st-arrow{display:none;}
-@media (max-width:760px){ .stops{display:none !important;} .stops{flex-wrap:nowrap; overflow-x:auto; gap:18px; padding:10px 16px; scrollbar-width:none; -webkit-overflow-scrolling:touch;} .stops::-webkit-scrollbar{display:none;} .stops::before,.stops a{flex:none;} }
-.entry .room{height:min(44vh,370px); width:100%; display:block;}
-.entry.open .entry-head{padding-bottom:10px;}
-.entry.open .entry-head h2{font-size:clamp(21px,2.6vw,34px);}
-.wk{border-bottom:1px solid var(--ink);}
-.wk-head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:14px 16px 10px; font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;}
-.wk-head b{font-weight:500; color:var(--ink);} .wk-head span{color:var(--slate);}
-.wk-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-top:1px solid var(--ink);}
-.wk-card{display:flex; flex-direction:column; gap:12px; padding:14px 16px 16px; color:var(--ink); text-decoration:none; border-right:1px solid var(--ink); transition:background .25s, color .25s;}
-.wk-card:last-child{border-right:0;}
-.wk-meta{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--slate);}
-.wk-q{font-family:'Archivo',sans-serif; font-weight:700; font-size:clamp(16px,1.35vw,20px); line-height:1.15; letter-spacing:-.015em; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex:1;}
-.wk-bar{display:flex; height:10px; border:1px solid var(--ink);}
-.wk-bar i{display:block; height:100%; min-width:2px;}
-.wk-card:hover,.wk-card:focus-visible{background:var(--ink); color:var(--bg); outline:none;}
-.wk-card:hover .wk-meta,.wk-card:focus-visible .wk-meta{color:var(--bg); opacity:.75;}
-.wk-card:hover .wk-bar,.wk-card:focus-visible .wk-bar{border-color:var(--bg);}
-@media (max-width:760px){ .wk-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .wk-card:nth-child(2n){border-right:0;} .wk-card:nth-child(-n+2){border-bottom:1px solid var(--ink);} .wk-q{-webkit-line-clamp:4;} }
-.hero-rule{display:block; margin-top:14px; padding:2px 0 2px 14px; border-left:3px solid var(--accent); font-size:14px; line-height:1.45; color:var(--ink);}
-.hero-rule b{font-weight:700;}
-.tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
-.tunnel.live img{visibility:hidden}
-.tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; overflow:hidden; background:#D9D8D2;}
-.tunnel .tun{position:absolute; left:50%; top:50%; width:0; height:0; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
-.tunnel .wall{position:absolute; left:0; top:0; -webkit-transform-style:preserve-3d; will-change:transform;}
-.tunnel .ln{position:absolute; display:flex; align-items:center; overflow:visible; font-family:'Archivo Black',sans-serif; color:#111; white-space:nowrap; line-height:1; text-transform:uppercase;}
-.tunnel .ln span{display:block; transform-origin:0 50%;}
-.tunnel .core{position:absolute; left:0; top:0; background:#E3342B; color:#D9D8D2; display:flex; align-items:center; justify-content:center; font-family:'Archivo Black',sans-serif;}
-.mega{font-family:'Archivo Black',sans-serif; font-size:26.4vw; line-height:.78; letter-spacing:-.05em; white-space:nowrap; padding:2vw 16px 0; margin-bottom:-1.2vw; color:var(--ink); user-select:none; overflow:hidden;}
-.mega .m87{color:var(--accent);}
-.hero{max-width:none; margin:0; padding:20px 16px 28px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink) !important; display:grid !important; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(170px,.55fr); gap:20px 40px; align-items:start;}
-.hero h1{font-family:'Archivo',sans-serif; font-weight:700; text-transform:none; font-size:clamp(22px,2.4vw,32px); line-height:1.12; letter-spacing:-.02em; max-width:none; grid-column:1; grid-row:1 / span 2;}
-.hero h1 .n87{color:var(--accent) !important;}
-.hero h1 span:not(.n87){color:var(--slate); font-family:'Archivo',sans-serif; font-weight:700;}
-.hero > p:not(.hero-updated){grid-column:2; grid-row:1; max-width:46ch; margin:0; font-size:15px; color:var(--text-warm);}
-.hero .hero-updated{grid-column:2; grid-row:2; margin:0; font-family:var(--mono); font-size:11px; letter-spacing:.03em; color:var(--slate); text-transform:uppercase;}
-.hero-spec{grid-column:3; grid-row:1 / span 2; margin:0; display:flex; flex-direction:column; border-top:1px solid var(--ink);}
-.hero-spec div{display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px solid var(--ink); font-family:var(--mono);}
-.hero-spec dt{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--slate);}
-.hero-spec dd{margin:0; font-size:18px; font-weight:500; font-variant-numeric:tabular-nums;}
-.hero-spec div:first-child dd{color:var(--accent);}
-@media (max-width:900px){ .hero{grid-template-columns:1fr; gap:16px;} .hero h1,.hero > p:not(.hero-updated),.hero .hero-updated,.hero-spec{grid-column:1; grid-row:auto;} }
-
-/* layout: sticky index sidebar + wide column */
-.layout{max-width:none; flex-direction:row; gap:48px; padding:0 16px; align-items:flex-start;}
-.sidebar{position:sticky; top:68px; flex:0 0 230px; width:230px; padding:22px 0 0; align-self:flex-start;}
-.sidebar-box{flex-direction:column !important; flex-wrap:nowrap; gap:0 !important; border:none !important; padding:0 !important; border-radius:0; background:transparent !important; border-top:1px solid var(--ink) !important;}
-.side-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--slate); margin:0 0 10px;}
-.tab{width:100%; font-family:var(--mono) !important; font-size:12px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; border:none !important; border-bottom:1px solid var(--ink) !important; border-radius:0; padding:12px 8px 12px 0; background:transparent; color:var(--ink); justify-content:space-between; gap:12px; transition:padding .3s ease-in-out, background-color .3s ease-in-out, color .3s ease-in-out;}
-.tab:hover{background:transparent; color:var(--accent); padding-left:8px; transform:none;}
-.tab.active,.tab.active:hover{background:var(--ink); color:var(--bg); padding-left:10px; padding-right:10px;}
-.tab .tab-n{font-variant-numeric:tabular-nums; opacity:.65; font-weight:400;}
-.tab-about{margin:0; border-top:none !important; border-radius:0; padding-top:12px;}
-.new-badge{background:var(--accent); color:var(--on-accent);}
-.layout > .content,.layout main{flex:1 1 auto; min-width:0; max-width:none !important; width:auto;}
-@media (max-width:860px){
-  .layout{flex-direction:column; gap:0;}
-  .sidebar{position:static; flex:0 0 auto; width:100%; padding:14px 0 4px;}
-  .side-label{display:none;}
-  .sidebar-box{flex-direction:row !important; flex-wrap:wrap; gap:8px !important; border-top:none !important;}
-  .tab{width:auto; border:1px solid var(--ink) !important; border-radius:999px; padding:7px 14px; justify-content:flex-start;}
-  .tab:hover{padding-left:14px; color:var(--bg); background:var(--ink);}
-  .tab.active,.tab.active:hover{padding-left:14px; padding-right:14px;}
-  .tab-about{border-top:1px solid var(--ink) !important; border-radius:999px; padding-top:7px;}
-}
-
-/* search */
-.searchbar .search-input{font-family:'Archivo',sans-serif !important; font-weight:600; font-size:clamp(22px,3.6vw,42px); letter-spacing:-.02em; background:transparent; border:none !important; border-bottom:2px solid var(--ink) !important; border-radius:0; padding:14px 40px 10px 0; box-shadow:none; color:var(--ink);}
-.searchbar .search-input::placeholder{color:var(--slate); opacity:1;}
-.searchbar svg{display:none;}
-.search-status{font-family:var(--mono); font-size:11.5px;}
-.sortbar{padding:12px 0 6px;}
-.sortbar-label,.sortbtn{font-family:var(--mono) !important; font-size:11px; letter-spacing:.07em; text-transform:uppercase;}
-.sortbtn{border:1px solid var(--ink); background:transparent; color:var(--ink); box-shadow:none;}
-.sortbtn:hover{background:var(--ink); color:var(--bg); transform:none;}
-.sortbtn.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
-
-/* the index */
-#entries{counter-reset:row;}
-.section-head{padding:36px 0 22px; border-top:1px solid var(--ink); margin-top:22px;}
-.section-title{font-family:'Archivo Black',sans-serif; font-size:clamp(32px,6vw,72px); line-height:.95; letter-spacing:-.03em; text-transform:none;}
-.section-standfirst{max-width:62ch; font-size:15px;}
-.section-head .entry-meta,.entry-meta{font-family:var(--mono);}
-.entry{padding:0 !important; margin:0 -14px; padding-inline:14px !important; border-top:1px solid var(--ink) !important; transform:none !important;}
-.entry::before{display:none !important;}
-.entry:first-child{border-top:1px solid var(--ink) !important;}
-.entry-head{display:grid !important; grid-template-columns:2rem minmax(0,1fr); column-gap:20px; align-items:center; max-width:none !important; margin:0 !important; padding:22px 0; cursor:pointer;}
-.entry-head::before{content:'+'; grid-column:1; grid-row:1 / span 2; font-family:var(--mono); font-size:26px; line-height:1; color:var(--ink); transition:transform .3s ease-in-out, color .3s ease-in-out;}
-.entry.open .entry-head::before{transform:rotate(45deg); color:var(--accent);}
-.entry-head h2{grid-column:2; grid-row:1; font-family:'Archivo',sans-serif !important; font-weight:700; font-size:clamp(21px,3.1vw,42px); line-height:1.05; letter-spacing:-.025em; margin:0; text-wrap:balance;}
-.entry-head .spec{grid-column:2; grid-row:2; margin:12px 0 0;}
-.entry-head .mini{display:none !important;}
-.entry:not(.open) .entry-head .spec{display:none;}
-.entry:not(.open) .entry-head{padding:26px 0;}
-.entry-head:hover h2{color:var(--accent);}
-.entry:hover:not(.open){background:var(--hover-tint);}
-.entry-head:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
-.entry:not(.open) > :not(.entry-head){display:none !important;}
-.entry.open{background:var(--panel); padding-bottom:36px !important;}
-.entry.open .entry-head{padding-bottom:18px;}
-.pill{border-color:var(--ink); color:var(--ink);}
-.pill-src{border-color:var(--line-soft); color:var(--slate);}
-.mini{display:flex; flex-direction:column; gap:6px; min-width:0;}
-.mini .bar{display:flex; height:16px; border:1px solid var(--ink); background:var(--panel);}
-.mini .bar i{display:block; height:100%; min-width:2px;}
-.mini .top{font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--slate); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.mini .top b{color:var(--ink); font-weight:500;}
-.hint{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--slate); padding:6px 0 14px;}
-@media (max-width:700px){
-  .entry-head{grid-template-columns:1.4rem minmax(0,1fr); column-gap:12px;}
-  .entry-head .mini{grid-column:2; grid-row:3; margin-top:12px;}
-  .mega{font-size:24vw;}
-}
-
-/* open panel contents */
-.entry.open .room-wrap{background:transparent;}
-.analysis{font-size:16px; max-width:64ch;}
-html.motion .entry:not(.open) .wipe{transform:scaleX(0) !important; transition:none !important;}
-html.motion .entry.open .wipe{transform:scaleX(1) !important; transition:transform 1.2s cubic-bezier(.45,.05,.2,1) .15s !important;}
-html.motion .entry{opacity:1 !important;}
-.card,.chips .chip,.legend{border-color:var(--ink);}
-.act-btn,.react-btn{border-color:var(--ink); color:var(--ink); font-family:var(--mono);}
-.footer-links,.footer-note{font-family:var(--mono);}
-footer{border-top:1px solid var(--ink);}
-
-
-/* ---------- CHOOSE YOUR ROUTE: pick up to two polls, ride them side by side ---------- */
-.entry:not(.open) .entry-head{padding:26px 0;}
-.entry-head::before{width:1.7rem; height:1.7rem; display:grid; place-items:center; font-size:22px; border:1px solid transparent; border-radius:50%; transition:background-color .3s ease-in-out, color .3s ease-in-out, border-color .3s ease-in-out;}
-.entry-head:hover::before{border-color:var(--ink);}
-.entry-head[data-slot]::before{content:attr(data-slot) !important; background:var(--accent); color:var(--on-accent); border-color:var(--accent); font-size:13px; font-weight:500; transform:none !important;}
-.entry.sel{background:var(--panel);}
-.entry.sel .entry-head h2{color:var(--accent);}
-.hint{display:flex; justify-content:space-between; gap:12px;}
-body.has-tray{padding-bottom:110px;}
-#tray{position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--ink); color:var(--bg); padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); display:flex; align-items:stretch; gap:12px; transform:translateY(110%); transition:transform .45s cubic-bezier(.2,.7,.2,1);}
-#tray.on{transform:none;}
-.tray-title{font-family:'Archivo Black',sans-serif; font-size:15px; line-height:1; letter-spacing:-.01em; display:flex; align-items:center; padding-right:6px; white-space:nowrap;}
-.tray-slot{flex:1 1 0; min-width:0; display:flex; align-items:center; gap:10px; border:1px solid color-mix(in srgb, var(--bg) 55%, transparent); border-radius:999px; padding:6px 8px 6px 6px; font-family:var(--mono); font-size:12px; letter-spacing:.02em;}
-.tray-slot .k{flex:0 0 auto; width:1.7rem; height:1.7rem; display:grid; place-items:center; border-radius:50%; background:var(--accent); color:var(--on-accent); font-size:12px; font-weight:500;}
-.tray-slot.empty .k{background:transparent; border:1px dashed color-mix(in srgb, var(--bg) 60%, transparent); color:var(--bg);}
-.tray-slot .q{flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.tray-slot.empty .q{opacity:.7;}
-.tray-slot .x{flex:0 0 auto; background:transparent; border:none; color:var(--bg); font-size:20px; line-height:1; width:1.7rem; height:1.7rem; border-radius:50%; cursor:pointer;}
-.tray-slot .x:hover{background:color-mix(in srgb, var(--bg) 20%, transparent);}
-#rideBtn{flex:0 0 auto; font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.08em; text-transform:uppercase; background:var(--accent); color:var(--on-accent); border:none; border-radius:999px; padding:0 22px; cursor:pointer; white-space:nowrap;}
-#rideBtn:hover{filter:brightness(1.08);}
-#tray button:focus-visible,#rideClose:focus-visible{outline:2px solid var(--bg); outline-offset:2px;}
-@media (max-width:760px){ .tray-title{display:none;} #tray{gap:8px; padding-left:12px; padding-right:12px;} .tray-slot .q{font-size:11px;} #rideBtn{padding:0 14px;} }
-
-#ride{position:fixed; inset:0; z-index:80; background:var(--bg); overflow-y:auto; overscroll-behavior:contain; padding:0 16px 48px; transform:translateY(100%); visibility:hidden; transition:transform .55s cubic-bezier(.2,.7,.2,1), visibility 0s linear .55s;}
-#ride.on{transform:none; visibility:visible; transition:transform .55s cubic-bezier(.2,.7,.2,1);}
-.ride-top{position:sticky; top:0; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:14px 0; background:var(--bg); border-bottom:1px solid var(--ink);}
-.ride-top h2{margin:0; font-family:'Archivo Black',sans-serif; font-size:clamp(20px,3vw,32px); letter-spacing:-.02em; text-transform:none;}
-#rideClose{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:transparent; border:1px solid var(--ink); border-radius:999px; padding:9px 18px; cursor:pointer;}
-#rideClose:hover{background:var(--ink); color:var(--bg);}
-#rideBody{display:grid; gap:0 40px; align-items:start;}
-#rideBody.two{grid-template-columns:1fr 1fr;}
-@media (max-width:1000px){ #rideBody.two{grid-template-columns:1fr;} }
-.route-card{padding:26px 0 8px; min-width:0;}
-#rideBody.two .route-card + .route-card{border-left:1px solid var(--ink); padding-left:40px; margin-left:-20px;}
-@media (max-width:1000px){ #rideBody.two .route-card + .route-card{border-left:none; padding-left:0; margin-left:0; border-top:1px solid var(--ink); margin-top:20px;} }
-.route-card header{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; align-items:center; margin-bottom:12px;}
-.route-card .slot{grid-row:1 / span 2; width:2.1rem; height:2.1rem; display:grid; place-items:center; border-radius:50%; background:var(--accent); color:var(--on-accent); font-family:var(--mono); font-size:14px; font-weight:500;}
-.route-card h3{margin:0; font-family:'Archivo',sans-serif; font-weight:700; font-size:clamp(20px,2.4vw,32px); line-height:1.08; letter-spacing:-.025em; text-wrap:balance;}
-.route-card .spec{margin:0;}
-.route-card .wipe{transform:scaleX(0); transition:none;}
-.route-card.go .wipe{transform:scaleX(1); transition:transform 1.2s cubic-bezier(.45,.05,.2,1) .35s;}
-.route-card .analysis{font-size:15px;}
-.route-card .cards,.route-card .chips{gap:10px;}
-
-/* one-at-a-time panel + compare button */
-.cmp-bar{padding:0 0 18px 3.4rem;}
-.cmp-btn{font-family:var(--mono); font-weight:500; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:transparent; border:1px solid var(--ink); border-radius:999px; padding:9px 18px; cursor:pointer;}
-.cmp-btn:hover{background:var(--ink); color:var(--bg);}
-.entry.open{background:var(--panel);}
-.entry.open .entry-head::before{transform:rotate(45deg); color:var(--accent);}
-.entry.open[data-x] .entry-head::before{transform:none;}
-.comparing .entry:not(.sel) .entry-head::before{content:'B'; font-size:13px; color:var(--slate); border:1px dashed var(--slate);}
-.comparing .entry:not(.sel):hover .entry-head::before{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
-#rideBtn[hidden]{display:none;}
-@media (max-width:760px){ .cmp-bar{padding-left:0;} }
-
 </style>
 </head>
 <body>
-<a class="skip-link" href="#entries">Skip to the polls</a>
 
-<nav aria-label="Site header">
+<nav>
   <div class="nav-inner">
-    <span class="brand">The <span class="brand-87">87</span></span>
+    <span class="brand">The 87</span>
     <div class="nav-right">
-      <button type="button" class="nav-link nav-menu-btn" id="navIndex" aria-expanded="false" aria-controls="navMenu">Index <span aria-hidden="true">&#9662;</span></button><a class="nav-link" href="#about" id="navAbout">About</a>
-      <button id="navSearch" class="nav-search" type="button" aria-label="Jump to search" title="Search the polls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></button>
+      <span class="nav-note">What Britain actually thinks, one double-decker at a time.</span>
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
     </div>
   </div>
-<div id="navMenu" class="nav-menu" hidden></div>
 </nav>
 
-<figure class="tunnel"><img src="tunnel-1200.jpg" srcset="tunnel-1200.jpg 1200w, tunnel-2400.jpg 2400w" sizes="100vw" width="2400" height="1181" alt="Type receding into a tunnel towards a red 87: upper deck 40, lower deck 47, one double-decker, eighty-seven seats" fetchpriority="high" decoding="async"></figure>
-<section class="hero" aria-label="Introduction">
-  <h1>Put <span class="n87" style="font-family:inherit;font-weight:inherit;text-transform:inherit">87</span> people on one double-decker <span>and ask them the big questions.</span></h1>
-  <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.<span class="hero-rule"><b>Why 87?</b> Besides being a bus&rsquo;s capacity, it&rsquo;s a number with some neat properties. 87 = 3 &times; 29, a semiprime, so most proportions of it can&rsquo;t be reduced to a simpler fraction. It is also the sum of the squares of the first four primes <span style="white-space:nowrap">(2&sup2; + 3&sup2; + 5&sup2; + 7&sup2;)</span>, and it equals <span style="white-space:nowrap">5! &minus; 4! &minus; 3! &minus; 2! &minus; 1!</span>.</span></p>
-<dl class="hero-spec" aria-label="The bus in numbers"><div><dt>Seats</dt><dd>87</dd></div><div><dt>Upper deck</dt><dd>40</dd></div><div><dt>Lower deck</dt><dd>47</dd></div><div><dt>Polls</dt><dd id="specPolls">&ndash;</dd></div></dl>
-<p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
-
+<section class="hero">
+  <h1>Put 87 people on one double-decker <span>and ask them the big questions.</span></h1>
+  <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.</p>
 </section>
-
-<section class="wk" id="weekly" aria-label="Polls of the week"></section>
-
-<nav class="stops" id="stops" aria-label="Jump to a section"></nav>
 
 <div class="layout">
   <aside class="sidebar">
     <nav class="sidebar-box" id="tabs" aria-label="Sections">
+      <button class="tab" data-cat="cabinet">Burnham's Cabinet</button>
       <button class="tab active" data-cat="all">All</button>
       <button class="tab" data-cat="tech">Technology &amp; AI</button>
       <button class="tab" data-cat="health">Health &amp; Ethics</button>
       <button class="tab" data-cat="economy">Economy</button>
       <button class="tab" data-cat="society">Society</button>
       <button class="tab" data-cat="politics">Politics</button>
-      <button class="tab" data-cat="cabinet">Burnham's Cabinet</button>
       <button class="tab tab-about" data-cat="about">About</button>
     </nav>
   </aside>
@@ -1027,16 +609,16 @@ body.has-tray{padding-bottom:110px;}
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
       <input id="searchInput" class="search-input" type="search" placeholder="Search the polls, e.g. poverty, women, NHS, Farage" aria-label="Search polls" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="searchSuggest" aria-autocomplete="list">
       <button id="searchClear" class="search-clear" type="button" aria-label="Clear search" hidden>&times;</button>
-      <div class="search-suggest" data-lenis-prevent id="searchSuggest" role="listbox" aria-label="Search suggestions" hidden></div>
+      <div class="search-suggest" id="searchSuggest" role="listbox" aria-label="Search suggestions" hidden></div>
     </div>
     <p class="search-status" id="searchStatus" aria-live="polite" hidden></p>
-    <div class="sortbar" id="sortbar" role="region" aria-label="Sort polls">
+    <div class="sortbar" id="sortbar">
       <span class="sortbar-label">Sort</span>
       <button class="sortbtn active" data-sort="default" type="button">Featured</button>
       <button class="sortbtn" data-sort="new" type="button">Newest first</button>
       <button class="sortbtn" data-sort="old" type="button">Oldest first</button>
     </div>
-    <main id="entries" tabindex="-1"></main>
+    <main id="entries"></main>
 
     <section id="about" class="about-section" hidden>
       <div class="about-inner">
@@ -1049,12 +631,8 @@ body.has-tray{padding-bottom:110px;}
         <h2 id="methodology" class="method-title">The methodology, briefly</h2>
         <p>Every entry starts as a set of percentages from a single poll. Each percentage is converted to a seat count by multiplying by 87 and rounding to the nearest whole passenger &mdash; so 4% becomes roughly 3.5, which rounds up or down depending on what else is happening on the bus. Because real-world percentages rarely divide evenly into 87 seats, the rounded totals are then nudged, one seat at a time, from whichever group currently holds the most passengers, until the bus seats exactly 87 people.</p>
         <p>No group that registered a genuine, non-zero share in the source polling is ever rounded down to zero. If 1% of respondents held a view, at least one person is on that bus holding it.</p>
-        <p><strong>Why the percentages don't always add up to 100.</strong> Pollsters round each figure to a whole number, so a published set can sum to 99 or 101. Where a source's figures sum to exactly 100, they are used as published. Where they don't, the figures are used as published, and the bus is still built to seat exactly 87 people using the rounding rule above.</p>
-        <p><strong>Polls and official statistics.</strong> Most buses are opinion polls: a sample of people asked a question. Some are not. A few are counts of who actually holds a role or was admitted somewhere, such as the share of MPs who are women or who went to private school. Those come from official releases and published research, and the source line says which kind each one is. They are drawn the same way, but they describe a group of people rather than what people think.</p>
-        <p><strong>Estimates.</strong> Where no official count exists and the figure rests on a published estimate or a think tank's own tally, the entry carries an <em>Estimate</em> tag, and its commentary explains how the number was reached and how firm it is.</p>
-        <p><strong>Corrections.</strong> If a figure looks wrong, or a source has been updated, please say so: use <em>Report a correction</em> in the footer, or email <a href="mailto:support@the87project.com">support@the87project.com</a>. Fixes are made to the entry itself, and a note is added to its commentary when the change is more than a typo.</p>
         <p>Where a poll reports a &ldquo;don't know&rdquo;, &ldquo;unsure&rdquo;, or &ldquo;undecided&rdquo; share, those passengers are drawn as flat, translucent grey figures and seated at the back of each deck &mdash; visually distinct, but still counted and still on the bus. Hiding or excluding undecided respondents would flatter the size of the &ldquo;real&rdquo; majority; The 87 keeps them in view instead.</p>
-        <p>Every figure on this site comes from a named, publicly available poll, official statistical release or published research, drawn mainly from a short list of recognised sources:</p>
+        <p>Every figure on this site comes from a named, publicly available poll or official statistical release, drawn mainly from a short list of recognised sources:</p>
         <ul class="method-list">
           <li>YouGov</li>
           <li>Ipsos</li>
@@ -1062,14 +640,10 @@ body.has-tray{padding-bottom:110px;}
           <li>The Office for National Statistics (ONS)</li>
           <li>GOV.UK statistical releases</li>
           <li>House of Commons Library briefings</li>
-          <li>Sutton Trust, the Parker Review, British Future and other published research</li>
         </ul>
-        <p>Each entry links directly to its original source. Nothing on this site is modelled or invented by us. A few entries rest on published estimates rather than an official count (for example, how many MPs are Black or from working-class jobs, where no official record exists) and each of those says so in its commentary and source line. If a well-sourced, reasonably recent figure for a question can't be found, the entry simply doesn't get made.</p>
+        <p>Each entry links directly to its original source. Nothing on this site is estimated, modelled, or invented &mdash; if a well-sourced, reasonably recent figure for a question can't be found, the entry simply doesn't get made.</p>
         <p>Polls are not perfectly interchangeable. Different pollsters use different panels, question wording, and fieldwork dates, so figures from two different organisations on a related topic &mdash; most visibly in the Cabinet section, which mixes YouGov and Ipsos favourability data &mdash; should be read as two separate snapshots rather than one continuous trend. Where it materially affects how a result should be read, the entry's own analysis says so explicitly.</p>
         <p>New entries are added as new, well-sourced UK polling becomes available, with the most recent questions and Society-category entries prioritised nearer the top of the feed so the newest thinking is the first thing you see. There's no fixed publishing schedule &mdash; this is an independent, personal project, updated as time and good data allow.</p>
-
-        <h2 id="who" class="method-title">Who made this</h2>
-        <p>The 87 Project is a personal project by Anna Glynn-Henley, built to make opinion polling and official statistics easier to picture. It isn't affiliated with any employer, political party or pollster, and every figure links to the source it came from. Spotted a mistake, or just want to say hello? Email <a href="mailto:support@the87project.com">support@the87project.com</a>.</p>
 
         <h2 id="our-buses" class="method-title">Our buses</h2>
         <p>Every poll on the site so far, one bus per poll, parked by section and colour-coded to match &mdash; the whole fleet at a glance. The traffic on the roads is just for show. Click any parked bus to jump to its section.</p>
@@ -1080,47 +654,11 @@ body.has-tray{padding-bottom:110px;}
   </div>
 </div>
 
-<div class="moquette footer-moq" aria-hidden="true"></div>
 <footer>
   <div class="footer-inner">
-    <div class="footer-links" role="navigation" aria-label="Footer">
-      <a href="#who" data-goto="about" data-anchor="who">Who made this</a>
-      <a href="#about" data-goto="about">About</a>
-      <a href="#methodology" data-goto="about" data-anchor="methodology">Methodology &amp; sources</a>
-      <a href="#our-buses" data-goto="about" data-anchor="our-buses">Our buses</a>
-      <a href="mailto:support@the87project.com?subject=The%2087%20correction">Report a correction</a>
-      <a href="mailto:support@the87project.com">Contact</a>
-    </div>
     <strong>About the numbers.</strong> Figures are drawn from publicly reported polling. Each question is redrawn as one full double-decker bus of 87 people — the capacity of a New Routemaster (40 upper deck, 47 below) — so one passenger represents ~1.15% of respondents; rounding applies, and no group that registered in the source polling is ever rounded off the bus entirely. All commentary is original and independent, and every entry links to its source. Cabinet favourability figures mix YouGov and Ipsos polling, whose question wording differs — they are not directly comparable. Built as a personal data &amp; policy project.
   </div>
-  <p class="footer-note">Typefaces: Archivo, Archivo Black, IBM Plex Mono, Inter and Playfair Display, used under the SIL Open Font License. Smooth scrolling: Lenis (MIT licence).</p>
-  <p class="footer-note" id="analyticsNote" hidden>This site counts visits with GoatCounter: anonymous, no cookies, nothing that identifies you.</p>
 </footer>
-
-<script src="lenis.min.js"></script>
-<script>
-// footer links that open the About tab
-document.querySelectorAll('[data-goto="about"]').forEach(function(a){
-  a.addEventListener('click', function(ev){
-    ev.preventDefault();
-    var t = document.querySelector('.tab[data-cat="about"]'); if(t) t.click();
-    var id = a.getAttribute('data-anchor');
-    var el = id ? document.getElementById(id) : document.getElementById('about');
-    if(el){ el.scrollIntoView(); if(el.tabIndex < 0 && !/^H[1-6]$/.test(el.tagName)) el.tabIndex = -1; }
-  });
-});
-// privacy-friendly analytics (GoatCounter): off until a site code is set here, and never runs when Do Not Track is on
-window.THE87_GOATCOUNTER = 'the87project';
-(function(){
-  var code = window.THE87_GOATCOUNTER;
-  if(!code || navigator.doNotTrack === '1') return;
-  var s = document.createElement('script');
-  s.async = true; s.src = 'https://gc.zgo.at/count.js';
-  s.setAttribute('data-goatcounter', 'https://' + code + '.goatcounter.com/count');
-  document.head.appendChild(s);
-  var n = document.getElementById('analyticsNote'); if(n) n.hidden = false;
-})();
-</script>
 
 <script>
 (function(){
@@ -2085,183 +1623,6 @@ const ENTRIES = [
     url: 'https://www.gov.uk/government/statistics/hate-crime-england-and-wales-year-ending-march-2025/hate-crime-england-and-wales-year-ending-march-2025'
   },
   {
-    id: 'rep-mps-women',
-    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
-    question: 'How many MPs are women?',
-    tags: 'who runs britain representation diversity women female gender men equality politicians mps parliament commons',
-    groups: [
-      {label:'Women', pct:40.5, color:'#2AA198'},
-      {label:'Men', pct:59.5, color:'#2E5FB7'},
-    ],
-    analysis: "Thirty-five of the eighty-seven seats belong to women and fifty-two to men: 263 women among the 650 MPs elected in July 2024, a record high and the first time women have made up 40% of the Commons. A bus that matched the population, which is just over half women, would seat about forty-four. These are the figures from the election itself; by-elections and changes of MP since then move the numbers by a seat or two at a time.",
-    source: 'House of Commons Library, General election 2024 results (263 of 650 MPs elected in July 2024); this is a count of people, not a poll',
-    url: 'https://commonslibrary.parliament.uk/research-briefings/cbp-10009/'
-  },
-  {
-    id: 'rep-mps-ethnic-minority',
-    estimate: true,
-    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
-    question: 'How many MPs are from an ethnic minority background?',
-    tags: 'who runs britain representation diversity ethnic minority minorities race racism black asian politicians mps parliament commons',
-    groups: [
-      {label:'Ethnic minority', pct:14, color:'#E28A2B'},
-      {label:'White', pct:86, color:'#2E5FB7'},
-    ],
-    analysis: "Twelve of the eighty-seven seats are held by MPs from an ethnic minority background and seventy-five by White MPs: around 90 of the 650 MPs, or 13.8%, a record and up from 66 in 2019. There is no official count, so this is British Future's tally (early counts said 87 or 89). Whether that is 'representative' depends on the yardstick. An estimate of the electorate puts the ethnic minority share at about 14%, which makes this almost exactly level, while the Commons Library gives about 16% of the UK population in 2024/25 and 19% of England at the 2021 census, which would be fourteen to seventeen seats.",
-    source: 'British Future analysis of the 2024 general election (5 July 2024); House of Commons Library, Ethnic diversity in politics and public life (October 2025); no official count exists',
-    url: 'https://commonslibrary.parliament.uk/research-briefings/sn01156/'
-  },
-  {
-    id: 'rep-mps-black',
-    estimate: true,
-    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
-    question: 'How many MPs are Black?',
-    tags: 'who runs britain representation diversity black race racism african caribbean ethnic minority politicians mps parliament commons',
-    groups: [
-      {label:'Black', pct:4.3, color:'#4C9A3F'},
-      {label:'All other MPs', pct:95.7, color:'#2E5FB7'},
-    ],
-    analysis: "Four of the eighty-seven seats are Black MPs. British Future counted 28 Black MPs among the 650 elected in July 2024, 16 of African-Caribbean heritage (counting mixed heritage) and 12 of African heritage, up from 11 in 2019. That is about 4.3% of the Commons. The 2021 census counts 4.0% of people in England and Wales as Black (see the Census ethnicity bus), so on this count Black MPs are roughly in proportion. Treat the figure with care: there is no official count of MPs by ethnic group, this one comes from a press report of British Future's analysis, and where mixed-heritage MPs are placed changes the answer.",
-    source: 'British Future analysis of the 2024 general election, as reported by The Gleaner (9 July 2024); no official count exists',
-    url: 'https://jamaica-gleaner.com/article/news/20240709/largest-number-black-mps-elected-labours-win'
-  },
-  {
-    id: 'rep-mps-working-class',
-    estimate: true,
-    cat: 'politics', catLabel: 'Politics', date: '2024',
-    question: 'How many MPs worked in working-class jobs before politics?',
-    tags: 'who runs britain representation class working class low income poor background social mobility manual jobs politicians mps parliament commons',
-    groups: [
-      {label:'Working-class job before politics', pct:5, color:'#E28A2B'},
-      {label:'Other backgrounds', pct:95, color:'#2E5FB7'},
-    ],
-    analysis: "Four of the eighty-seven are here because they worked in working-class jobs before politics. Nobody records MPs' family incomes, so researchers use the job someone held before entering politics as the closest measure. On that measure Britain sits in the middle of the pack, at about 5% of MPs, against around 18% in Denmark and Sweden. Across the countries studied, working-class occupations make up around 60% of the workforce, which on this bus would be about fifty-two seats. The estimate rests on research published in 2023, so it describes recent parliaments in general, not a count of the 2024 intake.",
-    source: 'Wang Leung Ting, University of Reading / The Conversation (July 2024), drawing on Carnes and Lupu, Working-Class Officeholding in the OECD (2023); an estimate, not an official count',
-    url: 'https://research.reading.ac.uk/research-blog/2024/07/26/what-a-house-of-commons-with-fewer-privately-educated-mps-could-mean-for-the-uk/'
-  },
-  {
-    id: 'rep-mps-school',
-    cat: 'politics', catLabel: 'Politics', date: 'Sep 2025',
-    question: 'What type of school did MPs go to?',
-    tags: 'who runs britain representation class privilege elite private school public school state school comprehensive grammar social mobility politicians mps parliament commons',
-    groups: [
-      {label:'Comprehensive', pct:62, color:'#2E5FB7'},
-      {label:'Grammar', pct:12, color:'#2AA198'},
-      {label:'Private (independent)', pct:24, color:'#C93B32'},
-      {label:'Other / not recorded', pct:2, color:'#A9A69E'},
-    ],
-    analysis: "Twenty-one of the eighty-seven seats are MPs who went to an independent school, in a country where about 7% of people do, which would be about six seats. Fifty-four went to a comprehensive and ten to a grammar school. It is a large change in a short time: 29% of MPs were privately educated in 2019. Much of the change is between the parties: among the MPs elected in 2024 it was 46% of Conservatives and 15% of Labour MPs. At the top the contrast was sharpest: 7% of the Cabinet in 2025 had been to private school, against 52% of the shadow cabinet.",
-    source: 'Sutton Trust, Elitist Britain 2025 (published 18 September 2025); party split from Sutton Trust, Parliamentary Privilege 2024',
-    url: 'https://www.suttontrust.com/our-research/elitist-britain-2025/'
-  },
-  {
-    id: 'rep-mps-university',
-    cat: 'politics', catLabel: 'Politics', date: 'Jul 2024',
-    question: 'Which university did MPs go to?',
-    tags: 'who runs britain representation class privilege elite oxbridge oxford cambridge russell group university universities graduates degree education politicians mps parliament commons',
-    groups: [
-      {label:'Oxford or Cambridge', pct:20, color:'#C93B32'},
-      {label:'Another Russell Group', pct:34, color:'#E28A2B'},
-      {label:'Other university', pct:36, color:'#2E5FB7'},
-      {label:'No university', pct:10, color:'#A9A69E'},
-    ],
-    analysis: "Seventeen of the eighty-seven seats are MPs who went to Oxford or Cambridge, thirty went to another Russell Group university, thirty-one to some other university and nine did not go at all. Add the first three and nine in ten MPs went to university. In England and Wales 33.8% of adults hold a degree-level qualification (2021 census), which on this bus would be about twenty-nine people, not seventy-eight. The Oxbridge share is uneven between the parties too: 29% of Conservative MPs and 19% of Labour MPs. (Attending a university and holding a degree-level qualification are not quite the same thing.)",
-    source: 'Sutton Trust, Parliamentary Privilege 2024 (July 2024); Other university = the remainder, calculated; population figure from ONS, Census 2021',
-    url: 'https://www.suttontrust.com/our-research/parliamentary-privilege-2024/'
-  },
-  {
-    id: 'rep-ceo-women',
-    cat: 'society', catLabel: 'Society', date: 'Feb 2026',
-    question: 'How many FTSE 350 chief executives are women?',
-    tags: 'who runs britain representation diversity women female gender equality ceo ceos chief executives bosses business ftse 350 boardroom board',
-    groups: [
-      {label:'Women', pct:8, color:'#2AA198'},
-      {label:'Men', pct:92, color:'#2E5FB7'},
-    ],
-    analysis: "Seven of the eighty-seven chief executives in the FTSE 350 are women and eighty are men. The boardroom looks very different: women hold 43% of FTSE 350 board seats, about thirty-seven on this bus and up from roughly 10% in 2011, and 36% of senior leadership roles, but only 17% of chairs. The review names executive roles as the main gap: the 40% board target has largely been met, while the top executive jobs are where women are still scarce.",
-    source: 'FTSE Women Leaders Review 2026 (published 24 February 2026), FTSE 350 companies; figures as summarised by Freshfields',
-    url: 'https://riskandcompliance.freshfields.com/post/102mkno/ftse-women-leaders-review-2026-achieving-gender-balance-five-years-on'
-  },
-  {
-    id: 'rep-ceo-ethnic-minority',
-    cat: 'society', catLabel: 'Society', date: 'Mar 2026',
-    question: 'How many FTSE 100 chief executives are from an ethnic minority background?',
-    tags: 'who runs britain representation diversity ethnic minority minorities race black asian ceo ceos chief executives bosses business ftse 100 boardroom board',
-    groups: [
-      {label:'Ethnic minority', pct:14, color:'#E28A2B'},
-      {label:'Not an ethnic minority', pct:86, color:'#2E5FB7'},
-    ],
-    analysis: "Twelve of the eighty-seven chief executives are from an ethnic minority background: 14 of the 100 FTSE 100 companies, the most the Parker Review has recorded. Directors from an ethnic minority background hold 20% of FTSE 100 board seats (208 of 1,063) and 16% in the FTSE 250, and 98 of the FTSE 100 have at least one, up from 47 in 2016. Among senior managers the share is lower, 11% in the FTSE 100 against a target of 15% by 2027. About 16% of the UK population is from an ethnic minority, which on this bus would be fourteen seats. Figures are as at 31 December 2025.",
-    source: 'The Parker Review, March 2026 (data at 31 December 2025)',
-    url: 'https://parkerreview.co.uk/wp-content/uploads/2026/03/Parker-Review-2026-Press-Release.pdf'
-  },
-  {
-    id: 'rep-ceo-school',
-    cat: 'society', catLabel: 'Society', date: 'Sep 2025',
-    question: 'Where did FTSE 100 chief executives go to school?',
-    tags: 'who runs britain representation class privilege elite private school public school state school ceo ceos chief executives bosses business ftse 100 social mobility',
-    groups: [
-      {label:'Private school', pct:37, color:'#C93B32'},
-      {label:'State school', pct:63, color:'#2E5FB7'},
-    ],
-    analysis: "Thirty-two of the eighty-seven chief executives went to a private school, against about six if the bus matched a country where 7% of people do. This counts only the UK-educated: 53% of FTSE 100 chief executives were schooled abroad, and a quarter of the UK-educated ones went to Oxford or Cambridge. The chairs above them are more privileged still: 68% of the UK-educated FTSE 100 chairs went to private school.",
-    source: 'Sutton Trust, Elitist Britain 2025 (published 18 September 2025); UK-educated FTSE 100 chief executives only',
-    url: 'https://www.suttontrust.com/our-research/elitist-britain-2025/'
-  },
-  {
-    id: 'rep-judges-school',
-    cat: 'society', catLabel: 'Society', date: 'Sep 2025',
-    question: 'Where did senior judges go to school?',
-    tags: 'who runs britain representation class privilege elite private school public school state school oxbridge judges judiciary courts law justice social mobility',
-    groups: [
-      {label:'Private school', pct:62, color:'#C93B32'},
-      {label:'State school', pct:38, color:'#2E5FB7'},
-    ],
-    analysis: "Fifty-four of the eighty-seven senior judges went to a private school, against about six if the bench matched a country where 7% of people do. Three in four of them (75%) went to Oxford or Cambridge, four points more than in the Sutton Trust's last count. It is among the highest private-school shares in the survey, close to the top ranks of the armed forces (63%) and well above MPs (24%).",
-    source: 'Sutton Trust, Elitist Britain 2025 (published 18 September 2025)',
-    url: 'https://www.suttontrust.com/our-research/elitist-britain-2025/'
-  },
-  {
-    id: 'rep-judges-ethnic-minority',
-    cat: 'society', catLabel: 'Society', date: 'Jul 2026',
-    question: 'How many judges are from an ethnic minority background?',
-    tags: 'who runs britain representation diversity ethnic minority minorities race black judges judiciary courts law justice',
-    groups: [
-      {label:'Ethnic minority', pct:13, color:'#E28A2B'},
-      {label:'Not an ethnic minority', pct:87, color:'#2E5FB7'},
-    ],
-    analysis: "Eleven of the eighty-seven judges are from an ethnic minority background: 13% of all judges in post on 1 April 2026, up from 6% in 2016. The population aged 25 to 74 is 17% ethnic minority (fifteen seats), or 11% for ages 50 to 74, the age group nearer to most of the bench (about ten seats). Black judges are the widest gap: 1.6% of all judges against about 4% of that population, one seat where three or four would match. On gender, 45% of all judges are female (40% of court judges and 54% of tribunal judges). Court and tribunal judges are counted together.",
-    source: 'Ministry of Justice, Diversity of the judiciary: 2026 Statistics (published 9 July 2026; judges in post at 1 April 2026)',
-    url: 'https://www.gov.uk/government/statistics/diversity-of-the-judiciary-2026-statistics/diversity-of-the-judiciary-legal-professions-new-appointments-and-current-post-holders-2026-statistics'
-  },
-  {
-    id: 'rep-oxford-intake',
-    cat: 'society', catLabel: 'Society', date: 'Jun 2026',
-    question: 'Which type of school did Oxford undergraduates go to?',
-    tags: 'who runs britain representation class privilege elite oxford oxbridge university universities students admissions state school private school free school meals ethnic minority access social mobility',
-    groups: [
-      {label:'State school', pct:66.5, color:'#2E5FB7'},
-      {label:'Independent school or other', pct:33.5, color:'#C93B32'},
-    ],
-    analysis: "Fifty-eight of the eighty-seven places went to students from state schools (66.5% of the UK-domiciled undergraduates admitted for 2025 entry) and twenty-nine to students from independent schools or other backgrounds. About 93% of UK pupils go to state schools, which would be about eighty-one seats. Oxford's other figures for the same intake: 30.0% from an ethnic minority background (twenty-six seats) and 6.6% eligible for free school meals (about six), down from 8.1% for 2024 entry. Oxford is one university, not the whole of higher education, but Oxford and Cambridge graduates fill many of the seats on the other buses.",
-    source: 'University of Oxford, Undergraduate Admissions Report 2026 (UK-domiciled students admitted, 2025 cycle); 2024 free-school-meals figure from Oxford admissions statistics',
-    url: 'https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students'
-  },
-  {
-    id: 'rep-adults-degree',
-    cat: 'society', catLabel: 'Society', date: 'Census 2021',
-    question: 'What is the highest qualification you hold?',
-    tags: 'who runs britain representation university graduates graduate degree degrees qualifications education census',
-    groups: [
-      {label:'Degree level or above', pct:33.8, color:'#2E5FB7'},
-      {label:'Other qualifications', pct:48, color:'#2AA198'},
-      {label:'No qualifications', pct:18.2, color:'#A9A69E'},
-    ],
-    analysis: "Twenty-nine of the eighty-seven adults in England and Wales hold a degree-level qualification (Level 4 or above): 33.8% of everyone aged 16 and over, or about 16.4 million people. Forty-two hold some other qualification and sixteen have none at all (18.2%). Set it beside the MPs bus, where nine in ten went to university. The 2011 and 2021 censuses asked about qualifications differently, so the change between them is not a clean comparison.",
-    source: 'ONS, Education, England and Wales: Census 2021 (usual residents aged 16 and over); Other qualifications = the remainder, calculated',
-    url: 'https://www.ons.gov.uk/peoplepopulationandcommunity/educationandchildcare/bulletins/educationenglandandwales/census2021'
-  },
-  {
     id: 'cabinet-pm',
     cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
     question: 'Prime Minister',
@@ -2491,17 +1852,6 @@ function personSvg(x, y, color, rand, scale, hollow){
   return p;
 }
 
-
-function specHtml(e){
-  const src = String(e.source||'').replace(/\s*[\(\[].*$/,'').split(/[,;]| and /)[0].trim();
-  const short = src.length > 30 ? src.slice(0,29).trim() + '\u2026' : src;
-  const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-  return `<span class="entry-meta spec"><span class="pill">${e.catLabel}</span><span class="pill entry-date">${e.date}</span>`
-    + (short ? `<span class="pill pill-src" title="${esc(e.source||'')}">${esc(short)}</span>` : '')
-    + (e.estimate ? '<span class="pill pill-est est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : '')
-    + `</span>`;
-}
-
 function roomSvg(groups, seedNum, flipped){
   // coordinate space matches the bus artwork: bus.png is 1792x592
   const W = 1792, IMGH = 592;
@@ -2520,7 +1870,6 @@ function roomSvg(groups, seedNum, flipped){
     counts[idx] += diff > 0 ? -1 : 1;
     diff += diff > 0 ? -1 : 1;
   }
-  svg = svg.replace('grouped by opinion', 'grouped by opinion: ' + groups.map((g, i) => escapeForHtml(g.label) + ' ' + counts[i]).join(', '));
 
   // ----- 87 places mapped to each artwork's transparent window bands -----
   // flipped = outgoing minister: uses the left-facing "departing" artwork, whose cab sits on the
@@ -2624,13 +1973,10 @@ function roomSvg(groups, seedNum, flipped){
     svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc, hollow);
   };
   const isHollow = i => /don'?t know|unsure|undecided/i.test(groups[assign[i]].label);
-  const wipeId = 'wp' + seedNum + (flipped ? 'f' : '');
-  svg += `<defs><clipPath id="${wipeId}"><rect class="wipe${flipped ? ' wipe-r' : ''}" x="0" y="-46" width="${W}" height="650"/></clipPath></defs><g clip-path="url(#${wipeId})">`;
   // unsure/don't-know first so they sit at the back, behind the coloured passengers
   seats.forEach((s, i) => { if(isHollow(i)) drawSeat(s, i); });
   seats.forEach((s, i) => { if(!isHollow(i)) drawSeat(s, i); });
 
-  svg += `</g>`;
   // bus artwork over the passengers (windows are transparent). Outgoing minister uses the
   // left-facing "departing" artwork — already correctly oriented, so no mirroring needed.
   svg += `<image href="${flipped ? 'bus-departing.png' : 'bus.png'}" x="0" y="0" width="${W}" height="${IMGH}"/>`;
@@ -2670,16 +2016,15 @@ function render(){
     return !!m;
   });
   {
-    // polls are grouped by section, in the same order as the section list (biggest first); the chosen sort applies within each section
-    const counts = {}; ENTRIES.forEach(e => { counts[e.cat] = (counts[e.cat] || 0) + 1; });
-    const cats = Object.keys(counts).sort((x, y) => counts[y] - counts[x]);
-    const rank = c => cats.indexOf(c);
+    // the Burnham's Cabinet block always comes first and stays together; the rest follow in the chosen order
+    const cab = visible.filter(e => e.cat === 'cabinet');
+    const rest = visible.filter(e => e.cat !== 'cabinet');
     if(currentSort !== 'default'){
-      visible.sort((a,b) => currentSort === 'new'
+      rest.sort((a,b) => currentSort === 'new'
         ? entryDateValue(b) - entryDateValue(a)
         : entryDateValue(a) - entryDateValue(b));
     }
-    visible = visible.map((e, i) => [e, i]).sort((x, y) => (rank(x[0].cat) - rank(y[0].cat)) || (x[1] - y[1])).map(x => x[0]);
+    visible = cab.concat(rest);
   }
   let directCount = visible.length;
   if(searchPlan){
@@ -2703,7 +2048,7 @@ function render(){
   }
   let cabinetHeaderAdded = false;
   let relatedHeaderAdded = false;
-  let restHeaderAdded = true; // no "More polls" divider now that sections follow the section list
+  let restHeaderAdded = false;
   for(let i=0;i<visible.length;i++){
     const e = visible[i];
     if(searchPlan && !relatedHeaderAdded && directCount > 0 && !matchInfo.get(e.id).direct){
@@ -2736,8 +2081,7 @@ function render(){
       restHeaderAdded = true;
     }
     const wrap = document.createElement('article');
-    wrap.className = 'entry'; wrap.dataset.cat = e.cat;
-    wrap.id = 'poll-' + e.id;
+    wrap.className = 'entry';
 
     const netStr = gs => {
       const n = gs[0].pct - gs[1].pct;
@@ -2762,11 +2106,6 @@ function render(){
           <button class="react-btn" data-kind="surprised">😮 Surprised <span class="react-count">0</span></button>
           <button class="react-btn" data-kind="expected">🤝 Figured <span class="react-count">0</span></button>
         </div>
-        <div class="entry-actions" style="flex-basis:100%">
-          <button type="button" class="act-btn" data-act="share" data-id="${e.id}">Share link</button>
-          ${(e.video || e.pairing) ? '' : `<button type="button" class="act-btn" data-act="image" data-id="${e.id}">Save as image</button>`}
-          <span class="act-status" role="status" aria-live="polite"></span>
-        </div>
       </div>
     `;
 
@@ -2784,7 +2123,7 @@ function render(){
 
       wrap.innerHTML = `
         <div class="entry-head">
-          ${specHtml(e)}
+          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span></span>
           <h2>${e.question}</h2>
         </div>
         <div class="room-wrap"><video src="${e.video}" poster="videos/bus-voting-swing-poster.jpg" autoplay muted loop playsinline controls style="width:100%;display:block;"></video></div>
@@ -2815,7 +2154,7 @@ function render(){
 
       wrap.innerHTML = `
         <div class="entry-head">
-          ${specHtml(e)}
+          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span></span>
           <h2>${e.question}</h2>
         </div>
         ${rendered.map((r, ri) => `
@@ -2848,7 +2187,7 @@ function render(){
 
     const cardsHtml = e.groups.map((g, gi) => `
       <div class="card">
-        <div class="card-num" data-count="${counts[gi]}">${counts[gi]}</div>
+        <div class="card-num">${counts[gi]}</div>
         <div class="card-desc"><span class="card-swatch" style="background:${g.color}"></span>${g.label} &middot; ${g.pct}%</div>
       </div>
     `).join('');
@@ -2866,7 +2205,7 @@ function render(){
 
     wrap.innerHTML = `
       <div class="entry-head">
-        ${specHtml(e)}
+        <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span></span>
         <h2>${e.question}</h2>
       </div>
       ${badgeHtml}
@@ -2892,9 +2231,8 @@ function render(){
 
 tabs.forEach(tab=>{
   tab.addEventListener('click', ()=>{
-    tabs.forEach(t=>{ t.classList.remove('active'); t.removeAttribute('aria-current'); });
+    tabs.forEach(t=>t.classList.remove('active'));
     tab.classList.add('active');
-    tab.setAttribute('aria-current','true');
     currentFilter = tab.getAttribute('data-cat');
     if(currentFilter === 'about'){
       container.hidden = true;
@@ -2967,11 +2305,6 @@ const SEARCH_THESAURUS_RAW = [
   ['national identity','english identity','british identity','englishness','britishness','patriotism','patriotic','nationalism','flag','english','england','?identity','?culture','?heritage'],
   ['immigration','immigrant','immigrants','migrants','migration','asylum','refugees','borders','border','small boats','net migration','visa','visas','deportation','country of birth','foreign born','?foreigners'],
   ['education','university','universities','graduates','graduate','students','student','degree','degrees','schools','school','pupils','teachers','tuition','skills','apprenticeships'],
-  // who runs Britain: class, schools and universities, business leaders, the bench, Parliament
-  ['elite','elites','privilege','privileged','establishment','social mobility','private school','public school','state school','comprehensive','grammar','oxbridge','oxford','cambridge','russell group','working class','low income','poor background','?class'],
-  ['ceo','ceos','chief executive','chief executives','boss','bosses','ftse','ftse 100','ftse 350','boardroom','board','directors','business leaders'],
-  ['judge','judges','judiciary','bench','magistrates','barristers','courts','?law'],
-  ['mps','mp','member of parliament','parliament','house of commons','commons','westminster','legislators','lawmakers','?politicians'],
   // health and care
   ['nhs','health','healthcare','hospital','hospitals','doctors','doctor','nurses','gp','gps','waiting lists','waiting times','patients','national health service','medical','illness','sick','disability','disabled','general health','wellbeing','?ambulance'],
   ['social care','care','carers','carer','unpaid care','care homes','national care service','elderly','older people','old age','dementia','ageing','disabled','?caring'],
@@ -3007,7 +2340,7 @@ const THESAURUS = SEARCH_THESAURUS_RAW.map(list => {
 });
 // topics offered when the box is empty
 const SEARCH_TOPICS = [
-  {label:'Poverty', q:'poverty'}, {label:"Women's equality", q:'women'}, {label:'Racism', q:'racism'}, {label:'Children', q:'children'}, {label:'Who runs Britain', q:'who runs britain'},
+  {label:'Poverty', q:'poverty'}, {label:"Women's equality", q:'women'}, {label:'Racism', q:'racism'}, {label:'Children', q:'children'},
   {label:'NHS & health', q:'nhs'}, {label:'Tax & wealth', q:'tax'}, {label:'Immigration', q:'immigration'}, {label:'AI & technology', q:'ai'},
   {label:'Housing & rent', q:'housing'}, {label:'Europe & Brexit', q:'brexit'}, {label:'Monarchy', q:'monarchy'}, {label:'Climate', q:'climate'}
 ];
@@ -3261,7 +2594,7 @@ function refreshSuggest(){
   const counter = {n: 0};
   let html = '';
   if(!tokens.length){
-    const chips = topicChipsHtml(13, counter);
+    const chips = topicChipsHtml(12, counter);
     if(chips) html = '<div class="sg-title">Try searching for</div>' + chips;
   } else {
     const plan = planFor(raw, true);
@@ -3710,546 +3043,7 @@ function buildFleet(){
 }
 buildFleet();
 
-// update these two when the site changes or the polls have been re-checked
-const SITE_LAST_UPDATED = '12 October 2026';
-const SITE_LAST_CHECKED = '12 October 2026';
-
-(function(){
-  const C=['#DC241F','#2E5FB7','#2AA198','#E28A2B','#4C9A3F','#D9B417','#A9A69E'], N=[24,20,14,11,9,5,4];
-  let h='',n=0; N.forEach((k,ci)=>{for(let i=0;i<k;i++){h+=`<i style="--d:${C[ci]};--n:${n++}"></i>`;}});
-  
-  const cats=new Set(ENTRIES.map(e=>e.cat)); cats.delete('cabinet');
-  const st=[[ENTRIES.length,'poll buses','#DC241F'],[87,'seats on every bus','#2E5FB7'],[40,'upper deck','#2AA198'],[47,'lower deck','#E28A2B']];
-  const sr=document.getElementById('statRow');
-  if(sr) sr.innerHTML=st.map(x=>`<div class="stat" style="--sc:${x[2]}"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('');
-  const tt=document.getElementById('tickerTrack');
-  if(tt){ const q=ENTRIES.filter(e=>e.cat!=='cabinet').slice(0,14).map((e,i)=>`<span style="--dc:${C[i%6]}">${e.question.replace(/</g,'&lt;')}</span>`).join(''); tt.innerHTML=q+q; }
-})();
-document.getElementById('lastUpdated').textContent = SITE_LAST_UPDATED;
-document.getElementById('lastChecked').textContent = SITE_LAST_CHECKED;
-
-// ----- sharing: link to one poll, and save one bus as an image -----
-const SITE_HOME = 'https://the87project.github.io/';
-function pollUrl(id){ return SITE_HOME + '#poll-' + id; }
-function actStatus(btn, msg){
-  const el = btn.parentElement && btn.parentElement.querySelector('.act-status');
-  if(!el) return;
-  el.textContent = msg;
-  clearTimeout(el._t);
-  el._t = setTimeout(() => { el.textContent = ''; }, 3500);
-}
-async function sharePoll(btn){
-  const id = btn.getAttribute('data-id');
-  const e = ENTRIES.find(x => x.id === id);
-  const url = pollUrl(id);
-  try{
-    if(navigator.share && window.matchMedia && window.matchMedia('(pointer:coarse)').matches){
-      await navigator.share({title: e ? e.question : 'The 87 Project', url});
-      return;
-    }
-    await navigator.clipboard.writeText(url);
-    actStatus(btn, 'Link copied');
-  }catch(err){
-    if(err && err.name === 'AbortError') return;
-    window.prompt('Copy this link', url);
-  }
-}
-let _assetCache = {};
-function dataUri(path, mime){
-  if(!_assetCache[path]) _assetCache[path] = fetch(path).then(r => { if(!r.ok) throw new Error(path); return r.blob(); }).then(b => new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(b); }));
-  return _assetCache[path];
-}
-function wrapLines(text, ctx, maxW){
-  const words = text.split(/\s+/), lines = [];
-  let cur = '';
-  words.forEach(w => {
-    const t = cur ? cur + ' ' + w : w;
-    if(ctx.measureText(t).width > maxW && cur){ lines.push(cur); cur = w; } else cur = t;
-  });
-  if(cur) lines.push(cur);
-  return lines;
-}
-const xmlEsc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-async function saveBusImage(btn){
-  const id = btn.getAttribute('data-id');
-  const art = document.getElementById('poll-' + id);
-  const e = ENTRIES.find(x => x.id === id);
-  const room = art && art.querySelector('svg.room');
-  if(!room || !e){ actStatus(btn, 'Not available for this one'); return; }
-  actStatus(btn, 'Making image…');
-  try{
-    const [busPng, fBlack, fArch] = await Promise.all([
-      dataUri('bus.png'), dataUri('fonts/archivo-black-latin-400-normal.woff2'), dataUri('fonts/archivo-latin-wght-normal.woff2')
-    ]);
-    await document.fonts.ready;
-    const W = 1200, PAD = 56;
-    const cv = document.createElement('canvas'); const ctx = cv.getContext('2d');
-    ctx.font = '700 40px "Playfair Display", Georgia, serif';
-    const qLines = wrapLines(e.question, ctx, (W - PAD * 2) * 0.86);  // margin of safety: the saved picture can use a wider fallback font
-    ctx.font = '500 20px Inter, Arial, sans-serif';
-    const legend = Array.from(art.querySelectorAll('.legend .legend-item')).map(li => ({
-      color: li.querySelector('.legend-swatch').style.background, text: li.textContent.replace(/\s+/g, ' ').trim()
-    }));
-    // legend rows
-    let lx = PAD, ly = 0, legendRows = [[]];
-    legend.forEach(l => {
-      const w = ctx.measureText(l.text).width + 44;
-      if(lx + w > W - PAD && legendRows[legendRows.length - 1].length){ legendRows.push([]); lx = PAD; }
-      legendRows[legendRows.length - 1].push({...l, x: lx}); lx += w;
-    });
-    const srcText = 'Source: ' + e.source;
-    ctx.font = '500 17px Inter, Arial, sans-serif';
-    const srcLines = wrapLines(srcText, ctx, W - PAD * 2);
-    const qH = qLines.length * 50;
-    const busH = Math.round((W - PAD * 2) * 650 / 1792);
-    let y = 78 + 34;                    // below the red band + meta line
-    const metaY = y; y += 18;
-    const qY = y + 38; y += qH + 14;
-    const busY = y; y += busH + 10;
-    const legY = y + 20; y += legendRows.length * 36 + 14;
-    const srcY = y + 18; y += srcLines.length * 24 + 24;
-    const footY = y + 22; const H = footY + 40;
-    const busSvg = room.outerHTML.replace(/href="(bus|bus-departing)\.png"/g, (m, n) => n === 'bus' ? `href="${busPng}"` : `href="${busPng}"`);
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`
-      + `<defs><style>@font-face{font-family:'Archivo Black';src:url(${fBlack}) format('woff2');}@font-face{font-family:'Archivo';font-weight:100 900;src:url(${fArch}) format('woff2');}</style></defs>`
-      + `<rect width="${W}" height="${H}" fill="#FAF6EC"/>`
-      + `<rect width="${W}" height="78" fill="#DC241F"/>`
-      + `<text x="${PAD}" y="53" font-family="'Archivo Black',Arial Black,sans-serif" font-size="30" fill="#FFF6E0" letter-spacing="1">THE 87 PROJECT</text>`
-      + `<text x="${W - PAD}" y="52" text-anchor="end" font-family="Archivo,Arial,sans-serif" font-weight="600" font-size="18" fill="#FFF6E0">UK public opinion, one double-decker at a time</text>`
-      + `<text x="${PAD}" y="${metaY}" font-family="Archivo,Arial,sans-serif" font-weight="700" font-size="16" letter-spacing="2" fill="#6A7077">${xmlEsc((e.catLabel + ' · ' + e.date + (e.estimate ? ' · ESTIMATE' : '')).toUpperCase())}</text>`
-      + qLines.map((l, i) => `<text x="${PAD}" y="${qY + i * 50}" font-family="'Playfair Display',Georgia,serif" font-weight="700" font-size="40" fill="#1A1A1A">${xmlEsc(l)}</text>`).join('')
-      + busSvg.replace('<svg ', `<svg x="${PAD}" y="${busY}" width="${W - PAD * 2}" height="${busH}" `)
-      + legendRows.map((row, ri) => row.map(l => `<rect x="${l.x}" y="${legY + ri * 36 - 14}" width="18" height="18" rx="3" fill="${xmlEsc(l.color)}"/><text x="${l.x + 26}" y="${legY + ri * 36 + 1}" font-family="Inter,Arial,sans-serif" font-weight="500" font-size="20" fill="#1A1A1A">${xmlEsc(l.text)}</text>`).join('')).join('')
-      + srcLines.map((l, i) => `<text x="${PAD}" y="${srcY + i * 24}" font-family="Inter,Arial,sans-serif" font-size="17" fill="#6A7077">${xmlEsc(l)}</text>`).join('')
-      + `<text x="${PAD}" y="${footY}" font-family="Archivo,Arial,sans-serif" font-weight="700" font-size="18" fill="#DC241F">the87project.github.io</text>`
-      + `</svg>`;
-    const img = new Image();
-    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
-    const scale = 2;
-    const out = document.createElement('canvas'); out.width = W * scale; out.height = H * scale;
-    const c2 = out.getContext('2d'); c2.scale(scale, scale);
-    // Safari/WebKit often leaves embedded pictures blank on the first draw of an SVG, so decode first and draw twice
-    if(img.decode) { try{ await img.decode(); }catch(_){} }
-    c2.drawImage(img, 0, 0, W, H);
-    await new Promise(r => setTimeout(r, 80));
-    c2.clearRect(0, 0, W, H); c2.drawImage(img, 0, 0, W, H);
-    const blob = await new Promise(res => out.toBlob(res, 'image/png'));
-    const file = new File([blob], 'the87-' + id + '.png', {type: 'image/png'});
-    if(navigator.canShare && navigator.canShare({files: [file]}) && window.matchMedia('(pointer:coarse)').matches){
-      await navigator.share({files: [file], title: e.question});
-    } else {
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name;
-      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    }
-    actStatus(btn, 'Image saved');
-  }catch(err){
-    if(err && err.name === 'AbortError'){ actStatus(btn, ''); return; }
-    console.error(err);
-    actStatus(btn, 'Could not make the image here');
-  }
-}
-container.addEventListener('click', ev => {
-  const b = ev.target.closest ? ev.target.closest('[data-act]') : null;
-  if(!b) return;
-  if(b.getAttribute('data-act') === 'share') sharePoll(b);
-  else if(b.getAttribute('data-act') === 'image') saveBusImage(b);
-});
-// open a poll straight from a shared link such as ...#poll-rep-mps-women
-function openFromHash(){
-  const m = location.hash.match(/^#poll-(.+)$/);
-  if(!m) return;
-  const id = decodeURIComponent(m[1]);
-  if(!ENTRIES.some(e => e.id === id)) return;
-  if(currentFilter !== 'all') document.querySelector('.tab[data-cat="all"]').click();
-  else if(aboutSection && !aboutSection.hidden) document.querySelector('.tab[data-cat="all"]').click();
-  if(searchInput.value) resetSearchQuietly();
-  render();
-  const el = document.getElementById('poll-' + id);
-  if(el){ el.scrollIntoView({block: 'start'}); el.classList.add('poll-flash'); setTimeout(() => el.classList.remove('poll-flash'), 2600); }
-}
-window.addEventListener('hashchange', openFromHash);
-
 render();
-openFromHash();
-
-/* ---------- MOTION: smooth scroll, reveals, count-up, pill bar ---------- */
-(function(){
-  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const root = document.documentElement;
-  let lenis = null;
-  if(!reduce && window.Lenis){
-    try{
-      lenis = new Lenis({lerp: 0.1, smoothWheel: true, anchors: false});
-      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
-      requestAnimationFrame(raf);
-      window.the87Lenis = lenis;
-    }catch(e){ lenis = null; }
-  }
-  // pill bar
-  const navEl = document.querySelector('nav[aria-label="Site header"]');
-  const setScrolled = () => { if(navEl) navEl.classList.toggle('scrolled', (window.scrollY || 0) > 260); };
-  window.addEventListener('scroll', setScrolled, {passive:true}); setScrolled();
-  const ns = document.getElementById('navSearch'), si = document.getElementById('searchInput');
-  if(ns && si) ns.addEventListener('click', () => {
-    const y = si.getBoundingClientRect().top + window.scrollY - 90;
-    if(lenis) lenis.scrollTo(Math.max(0,y), {duration:1.1}); else window.scrollTo({top:Math.max(0,y), behavior: reduce ? 'auto' : 'smooth'});
-    setTimeout(() => si.focus({preventScroll:true}), 450);
-  });
-  // reveals + count-up
-  if(!root.classList.contains('motion') || !('IntersectionObserver' in window)) return;
-  const countUp = el => {
-    const to = parseInt(el.getAttribute('data-count'), 10); if(isNaN(to)) return;
-    const t0 = performance.now(), dur = 900;
-    const step = now => {
-      const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(to * e);
-      if(p < 1) requestAnimationFrame(step); else el.textContent = to;
-    };
-    requestAnimationFrame(step);
-  };
-  const io = new IntersectionObserver(list => {
-    list.forEach(en => {
-      if(!en.isIntersecting) return;
-      const el = en.target; io.unobserve(el);
-      el.classList.add('in');
-      el.querySelectorAll('.card-num[data-count]').forEach(n => { n.textContent = '0'; setTimeout(() => countUp(n), 450); });
-    });
-  }, {rootMargin: '0px 0px -8% 0px', threshold: 0.08});
-  const watch = () => {
-    document.querySelectorAll('#entries .entry:not([data-m])').forEach(el => { el.setAttribute('data-m','1'); io.observe(el); });
-  };
-  watch();
-  new MutationObserver(watch).observe(document.getElementById('entries'), {childList:true});
-  // never leave content hidden if something stalls
-  setTimeout(() => document.querySelectorAll('#entries .entry:not(.in)').forEach(el => { if(el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }), 2500);
-})();
-
-/* ---------- REDESIGN: one bus by default, compare on request ---------- */
-(function(){
-  const feed = document.getElementById('entries'); if(!feed) return;
-  const sp = document.getElementById('specPolls'); if(sp) sp.textContent = ENTRIES.length;
-  const byId = {}; ENTRIES.forEach(e => { byId['poll-' + e.id] = e; });
-  const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  const strip = h => String(h).replace(/<[^>]*>/g, '');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let A = null, B = null;                       // compare state: A is the poll you started from
-  const tray = document.createElement('div'); tray.id = 'tray'; tray.setAttribute('role', 'region'); tray.setAttribute('aria-label', 'Compare two polls');
-  tray.innerHTML = '<div class="tray-title">Compare</div><div class="tray-slot" id="slotA"></div><div class="tray-slot" id="slotB"></div><button type="button" id="rideBtn">Ride both</button>';
-  document.body.appendChild(tray);
-  const ride = document.createElement('div'); ride.id = 'ride'; ride.setAttribute('role', 'dialog'); ride.setAttribute('aria-modal', 'true'); ride.setAttribute('aria-label', 'Two polls side by side'); ride.setAttribute('data-lenis-prevent', '');
-  ride.innerHTML = '<div class="ride-top"><h2>Side by side</h2><button type="button" id="rideClose">Back to the list</button></div><div id="rideBody"></div>';
-  document.body.appendChild(ride);
-  const rideBody = ride.querySelector('#rideBody'), rideClose = ride.querySelector('#rideClose'), rideBtn = tray.querySelector('#rideBtn');
-  let lastFocus = null;
-
-  const setHint = () => {
-    const h = document.getElementById('rowHint'); if(!h) return;
-    const n = feed.querySelectorAll('.entry').length;
-    h.innerHTML = '<span>Routes &middot; ' + n + '</span><span>' + (A ? 'Now pick a second poll' : 'Open a poll, then compare it with another') + '</span>';
-  };
-  const mark = () => {
-    feed.querySelectorAll('.entry').forEach(el => {
-      const head = el.querySelector('.entry-head'); if(!head) return;
-      const slot = el.id === A ? 'A' : el.id === B ? 'B' : null;
-      el.classList.toggle('sel', !!slot);
-      if(slot) head.setAttribute('data-slot', slot); else head.removeAttribute('data-slot');
-      head.setAttribute('aria-expanded', el.classList.contains('open') ? 'true' : 'false');
-    });
-    feed.classList.toggle('comparing', !!A);
-  };
-  const renderTray = () => {
-    [['A', A], ['B', B]].forEach(([k, id]) => {
-      const slot = tray.querySelector('#slot' + k);
-      if(id && byId[id]){
-        slot.className = 'tray-slot';
-        slot.innerHTML = '<span class="k">' + k + '</span><span class="q">' + esc(strip(byId[id].question || byId[id].catLabel)) + '</span><button type="button" class="x" data-k="' + k + '" aria-label="Remove ' + esc(strip(byId[id].question)) + '">&times;</button>';
-      } else {
-        slot.className = 'tray-slot empty';
-        slot.innerHTML = '<span class="k">' + k + '</span><span class="q">Pick a second poll below</span>';
-      }
-    });
-    rideBtn.hidden = !(A && B);
-    tray.classList.toggle('on', !!A);
-    document.body.classList.toggle('has-tray', !!A);
-    mark(); setHint();
-  };
-  tray.addEventListener('click', ev => {
-    const x = ev.target.closest('.x'); if(!x) return;
-    if(x.getAttribute('data-k') === 'A'){ A = B; B = null; } else { B = null; }
-    renderTray();
-  });
-
-  const closeInline = () => { feed.querySelectorAll('.entry.open').forEach(x => x.classList.remove('open')); };
-  const openInline = el => {
-    closeInline(); el.classList.add('open'); mark();
-    requestAnimationFrame(() => el.scrollIntoView({block: 'start', behavior: reduce ? 'auto' : 'smooth'}));
-  };
-
-  const openRide = () => {
-    if(!(A && B)) return;
-    lastFocus = document.activeElement;
-    rideBody.className = 'two'; rideBody.innerHTML = '';
-    [A, B].forEach((id, n) => {
-      const src = document.getElementById(id); if(!src) return;
-      const card = document.createElement('article'); card.className = 'route-card';
-      const head = src.querySelector('.entry-head'), spec = head && head.querySelector('.spec');
-      card.innerHTML = '<header><span class="slot">' + (n ? 'B' : 'A') + '</span><h3>' + (head && head.querySelector('h2') ? head.querySelector('h2').innerHTML : '') + '</h3><div class="spec-slot"></div></header>';
-      if(spec) card.querySelector('.spec-slot').appendChild(spec.cloneNode(true));
-      const body = document.createElement('div');
-      Array.from(src.children).forEach(c => { if(c !== head) body.appendChild(c.cloneNode(true)); });
-      body.querySelectorAll('.reactions,.entry-actions,.cmp-bar').forEach(x => x.remove());
-      body.innerHTML = body.innerHTML.replace(/(wp\d+f?)/g, '$1r' + n);
-      card.appendChild(body); rideBody.appendChild(card);
-    });
-    ride.classList.add('on'); document.documentElement.style.overflow = 'hidden'; if(window.the87Lenis) window.the87Lenis.stop(); ride.scrollTop = 0;
-    requestAnimationFrame(() => requestAnimationFrame(() => rideBody.querySelectorAll('.route-card').forEach(c => c.classList.add('go'))));
-    setTimeout(() => rideClose.focus(), 60);
-  };
-  const closeRide = () => {
-    ride.classList.remove('on'); document.documentElement.style.overflow = ''; if(window.the87Lenis) window.the87Lenis.start();
-    rideBody.querySelectorAll('.route-card').forEach(c => c.classList.remove('go'));
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
-  };
-  rideBtn.addEventListener('click', openRide);
-  rideClose.addEventListener('click', closeRide);
-  document.addEventListener('keydown', ev => { if(ev.key === 'Escape' && ride.classList.contains('on')) closeRide(); });
-
-  const onRow = el => {
-    if(A){                                       // compare mode: choose the second poll
-      if(el.id === A) return;
-      B = el.id; closeInline(); renderTray(); openRide();
-    } else {                                     // normal: one bus at a time
-      if(el.classList.contains('open')){ el.classList.remove('open'); mark(); } else openInline(el);
-    }
-  };
-  const decorate = () => {
-    feed.querySelectorAll('.entry:not([data-row])').forEach(el => {
-      el.setAttribute('data-row', '1');
-      const head = el.querySelector('.entry-head'); if(!head) return;
-      head.setAttribute('role', 'button'); head.setAttribute('tabindex', '0'); head.setAttribute('aria-expanded', 'false');
-      head.addEventListener('click', ev => { if(ev.target.closest('a,button')) return; onRow(el); });
-      head.addEventListener('keydown', ev => { if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); onRow(el); } });
-      const bar = document.createElement('div'); bar.className = 'cmp-bar';
-      bar.innerHTML = '<button type="button" class="cmp-btn">Compare with another poll</button>';
-      bar.querySelector('button').addEventListener('click', () => { A = el.id; B = null; closeInline(); renderTray(); });
-      head.insertAdjacentElement('afterend', bar);
-    });
-    if(!document.getElementById('rowHint') && feed.querySelector('.entry')){
-      const h = document.createElement('p'); h.id = 'rowHint'; h.className = 'hint';
-      const first = feed.querySelector('.entry'); first.parentNode.insertBefore(h, first);
-    }
-    mark(); setHint();
-    const hash = (location.hash || '').replace('#', '');
-    if(hash && !decorate.done){ const t = document.getElementById(hash); if(t && t.classList.contains('entry')){ decorate.done = true; t.classList.add('open'); mark(); } }
-  };
-  renderTray();
-  decorate();
-  new MutationObserver(decorate).observe(feed, {childList: true});
-  window.addEventListener('hashchange', () => {
-    const id = (location.hash || '').replace('#', ''); const t = id && document.getElementById(id);
-    if(t && t.classList && t.classList.contains('entry')){ setTimeout(() => { const t2 = document.getElementById(id); if(!t2) return; closeInline(); t2.classList.add('open'); mark(); t2.scrollIntoView({block: 'start'}); }, 60); }
-  });
-})();
-
-/* ---------- REDESIGN: sidebar counts ---------- */
-(function(){
-  const box = document.getElementById('tabs'); if(!box) return;
-  const lab = document.createElement('p'); lab.className = 'side-label'; lab.textContent = 'Browse by section';
-  box.parentNode.insertBefore(lab, box);
-  box.querySelectorAll('.tab').forEach(t => {
-    const c = t.getAttribute('data-cat'); if(c === 'about') return;
-    const n = c === 'all' ? ENTRIES.length : ENTRIES.filter(e => e.cat === c).length;
-    const s = document.createElement('span'); s.className = 'tab-n'; s.textContent = n; t.appendChild(s);
-  });
-})();
-/* order sections by number of polls (then All, then About) */
-(function(){
-  const box = document.getElementById('tabs'); if(!box) return;
-  const num = t => { const n = t.querySelector('.tab-n'); return n ? parseInt(n.textContent, 10) || 0 : 0; };
-  const tabs = Array.from(box.querySelectorAll('.tab'));
-  const all = tabs.find(t => t.dataset.cat === 'all'), about = tabs.find(t => t.dataset.cat === 'about');
-  const rest = tabs.filter(t => t !== all && t !== about).sort((a, b) => num(b) - num(a));
-  rest.concat([all, about]).filter(Boolean).forEach(t => box.appendChild(t));
-})();
-
-/* ---------- live tunnel cover ---------- */
-(function(){
-  const host = document.querySelector('.tunnel'); if(!host) return;
-  // Safari/WebKit: the 3D walls vanish there, so keep the static cover image
-  const ua = navigator.userAgent, webkitOnly = /AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg|Android|OPR/.test(ua) || /CriOS|FxiOS|EdgiOS/.test(ua);
-  if(webkitOnly) return;
-  const cnt = c => ENTRIES.filter(e => e.cat === c).length;
-  const N = ENTRIES.length;
-  // rings, outer to inner: [top, right, bottom, left]
-  const R = [
-    ['The 87','Lower deck 47','Eighty-seven seats','Upper deck 40'],
-    ['UK opinion','Standing 25','One double-decker','Seated'],
-    ['Official statistics','Seated 22', N+' questions','Forty upstairs'],
-    ['The 87','Forty-seven down','Ask them all','Front seat'],
-    ['Polls '+N,'Priority seat','Every answer counts','Upper deck 40'],
-    ['Technology & AI '+cnt('tech'),'Lower deck 47','Hold tight please','Window seat'],
-    ['Health & ethics '+cnt('health'),'Standing 25','One passenger 1.15%','Upper deck 40'],
-    ['Economy '+cnt('economy'),'Seated 22','Mind the gap','Forty upstairs'],
-    ['Society '+cnt('society'),'Priority seat','Ding ding','Front seat'],
-    ['Politics '+cnt('politics'),'Forty-seven down','Next stop','Window seat']
-  ];
-  const r = 0.8, P = 1000;
-  let stage = null, lastKey = '', layoutFn = null;
-  // homography mapping the rect (0,0),(w,0),(w,h),(0,h) onto four target points -> CSS matrix3d
-  function homography(w, h, q){
-    const src = [[0,0],[w,0],[w,h],[0,h]], A = [], B = [];
-    for(let i=0;i<4;i++){
-      const x = src[i][0], y = src[i][1], u = q[i][0], v = q[i][1];
-      A.push([x,y,1,0,0,0,-u*x,-u*y]); B.push(u);
-      A.push([0,0,0,x,y,1,-v*x,-v*y]); B.push(v);
-    }
-    for(let i=0;i<8;i++){
-      let m = i; for(let j=i+1;j<8;j++) if(Math.abs(A[j][i]) > Math.abs(A[m][i])) m = j;
-      [A[i],A[m]] = [A[m],A[i]]; [B[i],B[m]] = [B[m],B[i]];
-      for(let j=i+1;j<8;j++){ const f = A[j][i] / A[i][i]; for(let k=i;k<8;k++) A[j][k] -= f * A[i][k]; B[j] -= f * B[i]; }
-    }
-    const x = new Array(8);
-    for(let i=7;i>=0;i--){ let t = B[i]; for(let j=i+1;j<8;j++) t -= A[i][j] * x[j]; x[i] = t / A[i][i]; }
-    return 'matrix3d('+[x[0],x[3],0,x[6], x[1],x[4],0,x[7], 0,0,1,0, x[2],x[5],0,1].map(n => +n.toFixed(6)).join(',')+')';
-  }
-  function build(){
-    const w = host.clientWidth; if(!w) return;
-    const W = 1200, H = w < 640 ? 800 : 600;
-    const key = w+'x'+H; if(key === lastKey) return; lastKey = key;
-    host.style.aspectRatio = W+'/'+H;
-    if(stage) stage.remove();
-    stage = document.createElement('div'); stage.className = 'stage'; stage.setAttribute('aria-hidden','true');
-    stage.style.width = W+'px'; stage.style.height = H+'px';
-    stage.style.transform = 'scale('+(w/W)+')';
-    const rings = Math.min(R.length, 8);
-    const zs = []; for(let k=0;k<=rings;k++) zs.push(P*(Math.pow(1/r,k)-1));
-    const D = zs[rings];
-    const sc = z => P / (P + z);                       // screen scale at depth z
-    const cx = W/2, cy = H/2;
-    const pt = (X, Y, z) => [cx + X * sc(z), cy + Y * sc(z)];
-    // corners (local rect order) of a strip on wall i between depths a and b, camera moved forward by dz
-    const quad = (i, a, b, dz) => {
-      const za = a - dz, zb = b - dz, hw = W/2, hh = H/2;
-      if(i === 0) return [pt(-hw,-hh,za), pt(hw,-hh,za), pt(hw,-hh,zb), pt(-hw,-hh,zb)];     // top: tops of letters toward you
-      if(i === 2) return [pt(-hw,hh,zb), pt(hw,hh,zb), pt(hw,hh,za), pt(-hw,hh,za)];        // bottom: tops toward the far end
-      if(i === 3) return [pt(-hw,hh,za), pt(-hw,-hh,za), pt(-hw,-hh,zb), pt(-hw,hh,zb)];    // left: reads upwards
-      return [pt(hw,-hh,za), pt(hw,hh,za), pt(hw,hh,zb), pt(hw,-hh,zb)];                     // right: reads downwards
-    };
-    const items = [];
-    for(let wi = 0; wi < 4; wi++){
-      for(let k = 0; k < rings; k++){
-        const a = zs[k], b = zs[k+1];
-        const q0 = quad(wi, a, b, 0);
-        const len = Math.hypot(q0[1][0]-q0[0][0], q0[1][1]-q0[0][1]);                       // along the text
-        const thick = Math.hypot(q0[3][0]-q0[0][0], q0[3][1]-q0[0][1]) || 1;                 // across the text
-        const side = (wi === 1 || wi === 3);
-        const bw = Math.max(40, (side ? Math.abs(q0[1][1]-q0[0][1]) : len)) * 2.2;
-        const bh = Math.max(10, (side ? Math.abs(q0[3][0]-q0[0][0]) : Math.abs(q0[3][1]-q0[0][1]))) * 2.2;
-        const el = document.createElement('div'); el.className = 'ln';
-        el.style.cssText = 'left:0;top:0;width:'+bw+'px;height:'+bh+'px;font-size:'+(bh*1.02)+'px;transform-origin:0 0;';
-        const sp = document.createElement('span'); sp.textContent = R[k][wi]; el.appendChild(sp);
-        stage.appendChild(el); items.push({el, sp, wi, a, b, bw, bh});
-      }
-    }
-    const core = document.createElement('div'); core.className = 'core';
-    stage.appendChild(core); core.textContent = '87';
-    layoutFn = dz => {
-      items.forEach(it => { it.el.style.transform = homography(it.bw, it.bh, quad(it.wi, it.a, it.b, dz)); });
-      const s = sc(D - dz), cw = W * s, ch = H * s;
-      core.style.cssText = 'width:'+cw+'px;height:'+ch+'px;left:'+(cx - cw/2)+'px;top:'+(cy - ch/2)+'px;font-size:'+(ch*0.62)+'px;';
-    };
-    layoutFn(0);
-    host.appendChild(stage);
-    host.__ride = layoutFn;
-    const fit = () => { items.forEach(it => { it.sp.style.transform = 'none'; const tw = it.sp.offsetWidth || 1; it.sp.style.transform = 'scaleX('+(it.bw/tw)+')'; }); host.classList.add('live'); };
-    if(document.fonts && document.fonts.load){ document.fonts.load("100px 'Archivo Black'").then(fit, fit); } else fit();
-    host.setAttribute('role','img');
-    host.setAttribute('aria-label','Type receding into a tunnel towards a red 87: '+N+' polls on one double-decker bus');
-  }
-  build();
-  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 150); });
-})();
-
-/* ---------- tunnel ride: scroll moves you down the tunnel ---------- */
-(function(){
-  const host = document.querySelector('.tunnel'); if(!host) return;
-  if(!document.documentElement.classList.contains('motion')) return;
-  const MAX = 850; let cur = 0, target = 0, raf = 0, visible = true;
-  function aim(){ const h = host.offsetHeight || 1; target = Math.max(0, Math.min(1, (window.scrollY || 0) / (h * 0.95))) * MAX; if(!raf && visible) raf = requestAnimationFrame(step); }
-  function step(){
-    raf = 0; cur += (target - cur) * 0.12; if(Math.abs(target - cur) < 0.4) cur = target;
-    if(host.__ride) host.__ride(cur);
-    if(cur !== target && visible) raf = requestAnimationFrame(step);
-  }
-  window.addEventListener('scroll', aim, {passive:true});
-  window.addEventListener('resize', () => { cur = target = 0; aim(); });
-  if('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; if(visible) aim(); }).observe(host);
-  aim();
-})();
-
-/* ---------- top-bar links ---------- */
-(function(){
-  const idx = document.getElementById('navIndex'), ab = document.getElementById('navAbout');
-  const go = (t) => { const L = window.the87Lenis; if(L && L.scrollTo) L.scrollTo(t, {offset:-70}); else t.scrollIntoView({behavior:'smooth'}); };
-  const menu = document.getElementById('navMenu');
-  const closeMenu = () => { if(menu){ menu.hidden = true; if(idx) idx.setAttribute('aria-expanded','false'); } };
-  if(menu && idx){
-    document.querySelectorAll('#tabs .tab').forEach(t => {
-      const a = document.createElement('a'); a.href = '#entries';
-      const n = t.querySelector('.tab-n'); const name = t.childNodes[0] ? t.childNodes[0].textContent.trim() : t.textContent.trim();
-      a.innerHTML = '<span></span><i></i>'; a.firstChild.textContent = name; a.lastChild.textContent = n ? n.textContent : '';
-      a.addEventListener('click', e => { e.preventDefault(); t.click(); closeMenu(); setTimeout(() => go(document.querySelector('.layout')), 30); });
-      menu.appendChild(a);
-    });
-    idx.addEventListener('click', e => { e.preventDefault(); const open = menu.hidden; menu.hidden = !open; idx.setAttribute('aria-expanded', String(open)); if(open){ const f = menu.querySelector('a'); if(f) f.focus({preventScroll:true}); } });
-    document.addEventListener('keydown', e => { if(e.key === 'Escape' && !menu.hidden){ closeMenu(); idx.focus(); } });
-    document.addEventListener('click', e => { if(!menu.hidden && !menu.contains(e.target) && !idx.contains(e.target)) closeMenu(); });
-    window.addEventListener('scroll', () => { if(!menu.hidden && window.scrollY > 80) closeMenu(); }, {passive:true});
-  }
-  if(ab) ab.addEventListener('click', e => { e.preventDefault(); closeMenu(); const t = document.querySelector('.tab-about'); if(t) t.click(); const a = document.getElementById('about'); setTimeout(() => go(document.querySelector('.layout')), 30); });
-})();
-
-/* ---------- front-page section stops ---------- */
-(function(){
-  const box = document.getElementById('stops'); if(!box) return;
-  const go = (t) => { const L = window.the87Lenis; if(L && L.scrollTo) L.scrollTo(t, {offset:-70}); else t.scrollIntoView({behavior:'smooth'}); };
-  const num = t => { if(t.getAttribute('data-cat') === 'all') return 0; const n = t.querySelector('.tab-n'); return n ? parseInt(n.textContent, 10) || 0 : -1; };
-  Array.from(document.querySelectorAll('#tabs .tab')).sort((x, y) => num(y) - num(x)).forEach(t => {
-    const c = t.getAttribute('data-cat');
-    const n = t.querySelector('.tab-n'); const name = t.childNodes[0].textContent.trim();
-    const a = document.createElement('a'); a.href = '#entries';
-    const top = document.createElement('span'); top.className = 'st-top';
-    const l = document.createElement('span'); l.textContent = n ? n.textContent : '';
-    top.appendChild(l);
-    const nm = document.createElement('span'); nm.className = 'st-name'; nm.textContent = c === 'about' ? 'About' : c === 'all' ? 'All polls' : name;
-    a.appendChild(nm); a.appendChild(top);
-    a.addEventListener('click', e => { e.preventDefault(); t.click(); setTimeout(() => go(document.querySelector('.layout')), 30); });
-    box.appendChild(a);
-  });
-})();
-
-/* ---------- polls of the week: the four most recent polls, pinned at the top ---------- */
-(function(){
-  const box = document.getElementById('weekly'); if(!box) return;
-  const recent = ENTRIES.map((e, i) => [e, i]).filter(x => x[0].cat !== 'cabinet')
-    .sort((a, b) => (entryDateValue(b[0]) - entryDateValue(a[0])) || (b[1] - a[1])).slice(0, 4).map(x => x[0]);
-  if(!recent.length) return;
-  const head = document.createElement('div'); head.className = 'wk-head';
-  head.innerHTML = '<b>Polls of the week</b><span>The four most recent</span>';
-  const grid = document.createElement('div'); grid.className = 'wk-grid';
-  recent.forEach(e => {
-    const a = document.createElement('a'); a.className = 'wk-card'; a.href = '#poll-' + e.id;
-    const m = document.createElement('span'); m.className = 'wk-meta'; m.textContent = e.date + ' \u00b7 ' + e.catLabel;
-    const q = document.createElement('span'); q.className = 'wk-q'; q.textContent = e.question;
-    const bar = document.createElement('span'); bar.className = 'wk-bar'; bar.setAttribute('aria-hidden', 'true');
-    const tot = e.groups.reduce((t, g) => t + g.pct, 0) || 1;
-    e.groups.forEach(g => { const i = document.createElement('i'); i.style.width = (g.pct / tot * 100) + '%'; i.style.background = g.color; bar.appendChild(i); });
-    a.appendChild(m); a.appendChild(q); a.appendChild(bar);
-    a.addEventListener('click', ev => { ev.preventDefault(); history.replaceState(null, '', location.pathname + location.search); location.hash = 'poll-' + e.id; });
-    grid.appendChild(a);
-  });
-  box.appendChild(head); box.appendChild(grid);
-})();
 </script>
 
 </body>
