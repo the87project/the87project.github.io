@@ -28,6 +28,7 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>
@@ -45,6 +46,8 @@
 <style>
 @font-face{font-family:'Archivo Black'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/archivo-black-latin-400-normal.woff2') format('woff2');}
 @font-face{font-family:'Archivo'; font-style:normal; font-weight:100 900; font-display:swap; src:url('fonts/archivo-latin-wght-normal.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Mono'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Mono'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');}
 @font-face{font-family:'Inter'; font-style:normal; font-weight:100 900; font-display:swap; src:url('fonts/inter-latin-wght-normal.woff2') format('woff2');}
 @font-face{font-family:'Playfair Display'; font-style:normal; font-weight:400 900; font-display:swap; src:url('fonts/playfair-display-latin-wght-normal.woff2') format('woff2');}
 
@@ -188,7 +191,7 @@ nav{
 
 
 /* ---------- WEB-DESIGN PASS: dot-matrix hero, stat tiles, ticker, chunky controls ---------- */
-.hero{display:grid; grid-template-columns:minmax(0,1fr); column-gap:40px; row-gap:0; align-content:center; align-items:start; border-bottom:none !important; padding-bottom:36px;}
+.hero{display:grid; grid-template-columns:minmax(0,1fr); column-gap:40px; row-gap:0; align-content:start; align-items:start; border-bottom:none !important; padding-bottom:36px;}
 .hero > h1{margin-top:0;}
 .hero > .route-tag,.hero > h1,.hero > p{grid-column:1;}
 .hero-viz{grid-column:2; grid-row:1 / span 5; align-self:center; justify-self:end; width:100%; max-width:300px;}
@@ -238,6 +241,25 @@ html.motion .entry.in{opacity:1; transform:none;}
 html.motion .entry:not(.in) .wipe{transform:scaleX(0);}
 html.motion .entry.in .wipe{transform:scaleX(1); transition:transform 1.2s cubic-bezier(.45,.05,.2,1) .35s;}
 @media (max-width:640px){ nav[aria-label="Site header"].scrolled .nav-inner{max-width:calc(100% - 24px);} }
+
+
+/* ---------- MOCKUP: mono labels, spec pills, monochrome UI, big 87 ---------- */
+:root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;}
+.mono,.tab,.sortbtn,.sortbar-label,.legend,.legend-item,.card-desc,.search-status,.hero-updated,.footer-links,.nav-note,.entry-footer,.est-badge,.new-badge,.section-head .entry-meta{font-family:var(--mono) !important; letter-spacing:.02em;}
+.tab,.sortbtn{font-weight:500; font-size:11px; letter-spacing:.06em;}
+.legend,.legend-item{font-size:11.5px;}
+.hero-updated{font-size:12px; letter-spacing:.02em;}
+.spec{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;}
+.spec::before{display:none !important;}
+.pill{font-family:var(--mono); font-weight:500; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); border:1px solid var(--ink); border-radius:999px; padding:4px 11px; background:transparent; line-height:1.2; white-space:nowrap;}
+.pill-src{border-color:var(--line); color:var(--slate); max-width:100%; overflow:hidden; text-overflow:ellipsis;}
+.pill-est{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
+/* monochrome UI: the buses carry the only colour */
+.tab::before{display:none !important;}
+.entry[data-cat]::before{border-color:var(--ink) !important;}
+.entry-meta::before{display:none !important;}
+.tab:hover{transform:none;}
+@media (max-width:760px){ .nav-note{display:none;} .tab{font-size:10px; padding:6px 10px;} .sidebar-box{padding:8px; gap:4px;} }
 
 /* ---------- LAYOUT: fixed left sidebar + content ---------- */
 .layout{
@@ -2211,6 +2233,17 @@ function personSvg(x, y, color, rand, scale, hollow){
   return p;
 }
 
+
+function specHtml(e){
+  const src = String(e.source||'').replace(/\s*[\(\[].*$/,'').split(/[,;]| and /)[0].trim();
+  const short = src.length > 30 ? src.slice(0,29).trim() + '\u2026' : src;
+  const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  return `<span class="entry-meta spec"><span class="pill">${e.catLabel}</span><span class="pill entry-date">${e.date}</span>`
+    + (short ? `<span class="pill pill-src" title="${esc(e.source||'')}">${esc(short)}</span>` : '')
+    + (e.estimate ? '<span class="pill pill-est est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : '')
+    + `</span>`;
+}
+
 function roomSvg(groups, seedNum, flipped){
   // coordinate space matches the bus artwork: bus.png is 1792x592
   const W = 1792, IMGH = 592;
@@ -2492,7 +2525,7 @@ function render(){
 
       wrap.innerHTML = `
         <div class="entry-head">
-          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span>${e.estimate ? '<span class="est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : ''}</span>
+          ${specHtml(e)}
           <h2>${e.question}</h2>
         </div>
         <div class="room-wrap"><video src="${e.video}" poster="videos/bus-voting-swing-poster.jpg" autoplay muted loop playsinline controls style="width:100%;display:block;"></video></div>
@@ -2523,7 +2556,7 @@ function render(){
 
       wrap.innerHTML = `
         <div class="entry-head">
-          <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span>${e.estimate ? '<span class="est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : ''}</span>
+          ${specHtml(e)}
           <h2>${e.question}</h2>
         </div>
         ${rendered.map((r, ri) => `
@@ -2574,7 +2607,7 @@ function render(){
 
     wrap.innerHTML = `
       <div class="entry-head">
-        <span class="entry-meta">${e.catLabel} &middot; <span class="entry-date">${e.date}</span>${e.estimate ? '<span class="est-badge" tabindex="0" title="An estimate or unofficial count, not an official statistic. The commentary below explains how it was reached.">Estimate</span>' : ''}</span>
+        ${specHtml(e)}
         <h2>${e.question}</h2>
       </div>
       ${badgeHtml}
