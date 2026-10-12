@@ -152,6 +152,49 @@ nav{
 .sortbtn.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
 .sortbar[hidden]{display:none;}
 
+/* ---------- SEARCH ---------- */
+.searchbar{position:relative; display:flex; align-items:center; margin:2px 0 12px;}
+.searchbar[hidden]{display:none;}
+.search-icon{position:absolute; left:15px; width:16px; height:16px; color:var(--slate); pointer-events:none;}
+.search-input{
+  width:100%;
+  font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:var(--ink);
+  background:var(--bg); border:1px solid var(--line-soft); border-radius:999px;
+  padding:11px 42px 11px 42px;
+  -webkit-appearance:none; appearance:none;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.search-input::placeholder{color:var(--slate);}
+.search-input:hover{border-color:var(--slate);}
+.search-input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--hover-tint);}
+.search-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-decoration{-webkit-appearance:none; display:none;}
+.search-clear{
+  position:absolute; right:8px; width:28px; height:28px; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  border:none; border-radius:50%; background:transparent; color:var(--ink-soft);
+  font-size:20px; line-height:1; cursor:pointer; transition:all .15s ease;
+}
+.search-clear:hover{color:var(--accent); background:var(--hover-tint);}
+.search-clear[hidden]{display:none;}
+.search-status{font-family:'Archivo',sans-serif; font-weight:600; font-size:12px; letter-spacing:.03em; color:var(--ink-soft); margin:0 0 8px;}
+.search-status[hidden]{display:none;}
+.search-link{
+  font:inherit; letter-spacing:inherit; color:var(--accent); background:none; border:none; padding:0;
+  text-decoration:underline; text-underline-offset:2px; cursor:pointer;
+}
+.search-empty{padding:56px 0 72px; text-align:center; color:var(--ink-soft); font-size:15px;}
+.search-empty p{margin:0 0 6px;}
+.search-empty .search-empty-title{font-family:'Archivo Black',sans-serif; text-transform:uppercase; font-size:18px; color:var(--ink); margin-bottom:10px;}
+@media (max-width:760px){ .search-input{font-size:16px;} }
+
+:root{--map-green:#D3DFCB; --map-green-edge:#B7C9AD;}
+:root[data-theme="dark"]{--map-green:#2F3F33; --map-green-edge:#44594A;}
+.fleet .rbus{cursor:pointer; transition:opacity .12s ease;}
+.fleet .rbus:hover{opacity:.72;}
+.fleet .rbus:focus{outline:none;}
+.fleet .rbus:focus-visible{opacity:.72;}
+
 /* ---------- TABS ---------- */
 .tab{
   font-family:'Archivo',sans-serif;
@@ -519,6 +562,12 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   </aside>
 
   <div class="content">
+    <div class="searchbar" id="searchbar" role="search">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <input id="searchInput" class="search-input" type="search" placeholder="Search the polls, e.g. wealth tax, NHS, Farage" aria-label="Search polls" autocomplete="off" spellcheck="false">
+      <button id="searchClear" class="search-clear" type="button" aria-label="Clear search" hidden>&times;</button>
+    </div>
+    <p class="search-status" id="searchStatus" aria-live="polite" hidden></p>
     <div class="sortbar" id="sortbar">
       <span class="sortbar-label">Sort</span>
       <button class="sortbtn active" data-sort="default" type="button">Featured</button>
@@ -553,7 +602,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
         <p>New entries are added as new, well-sourced UK polling becomes available, with the most recent questions and Society-category entries prioritised nearer the top of the feed so the newest thinking is the first thing you see. There's no fixed publishing schedule &mdash; this is an independent, personal project, updated as time and good data allow.</p>
 
         <h2 id="our-buses" class="method-title">Our buses</h2>
-        <p>Every poll on the site so far, one glyph per bus, grouped and colour-coded by section &mdash; the whole fleet at a glance.</p>
+        <p>Every poll on the site so far, one bus per poll, parked by section and colour-coded to match &mdash; the whole fleet at a glance. Click any bus to jump to its section.</p>
         <div id="fleetLegend" class="fleet-legend"></div>
         <div id="fleet" class="fleet"></div>
       </div>
@@ -1807,7 +1856,7 @@ const CABINET_STANDFIRST = "When Andy Burnham became prime minister on 20 July 2
 
 function render(){
   container.innerHTML = '';
-  let visible = ENTRIES.filter(e => currentFilter==='all' || e.cat===currentFilter);
+  let visible = ENTRIES.filter(e => (currentFilter==='all' || e.cat===currentFilter) && matchesSearch(e));
   if(currentSort !== 'default'){
     // keep the Burnham's Cabinet block together at the end; sort the rest by date
     const cab = visible.filter(e => e.cat === 'cabinet');
@@ -1817,10 +1866,27 @@ function render(){
       : entryDateValue(a) - entryDateValue(b));
     visible = rest.concat(cab);
   }
+  if(searchTerms.length && currentSort === 'default'){
+    // under Featured order, polls whose question matches come before those matching only in the commentary
+    const inQuestion = e => { const ix = SEARCH_INDEX.get(e.id); return !!ix && searchTerms.every(t => ix.q.includes(t)); };
+    visible = visible.filter(inQuestion).concat(visible.filter(e => !inQuestion(e)));
+  }
+  updateSearchStatus(visible.length);
+  if(visible.length === 0){
+    const none = document.createElement('div');
+    none.className = 'search-empty';
+    none.innerHTML = searchTerms.length
+      ? '<p class="search-empty-title">No polls match that search.</p><p>Try a shorter or different word, or <button type="button" class="search-link" id="searchEmptyClear">clear the search</button>.</p>'
+      : '<p class="search-empty-title">No polls in this section yet.</p>';
+    container.appendChild(none);
+    const emptyClear = document.getElementById('searchEmptyClear');
+    if(emptyClear) emptyClear.addEventListener('click', () => { clearSearch(); searchInput.focus(); });
+    return;
+  }
   let cabinetHeaderAdded = false;
   for(let i=0;i<visible.length;i++){
     const e = visible[i];
-    if(e.cat === 'cabinet' && !cabinetHeaderAdded){
+    if(e.cat === 'cabinet' && !cabinetHeaderAdded && !searchTerms.length){
       const head = document.createElement('div');
       head.className = 'section-head';
       head.innerHTML = `
@@ -1987,13 +2053,106 @@ tabs.forEach(tab=>{
       container.hidden = true;
       aboutSection.hidden = false;
       sortbar.hidden = true;
+      searchbar.hidden = true;
+      searchStatus.hidden = true;
     } else {
       aboutSection.hidden = true;
       container.hidden = false;
       sortbar.hidden = false;
+      searchbar.hidden = false;
       render();
     }
   });
+});
+
+// ----- search (filters the polls as you type, within the current section) -----
+const searchbar = document.getElementById('searchbar');
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+const searchStatus = document.getElementById('searchStatus');
+let searchTerms = [];
+let searchTimer = null;
+
+// lower-case, strip tags/entities/accents/apostrophes so "Burnham's", "burnhams" and "Burnham’s" all match
+function normaliseText(str){
+  return String(str == null ? '' : str)
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&amp;/g, ' and ')
+    .replace(/&[a-z]+;|&#\d+;/gi, ' ')
+    .replace(/&/g, ' and ')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/['‘’`]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+function escapeForHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// one searchable string per poll: question, section, date, commentary, source and every group/person label
+const SEARCH_INDEX = new Map();
+ENTRIES.forEach(e => {
+  const parts = [e.question, e.catLabel, e.date, e.analysis, e.source, e.who, e.badge];
+  (e.groups || []).forEach(g => parts.push(g.label));
+  (e.pairing || []).forEach(p => {
+    parts.push(p.name, p.status);
+    (p.groups || []).forEach(g => parts.push(g.label));
+  });
+  SEARCH_INDEX.set(e.id, {
+    q: normaliseText(e.question),
+    all: normaliseText(parts.filter(Boolean).join(' '))
+  });
+});
+function matchesSearch(e){
+  if(!searchTerms.length) return true;
+  const ix = SEARCH_INDEX.get(e.id);
+  return !!ix && searchTerms.every(t => ix.all.includes(t));
+}
+function updateSearchStatus(n){
+  if(!searchTerms.length){ searchStatus.hidden = true; searchStatus.textContent = ''; return; }
+  let html = n + (n === 1 ? ' poll matches ' : ' polls match ') + '&ldquo;' + escapeForHtml(searchInput.value.trim()) + '&rdquo;';
+  if(currentFilter !== 'all'){
+    const elsewhere = ENTRIES.filter(e => e.cat !== currentFilter && matchesSearch(e)).length;
+    html += ' in this section';
+    if(elsewhere) html += ' &middot; <button type="button" class="search-link" id="searchAllSections">' + elsewhere + ' more in other sections</button>';
+  }
+  searchStatus.innerHTML = html;
+  searchStatus.hidden = false;
+  const all = document.getElementById('searchAllSections');
+  if(all) all.addEventListener('click', () => document.querySelector('.tab[data-cat="all"]').click());
+}
+function applySearch(){
+  clearTimeout(searchTimer);
+  searchTerms = normaliseText(searchInput.value).split(' ').filter(Boolean);
+  searchClear.hidden = !searchInput.value;
+  if(currentFilter !== 'about') render();
+}
+function clearSearch(){
+  searchInput.value = '';
+  applySearch();
+}
+function resetSearchQuietly(){
+  clearTimeout(searchTimer);
+  searchInput.value = '';
+  searchTerms = [];
+  searchClear.hidden = true;
+}
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applySearch, 150);
+});
+searchInput.addEventListener('keydown', ev => {
+  if(ev.key === 'Enter'){ ev.preventDefault(); applySearch(); }
+  else if(ev.key === 'Escape'){ clearSearch(); }
+});
+searchClear.addEventListener('click', () => { clearSearch(); searchInput.focus(); });
+// press "/" anywhere to jump to the search box
+document.addEventListener('keydown', ev => {
+  if(ev.key !== '/' || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+  const t = document.activeElement && document.activeElement.tagName;
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(t) || currentFilter === 'about') return;
+  ev.preventDefault();
+  searchInput.focus();
 });
 
 // ----- sort control (Featured / Newest / Oldest) -----
@@ -2028,13 +2187,10 @@ function buildFleet(){
     `<span class="leg"><span class="leg-sw" style="background:${CAT_META[c].color}"></span>${CAT_META[c].label} (${byCat[c].length})</span>`
   ).join('');
 
-  // flat list of buses ordered by category so colours form contiguous arcs
-  const ordered = [];
-  cats.forEach(c => byCat[c].forEach(e => ordered.push({e, cat:c, color:CAT_META[c].color})));
-  const N = ordered.length;
+  const N = cats.reduce((n, c) => n + byCat[c].length, 0);
 
   // one bus image is tinted per category via a multiply filter (keeps the line-drawing detail)
-  const BW = 40, BH = BW * 592 / 1792;   // bus.png is 1792x592
+  const BW = 44, BH = BW * 592 / 1792;   // bus.png is 1792x592
   const filters = cats.map(c =>
     `<filter id="tint-${c}" x="-5%" y="-5%" width="110%" height="110%">`
     + `<feFlood flood-color="${CAT_META[c].color}" result="c"/>`
@@ -2043,37 +2199,101 @@ function buildFleet(){
     + `</filter>`
   ).join('');
 
-  const W = 680, H = 600, cx = 340, cy = 300, Rin = 150, Rout = 212;
-  let s = `<svg class="roundabout" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A roundabout with ${N} tiny buses around it, one per poll, coloured by section">`;
+  // ----- street-map layout: a depot per section (largest first), buses parked in bays, roads and roundabouts between -----
+  const W = 720, M = 22, G = 48, COLS = 2, PAD = 18, HEAD = 46, BAYGAP = 8, ROWH = BH + 16;
+  const bw = (W - 2*M - (COLS-1)*G) / COLS;
+  const perRow = Math.max(1, Math.floor((bw - 2*PAD + BAYGAP) / (BW + BAYGAP)));
+  const districts = cats.slice().sort((a, b) => byCat[b].length - byCat[a].length || CAT_ORDER.indexOf(a) - CAT_ORDER.indexOf(b));
+  const rows = [];
+  for(let i = 0; i < districts.length; i += COLS) rows.push(districts.slice(i, i + COLS));
+  const rowH = rows.map(r => HEAD + Math.max(...r.map(c => Math.ceil(byCat[c].length / perRow))) * ROWH + 10);
+  const H = 2*M + rowH.reduce((a, b) => a + b, 0) + (rows.length - 1) * G;
+  const rowTop = []; { let yy = M; rows.forEach((r, ri) => { rowTop.push(yy); yy += rowH[ri] + G; }); }
+  const xMid = M + bw + G/2;
+  const lane = 'fill="none" stroke="var(--bg)" stroke-width="1.6" stroke-dasharray="9 8"';
+
+  let s = `<svg class="roundabout" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A street map of ${N} buses, one per poll, parked in a depot for each section and coloured by section">`;
   s += `<defs>${filters}</defs>`;
-  // approach roads (behind everything)
-  s += `<rect x="0" y="${cy-26}" width="${W}" height="52" fill="var(--rule)"/>`;
-  s += `<rect x="${cx-26}" y="0" width="52" height="${H}" fill="var(--rule)"/>`;
-  // roundabout: road ring + grass island
-  s += `<circle cx="${cx}" cy="${cy}" r="82" fill="var(--rule)"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="66" fill="none" stroke="var(--bg)" stroke-width="2" stroke-dasharray="6 7"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="54" fill="#6FA463"/>`;
-  s += `<circle cx="${cx}" cy="${cy}" r="54" fill="none" stroke="#5B8C50" stroke-width="2"/>`;
-  s += `<text x="${cx}" y="${cy-3}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="28" fill="#ffffff">${N}</text>`;
-  s += `<text x="${cx}" y="${cy+16}" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="600" font-size="11" letter-spacing="1" fill="#eef4ea">BUSES</text>`;
-  // buses kept upright (roof up), staggered across two lanes so 54 fit without overlap
-  ordered.forEach((o, i) => {
-    const a = (i / N) * Math.PI * 2 - Math.PI/2;      // start at top, contiguous colour arcs
-    const R = (i % 2 === 0) ? Rout : Rin;
-    const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
-    const q = (o.e.question || '').replace(/"/g,'&quot;');
-    s += `<g class="rbus" data-cat="${o.cat}" transform="translate(${(x-BW/2).toFixed(1)},${(y-BH/2).toFixed(1)})" role="button" tabindex="0">`
-      + `<title>${q}</title>`
-      + `<image href="bus.png" x="0" y="0" width="${BW}" height="${BH.toFixed(1)}" filter="url(#tint-${o.cat})"/>`
-      + `</g>`;
+  // roads: the whole canvas is tarmac, the depots sit on top, and what is left between them is the street grid
+  s += `<rect width="${W}" height="${H}" rx="14" fill="var(--rule)"/>`;
+  s += `<rect x="${M/2}" y="${M/2}" width="${W-M}" height="${H-M}" rx="10" ${lane}/>`;
+  s += `<line x1="${xMid}" y1="${M/2}" x2="${xMid}" y2="${H-M/2}" ${lane}/>`;
+  for(let i = 1; i < rows.length; i++){
+    const yy = rowTop[i] - G/2;
+    s += `<line x1="${M/2}" y1="${yy}" x2="${W-M/2}" y2="${yy}" ${lane}/>`;
+  }
+
+  rows.forEach((r, ri) => {
+    r.forEach((c, ci) => {
+      const bx = M + ci * (bw + G), by = rowTop[ri], bh = rowH[ri];
+      const col = CAT_META[c].color, list = byCat[c], n = list.length;
+      const label = escapeForHtml(CAT_META[c].label);
+      // depot: paper-coloured base, then a faint wash of the section colour
+      s += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="12" fill="var(--bg)"/>`;
+      s += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="12" fill="${col}" fill-opacity="0.09" stroke="${col}" stroke-opacity="0.45" stroke-width="1"/>`;
+      // depot sign (also a link to the section)
+      s += `<g class="rbus" data-cat="${c}" role="button" tabindex="0">`
+        + `<title>${label}: ${n} ${n === 1 ? 'poll' : 'polls'}</title>`
+        + `<rect x="${bx}" y="${by}" width="${bw}" height="${HEAD}" fill="transparent"/>`
+        + `<circle cx="${bx + PAD + 5}" cy="${by + 23}" r="5" fill="${col}"/>`
+        + `<text x="${bx + PAD + 18}" y="${by + 27.5}" font-family="Archivo, sans-serif" font-weight="700" font-size="13" letter-spacing="1" fill="var(--ink)">${label.toUpperCase()}</text>`
+        + `<text x="${bx + bw - PAD}" y="${by + 27.5}" text-anchor="end" font-family="Archivo, sans-serif" font-weight="600" font-size="12" fill="var(--ink-soft)">${n} ${n === 1 ? 'poll' : 'polls'}</text>`
+        + `</g>`;
+      s += `<line x1="${bx + PAD}" y1="${by + HEAD - 6}" x2="${bx + bw - PAD}" y2="${by + HEAD - 6}" stroke="${col}" stroke-opacity="0.3" stroke-width="1"/>`;
+      // bays: a baseline under each row and a divider between neighbours
+      const full = perRow * BW + (perRow - 1) * BAYGAP;
+      const x0 = bx + (bw - full) / 2;
+      const nRows = Math.ceil(n / perRow);
+      for(let rr = 0; rr < nRows; rr++){
+        const occ = Math.min(perRow, n - rr * perRow);
+        const yb = by + HEAD + rr * ROWH + 4;
+        const xr = x0 + occ * BW + (occ - 1) * BAYGAP;
+        s += `<line x1="${(x0 - 4).toFixed(1)}" y1="${(yb + BH + 5).toFixed(1)}" x2="${(xr + 4).toFixed(1)}" y2="${(yb + BH + 5).toFixed(1)}" stroke="var(--bg)" stroke-width="1.2"/>`;
+        for(let k = 0; k <= occ; k++){
+          const dx = x0 + k * (BW + BAYGAP) - BAYGAP / 2;
+          s += `<line x1="${dx.toFixed(1)}" y1="${(yb - 3).toFixed(1)}" x2="${dx.toFixed(1)}" y2="${(yb + BH + 5).toFixed(1)}" stroke="var(--bg)" stroke-width="1.2"/>`;
+        }
+      }
+      // the buses themselves
+      list.forEach((e, i) => {
+        const rr = Math.floor(i / perRow), cc = i % perRow;
+        const x = x0 + cc * (BW + BAYGAP), y = by + HEAD + rr * ROWH + 4;
+        s += `<g class="rbus" data-cat="${c}" transform="translate(${x.toFixed(1)},${y.toFixed(1)})" role="button" tabindex="0">`
+          + `<title>${escapeForHtml(e.question || '')}</title>`
+          + `<image href="bus.png" x="0" y="0" width="${BW}" height="${BH.toFixed(1)}" filter="url(#tint-${c})"/>`
+          + `</g>`;
+      });
+    });
   });
+
+  // roundabouts where the streets cross (the first one carries the total)
+  for(let i = 1; i < rows.length; i++){
+    const yy = rowTop[i] - G/2;
+    s += `<circle cx="${xMid}" cy="${yy}" r="30" fill="var(--rule)"/>`;
+    s += `<circle cx="${xMid}" cy="${yy}" r="23" fill="none" stroke="var(--bg)" stroke-width="1.6" stroke-dasharray="5 6"/>`;
+    s += `<circle cx="${xMid}" cy="${yy}" r="14.5" fill="var(--map-green)" stroke="var(--map-green-edge)" stroke-width="1.5"/>`;
+    // zebra crossings on the four approaches
+    const zebra = (zx, zy, vertical) => {
+      let out = '';
+      for(let k = -2.5; k <= 2.5; k++){
+        const off = k * 6.4;
+        out += vertical
+          ? `<rect x="${(zx + off - 1.7).toFixed(1)}" y="${zy - 6}" width="3.4" height="12" rx="0.6" fill="var(--bg)" fill-opacity="0.85"/>`
+          : `<rect x="${zx - 6}" y="${(zy + off - 1.7).toFixed(1)}" width="12" height="3.4" rx="0.6" fill="var(--bg)" fill-opacity="0.85"/>`;
+      }
+      return out;
+    };
+    s += zebra(xMid, yy - 46, true) + zebra(xMid, yy + 46, true) + zebra(xMid - 46, yy, false) + zebra(xMid + 46, yy, false);
+    if(i === 1) s += `<text x="${xMid}" y="${yy + 5}" text-anchor="middle" font-family="Archivo Black, sans-serif" font-size="14" fill="var(--ink)">${N}</text>`;
+  }
   s += `</svg>`;
   fleet.innerHTML = s;
 
   fleet.querySelectorAll('.rbus').forEach(el => {
+    el.addEventListener('keydown', ev => { if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); el.dispatchEvent(new Event('click')); } });
     el.addEventListener('click', () => {
       const tab = document.querySelector(`.tab[data-cat="${el.getAttribute('data-cat')}"]`);
-      if(tab){ tab.click(); window.scrollTo({top:0, behavior:'smooth'}); }
+      if(tab){ resetSearchQuietly(); tab.click(); window.scrollTo({top:0, behavior:'smooth'}); }
     });
   });
 }
