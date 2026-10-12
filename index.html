@@ -187,8 +187,8 @@ nav{
 .hero{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,.9fr); column-gap:40px; row-gap:0; align-content:center; align-items:start; border-bottom:none !important; padding-bottom:36px;}
 .hero > h1{margin-top:0;}
 .hero > .route-tag,.hero > h1,.hero > p{grid-column:1;}
-.hero-viz{grid-column:2; grid-row:1 / span 5; align-self:center; justify-self:end; width:100%; max-width:380px;}
-.dots{display:grid; grid-template-columns:repeat(10,1fr); gap:9px; padding:22px; background:#fff; border:2.5px solid var(--ink); border-radius:18px; box-shadow:7px 7px 0 var(--ink);}
+.hero-viz{grid-column:2; grid-row:1 / span 5; align-self:center; justify-self:end; width:100%; max-width:300px;}
+.dots{display:grid; grid-template-columns:repeat(10,1fr); gap:9px; padding:22px; background:#fff; border:1px solid var(--line); border-radius:16px;}
 :root[data-theme="dark"] .dots{background:var(--card, #1d2125);}
 .dots i{aspect-ratio:1; border-radius:50%; background:var(--d); transform:scale(0); animation:dotpop .5s cubic-bezier(.2,1.6,.4,1) forwards; animation-delay:calc(var(--n) * 14ms + 150ms);}
 @keyframes dotpop{to{transform:scale(1);}}
@@ -204,11 +204,6 @@ nav{
 .ticker:hover .ticker-track{animation-play-state:paused;}
 .ticker-track span{padding:0 22px;} .ticker-track span::after{content:'\25CF'; margin-left:44px; color:var(--dc);}
 @keyframes tick{to{transform:translateX(-50%);}}
-.tab.active,.sortbtn.active{box-shadow:3px 3px 0 var(--ink);}
-.sortbtn,.search-input{border-width:2px; border-color:var(--ink);}
-.sortbtn{box-shadow:2px 2px 0 var(--ink);}
-.search-input{box-shadow:4px 4px 0 var(--ink);}
-.sidebar-box{border:2.5px solid var(--ink) !important; box-shadow:5px 5px 0 var(--ink);}
 @media (max-width:860px){ .hero{grid-template-columns:1fr; gap:24px;} .hero-viz{grid-column:1; grid-row:auto; justify-self:start; max-width:300px;} .dots{gap:7px; padding:16px;} .hero{padding-top:36px;} .stat-row{grid-template-columns:repeat(2,1fr);} }
 
 /* ---------- LAYOUT: fixed left sidebar + content ---------- */
@@ -702,8 +697,6 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 <p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
 
 </section>
-<section class="stat-row" id="statRow" aria-label="Key numbers"></section>
-<div class="ticker" aria-hidden="true"><div class="ticker-track" id="tickerTrack"></div></div>
 
 <div class="layout">
   <aside class="sidebar">
