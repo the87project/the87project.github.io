@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found | The 87 Project</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+@font-face{font-family:'Archivo Black'; font-weight:400; font-display:swap; src:url('/fonts/archivo-black-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter'; font-weight:100 900; font-display:swap; src:url('/fonts/inter-latin-wght-normal.woff2') format('woff2');}
+:root{--bg:#FAF6EC; --ink:#1A1A1A; --soft:#5E5A50; --red:#DC241F;}
+@media (prefers-color-scheme:dark){:root{--bg:#14171A; --ink:#F2F1EA; --soft:#B3AFA2; --red:#EF4A43;}}
+*{box-sizing:border-box; margin:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Inter',-apple-system,sans-serif; min-height:100vh; display:flex; flex-direction:column;}
+.band{background:#DC241F; color:#FFF6E0; padding:18px 24px; font-family:'Archivo Black',sans-serif; text-transform:uppercase; letter-spacing:.02em;}
+main{flex:1; display:flex; flex-direction:column; justify-content:center; max-width:640px; margin:0 auto; padding:48px 24px;}
+.big{font-family:'Archivo Black',sans-serif; font-size:clamp(88px,22vw,180px); line-height:.95; color:var(--red);}
+h1{font-family:'Archivo Black',sans-serif; text-transform:uppercase; font-size:clamp(24px,5vw,34px); margin:18px 0 12px;}
+p{color:var(--soft); line-height:1.65; font-size:17px; max-width:46ch;}
+a.btn{display:inline-block; margin-top:26px; background:var(--red); color:#fff; text-decoration:none; font-weight:700; padding:13px 22px; border-radius:10px; align-self:flex-start;}
+a.btn:focus-visible{outline:3px solid var(--ink); outline-offset:3px;}
+</style>
+</head>
+<body>
+<div class="band">The 87 Project</div>
+<main>
+  <div class="big" aria-hidden="true">404</div>
+  <h1>This bus doesn't stop here</h1>
+  <p>We couldn't find that page. The poll you were after may have moved, or the link may have a typo.</p>
+  <a class="btn" href="/">Back to all the buses</a>
+</main>
+</body>
+</html>

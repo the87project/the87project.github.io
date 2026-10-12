@@ -13,6 +13,8 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="fonts/archivo-black-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>
 (function(){
   try{
@@ -23,7 +25,10 @@
 })();
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Archivo+Black&family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@font-face{font-family:'Archivo Black'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/archivo-black-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Archivo'; font-style:normal; font-weight:100 900; font-display:swap; src:url('fonts/archivo-latin-wght-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter'; font-style:normal; font-weight:100 900; font-display:swap; src:url('fonts/inter-latin-wght-normal.woff2') format('woff2');}
+@font-face{font-family:'Playfair Display'; font-style:normal; font-weight:400 900; font-display:swap; src:url('fonts/playfair-display-latin-wght-normal.woff2') format('woff2');}
 
 :root{
   --bg:#FAF6EC;
@@ -33,7 +38,7 @@
   --line-soft:#E6DFCC;
   --ink:#1A1A1A;
   --ink-soft:#6B675E;
-  --slate:#83898F;
+  --slate:#6A7077;
   --accent:#DC241F;
   --hover-tint:#F8E8DC;
   --on-accent:#fff;
@@ -59,7 +64,7 @@
   --slate:#9CA2A8;
   --accent:#EF4A43;
   --hover-tint:#271A1A;
-  --on-accent:#fff;
+  --on-accent:#14171A;
   --text-warm:#D8D4C8;
   --badge-out-text:#B3AFA2;
   --badge-out-border:#3A3F44;
@@ -425,7 +430,7 @@ main[hidden]{display:none;}
 }
 .badge-out{color:var(--badge-out-text); border-color:var(--badge-out-border); background:var(--badge-out-bg);}
 .badge-in{color:var(--on-accent); border-color:var(--accent); background:var(--accent);}
-.badge-stay{color:var(--on-accent); border-color:#2AA198; background:#2AA198;}
+.badge-stay{color:#fff; border-color:#1F7F78; background:#1F7F78;}
 .pair-name{
   font-family:'Archivo',sans-serif;
   font-weight:700;
@@ -566,6 +571,17 @@ main[hidden]{display:none;}
 .react-btn:disabled{opacity:.85; cursor:default;}
 .react-count{font-weight:700;}
 
+
+/* accessibility */
+.skip-link{position:absolute; left:12px; top:-60px; z-index:100; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-family:'Archivo',sans-serif; font-weight:700; font-size:14px; text-decoration:none;}
+.skip-link:focus{top:12px;}
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+.search-input:focus-visible{outline:none;}
+.footer-links{display:flex; flex-wrap:wrap; gap:6px 18px; margin:0 0 14px; font-family:'Archivo',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:.04em; text-transform:uppercase;}
+.footer-links a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line-soft); padding:2px 0;}
+.footer-links a:hover{color:var(--accent); border-color:var(--accent);}
+.footer-note{margin-top:10px;}
+@media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none !important; transition:none !important; scroll-behavior:auto !important;} }
 footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 .footer-inner{
   max-width:1100px; margin:0 auto;
@@ -580,8 +596,9 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#entries">Skip to the polls</a>
 
-<nav>
+<nav aria-label="Site header">
   <div class="nav-inner">
     <span class="brand">The 87</span>
     <div class="nav-right">
@@ -594,7 +611,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   </div>
 </nav>
 
-<section class="hero">
+<section class="hero" aria-label="Introduction">
   <h1>Put 87 people on one double-decker <span>and ask them the big questions.</span></h1>
   <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.</p>
 </section>
@@ -603,12 +620,12 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   <aside class="sidebar">
     <nav class="sidebar-box" id="tabs" aria-label="Sections">
       <button class="tab active" data-cat="all">All</button>
-      <button class="tab" data-cat="cabinet">Burnham's Cabinet</button>
       <button class="tab" data-cat="tech">Technology &amp; AI</button>
       <button class="tab" data-cat="health">Health &amp; Ethics</button>
       <button class="tab" data-cat="economy">Economy</button>
       <button class="tab" data-cat="society">Society</button>
       <button class="tab" data-cat="politics">Politics</button>
+      <button class="tab" data-cat="cabinet">Burnham's Cabinet</button>
       <button class="tab tab-about" data-cat="about">About</button>
     </nav>
   </aside>
@@ -621,13 +638,13 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
       <div class="search-suggest" id="searchSuggest" role="listbox" aria-label="Search suggestions" hidden></div>
     </div>
     <p class="search-status" id="searchStatus" aria-live="polite" hidden></p>
-    <div class="sortbar" id="sortbar">
+    <div class="sortbar" id="sortbar" role="region" aria-label="Sort polls">
       <span class="sortbar-label">Sort</span>
       <button class="sortbtn active" data-sort="default" type="button">Featured</button>
       <button class="sortbtn" data-sort="new" type="button">Newest first</button>
       <button class="sortbtn" data-sort="old" type="button">Oldest first</button>
     </div>
-    <main id="entries"></main>
+    <main id="entries" tabindex="-1"></main>
 
     <section id="about" class="about-section" hidden>
       <div class="about-inner">
@@ -641,7 +658,7 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
         <p>Every entry starts as a set of percentages from a single poll. Each percentage is converted to a seat count by multiplying by 87 and rounding to the nearest whole passenger &mdash; so 4% becomes roughly 3.5, which rounds up or down depending on what else is happening on the bus. Because real-world percentages rarely divide evenly into 87 seats, the rounded totals are then nudged, one seat at a time, from whichever group currently holds the most passengers, until the bus seats exactly 87 people.</p>
         <p>No group that registered a genuine, non-zero share in the source polling is ever rounded down to zero. If 1% of respondents held a view, at least one person is on that bus holding it.</p>
         <p>Where a poll reports a &ldquo;don't know&rdquo;, &ldquo;unsure&rdquo;, or &ldquo;undecided&rdquo; share, those passengers are drawn as flat, translucent grey figures and seated at the back of each deck &mdash; visually distinct, but still counted and still on the bus. Hiding or excluding undecided respondents would flatter the size of the &ldquo;real&rdquo; majority; The 87 keeps them in view instead.</p>
-        <p>Every figure on this site comes from a named, publicly available poll or official statistical release, drawn mainly from a short list of recognised sources:</p>
+        <p>Every figure on this site comes from a named, publicly available poll, official statistical release or published research, drawn mainly from a short list of recognised sources:</p>
         <ul class="method-list">
           <li>YouGov</li>
           <li>Ipsos</li>
@@ -649,8 +666,9 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
           <li>The Office for National Statistics (ONS)</li>
           <li>GOV.UK statistical releases</li>
           <li>House of Commons Library briefings</li>
+          <li>Sutton Trust, the Parker Review, British Future and other published research</li>
         </ul>
-        <p>Each entry links directly to its original source. Nothing on this site is estimated, modelled, or invented &mdash; if a well-sourced, reasonably recent figure for a question can't be found, the entry simply doesn't get made.</p>
+        <p>Each entry links directly to its original source. Nothing on this site is modelled or invented by us. A few entries rest on published estimates rather than an official count (for example, how many MPs are Black or from working-class jobs, where no official record exists) and each of those says so in its commentary and source line. If a well-sourced, reasonably recent figure for a question can't be found, the entry simply doesn't get made.</p>
         <p>Polls are not perfectly interchangeable. Different pollsters use different panels, question wording, and fieldwork dates, so figures from two different organisations on a related topic &mdash; most visibly in the Cabinet section, which mixes YouGov and Ipsos favourability data &mdash; should be read as two separate snapshots rather than one continuous trend. Where it materially affects how a result should be read, the entry's own analysis says so explicitly.</p>
         <p>New entries are added as new, well-sourced UK polling becomes available, with the most recent questions and Society-category entries prioritised nearer the top of the feed so the newest thinking is the first thing you see. There's no fixed publishing schedule &mdash; this is an independent, personal project, updated as time and good data allow.</p>
 
@@ -665,9 +683,40 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
 
 <footer>
   <div class="footer-inner">
+    <div class="footer-links" role="navigation" aria-label="Footer">
+      <a href="#about" data-goto="about">About</a>
+      <a href="#methodology" data-goto="about" data-anchor="methodology">Methodology &amp; sources</a>
+      <a href="#our-buses" data-goto="about" data-anchor="our-buses">Our buses</a>
+      <a href="https://github.com/the87project/the87project.github.io/issues" rel="noopener">Report a correction</a>
+    </div>
     <strong>About the numbers.</strong> Figures are drawn from publicly reported polling. Each question is redrawn as one full double-decker bus of 87 people — the capacity of a New Routemaster (40 upper deck, 47 below) — so one passenger represents ~1.15% of respondents; rounding applies, and no group that registered in the source polling is ever rounded off the bus entirely. All commentary is original and independent, and every entry links to its source. Cabinet favourability figures mix YouGov and Ipsos polling, whose question wording differs — they are not directly comparable. Built as a personal data &amp; policy project.
   </div>
+  <p class="footer-note" id="analyticsNote" hidden>This site counts visits with GoatCounter: anonymous, no cookies, nothing that identifies you.</p>
 </footer>
+
+<script>
+// footer links that open the About tab
+document.querySelectorAll('[data-goto="about"]').forEach(function(a){
+  a.addEventListener('click', function(ev){
+    ev.preventDefault();
+    var t = document.querySelector('.tab[data-cat="about"]'); if(t) t.click();
+    var id = a.getAttribute('data-anchor');
+    var el = id ? document.getElementById(id) : document.getElementById('about');
+    if(el){ el.scrollIntoView(); if(el.tabIndex < 0 && !/^H[1-6]$/.test(el.tagName)) el.tabIndex = -1; }
+  });
+});
+// privacy-friendly analytics (GoatCounter): off until a site code is set here, and never runs when Do Not Track is on
+window.THE87_GOATCOUNTER = '';
+(function(){
+  var code = window.THE87_GOATCOUNTER;
+  if(!code || navigator.doNotTrack === '1') return;
+  var s = document.createElement('script');
+  s.async = true; s.src = 'https://gc.zgo.at/count.js';
+  s.setAttribute('data-goatcounter', 'https://' + code + '.goatcounter.com/count');
+  document.head.appendChild(s);
+  var n = document.getElementById('analyticsNote'); if(n) n.hidden = false;
+})();
+</script>
 
 <script>
 (function(){
@@ -2053,6 +2102,7 @@ function roomSvg(groups, seedNum, flipped){
     counts[idx] += diff > 0 ? -1 : 1;
     diff += diff > 0 ? -1 : 1;
   }
+  svg = svg.replace('grouped by opinion', 'grouped by opinion: ' + groups.map((g, i) => escapeForHtml(g.label) + ' ' + counts[i]).join(', '));
 
   // ----- 87 places mapped to each artwork's transparent window bands -----
   // flipped = outgoing minister: uses the left-facing "departing" artwork, whose cab sits on the
@@ -2414,8 +2464,9 @@ function render(){
 
 tabs.forEach(tab=>{
   tab.addEventListener('click', ()=>{
-    tabs.forEach(t=>t.classList.remove('active'));
+    tabs.forEach(t=>{ t.classList.remove('active'); t.removeAttribute('aria-current'); });
     tab.classList.add('active');
+    tab.setAttribute('aria-current','true');
     currentFilter = tab.getAttribute('data-cat');
     if(currentFilter === 'about'){
       container.hidden = true;
