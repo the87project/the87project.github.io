@@ -187,6 +187,40 @@ nav{
 .search-empty p{margin:0 0 6px;}
 .search-empty .search-empty-title{font-family:'Archivo Black',sans-serif; text-transform:uppercase; font-size:18px; color:var(--ink); margin-bottom:10px;}
 @media (max-width:760px){ .search-input{font-size:16px;} }
+.search-via{font-weight:500; letter-spacing:0; color:var(--slate);}
+.search-suggest{
+  position:absolute; left:0; right:0; top:calc(100% + 8px); z-index:30;
+  background:var(--bg); border:1px solid var(--line-soft); border-radius:18px;
+  box-shadow:0 14px 34px rgba(20,20,20,.14);
+  padding:4px 8px 12px; max-height:min(64vh,440px); overflow:auto; text-align:left;
+}
+:root[data-theme="dark"] .search-suggest{box-shadow:0 14px 34px rgba(0,0,0,.55);}
+.search-suggest[hidden]{display:none;}
+.sg-title{font-family:'Archivo',sans-serif; font-weight:700; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--slate); padding:12px 8px 6px;}
+.sg-chips{display:flex; flex-wrap:wrap; gap:6px; padding:0 4px;}
+.sg-chips-center{justify-content:center; margin-top:18px;}
+.sg-chip{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:13px; color:var(--ink);
+  background:var(--bg); border:1px solid var(--line-soft); border-radius:999px;
+  padding:6px 12px; cursor:pointer; transition:all .12s ease;
+}
+.sg-chip:hover,.sg-chip.active{border-color:var(--accent); color:var(--accent); background:var(--hover-tint);}
+.sg-n{font-size:11px; font-weight:700; color:var(--slate);}
+.sg-chip:hover .sg-n,.sg-chip.active .sg-n{color:inherit;}
+.sg-item{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; text-align:left;
+  font-family:'Archivo',sans-serif; font-weight:500; font-size:14px; color:var(--ink);
+  background:none; border:none; border-radius:10px; padding:9px 10px; cursor:pointer;
+}
+.sg-item b{font-weight:800;}
+.sg-item:hover,.sg-item.active{background:var(--hover-tint); color:var(--accent);}
+.sg-count{font-size:11.5px; font-weight:700; color:var(--slate); white-space:nowrap;}
+.search-divider{margin:34px 0 4px; max-width:760px;}
+.search-divider-title{display:block; font-family:'Archivo',sans-serif; font-weight:800; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink);}
+.search-divider-note{display:block; font-family:'Archivo',sans-serif; font-weight:500; font-size:13px; color:var(--ink-soft); margin-top:4px;}
+.search-divider + .entry{border-top:none; padding-top:26px;}
+.search-rel-tag{color:var(--accent); font-weight:700;}
 
 :root{--map-green:#D3DFCB; --map-green-edge:#B7C9AD;}
 :root[data-theme="dark"]{--map-green:#2F3F33; --map-green-edge:#44594A;}
@@ -564,8 +598,9 @@ footer{border-top:1px solid var(--line); padding:32px 24px 48px;}
   <div class="content">
     <div class="searchbar" id="searchbar" role="search">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
-      <input id="searchInput" class="search-input" type="search" placeholder="Search the polls, e.g. wealth tax, NHS, Farage" aria-label="Search polls" autocomplete="off" spellcheck="false">
+      <input id="searchInput" class="search-input" type="search" placeholder="Search the polls, e.g. poverty, women, NHS, Farage" aria-label="Search polls" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="searchSuggest" aria-autocomplete="list">
       <button id="searchClear" class="search-clear" type="button" aria-label="Clear search" hidden>&times;</button>
+      <div class="search-suggest" id="searchSuggest" role="listbox" aria-label="Search suggestions" hidden></div>
     </div>
     <p class="search-status" id="searchStatus" aria-live="polite" hidden></p>
     <div class="sortbar" id="sortbar">
@@ -644,6 +679,7 @@ const ENTRIES = [
     id: 'graduate-employment',
     cat: 'economy', catLabel: 'Economy', date: '2024',
     question: 'What jobs do UK graduates actually end up in?',
+    tags: 'jobs university students graduates careers work',
     groups: [
       {label:'In a graduate-level job', pct:68, color:'#2E5FB7'},
       {label:'Employed, non-graduate-level job', pct:20, color:'#E28A2B'},
@@ -657,6 +693,7 @@ const ENTRIES = [
     id: 'digital-id-cards-2026',
     cat: 'tech', catLabel: 'Technology & AI', date: 'Jan 2026',
     question: 'Do you support or oppose introducing a national identity card scheme?',
+    tags: 'privacy identity cards id cards surveillance',
     groups: [
       {label:'Oppose', pct:40, color:'#C93B32'},
       {label:'Support', pct:32, color:'#2E5FB7'},
@@ -670,6 +707,7 @@ const ENTRIES = [
     id: 'ai-safety',
     cat: 'tech', catLabel: 'Technology & AI', date: 'Jan 2026',
     question: 'Should AI developers have to prove their systems are safe before release?',
+    tags: 'artificial intelligence regulation technology',
     groups: [
       {label:'Yes — prove it first', pct:87, color:'#2E5FB7'},
       {label:'No / unsure', pct:13, color:'#A9A69E'},
@@ -683,6 +721,7 @@ const ENTRIES = [
     id: 'ai-jobs-automation',
     cat: 'tech', catLabel: 'Technology & AI', date: 'May 2023',
     question: 'Will AI and automation destroy more jobs than they create?',
+    tags: 'artificial intelligence jobs work technology workers',
     groups: [
       {label:'More jobs will be lost', pct:64, color:'#C93B32'},
       {label:'More jobs will be created', pct:7, color:'#4C9A3F'},
@@ -696,6 +735,7 @@ const ENTRIES = [
     id: 'facial-recognition-vans',
     cat: 'tech', catLabel: 'Technology & AI', date: 'Feb 2026',
     question: 'Should the government fund live facial recognition vans for policing?',
+    tags: 'police policing surveillance privacy crime',
     groups: [
       {label:'Support', pct:64, color:'#2E5FB7'},
       {label:'Oppose', pct:17, color:'#C93B32'},
@@ -709,6 +749,7 @@ const ENTRIES = [
     id: 'ai-tax',
     cat: 'economy', catLabel: 'Economy', date: 'May 2026',
     question: 'Should work carried out by AI be taxed differently to human labour?',
+    tags: 'artificial intelligence jobs work tax technology',
     groups: [
       {label:'Support an AI tax', pct:47, color:'#4C9A3F'},
       {label:'Undecided', pct:33, color:'#A9A69E'},
@@ -723,6 +764,7 @@ const ENTRIES = [
     id: 'wealth-tax-oneoff',
     cat: 'economy', catLabel: 'Economy', date: 'Jan 2023',
     question: 'Should the UK introduce a one-off 1% wealth tax on wealth over £500,000?',
+    tags: 'rich millionaires billionaires inequality tax fairness',
     groups: [
       {label:'Support', pct:53, color:'#4C9A3F'},
       {label:'Oppose', pct:25, color:'#C93B32'},
@@ -736,6 +778,7 @@ const ENTRIES = [
     id: 'assisted-dying',
     cat: 'health', catLabel: 'Health & Ethics', date: 'Jan 2026',
     question: 'Should assisted dying be legal in the UK, in principle?',
+    tags: 'dying euthanasia terminal illness right to die end of life',
     groups: [
       {label:'Support in principle', pct:76, color:'#2AA198'},
       {label:'Oppose', pct:14, color:'#C93B32'},
@@ -749,6 +792,7 @@ const ENTRIES = [
     id: 'smartphones-focus',
     cat: 'society', catLabel: 'Society', date: '2026',
     question: "Do smartphones harm society's ability to focus?",
+    tags: 'phones screens screen time attention technology',
     groups: [
       {label:'Yes, they harm focus', pct:76, color:'#E28A2B'},
       {label:'Disagree or unsure', pct:24, color:'#A9A69E'},
@@ -761,6 +805,7 @@ const ENTRIES = [
     id: 'business-ai-risk',
     cat: 'economy', catLabel: 'Economy', date: '2026',
     question: 'Do business leaders see AI regulation itself as a business risk?',
+    tags: 'artificial intelligence regulation business',
     groups: [
       {label:'Cite future regulation as a key risk', pct:50, color:'#D9B417'},
       {label:'Did not cite it', pct:50, color:'#A9A69E'},
@@ -773,6 +818,7 @@ const ENTRIES = [
     id: 'assisted-dying-moreincommon',
     cat: 'health', catLabel: 'Health & Ethics', date: '2026',
     question: 'Should assisted dying be legal in the UK, in principle?',
+    tags: 'dying euthanasia terminal illness right to die end of life',
     groups: [
       {label:'Support in principle', pct:65, color:'#2AA198'},
       {label:'Oppose', pct:13, color:'#C93B32'},
@@ -786,6 +832,7 @@ const ENTRIES = [
     id: 'unpaid-care',
     cat: 'health', catLabel: 'Health & Ethics', date: '2023',
     question: 'How many people provide unpaid care for a family member or friend?',
+    tags: 'carers social care family caring elderly disabled',
     groups: [
       {label:'Provide 50+ hrs of care a week', pct:3, color:'#C93B32'},
       {label:'Provide unpaid care, fewer hours', pct:6, color:'#E28A2B'},
@@ -799,6 +846,7 @@ const ENTRIES = [
     id: 'party-membership',
     cat: 'society', catLabel: 'Society', date: '2025',
     question: 'How many UK adults are members of a political party?',
+    tags: 'political parties democracy membership',
     groups: [
       {label:'Member of a political party', pct:2, color:'#2E5FB7'},
       {label:'Not a member of any party', pct:98, color:'#A9A69E'},
@@ -811,6 +859,7 @@ const ENTRIES = [
     id: 'fraud-victims',
     cat: 'society', catLabel: 'Society', date: '2020',
     question: 'How many adults are victims of fraud each year?',
+    tags: 'crime scams victims police',
     groups: [
       {label:'Victim of fraud in the past year', pct:7, color:'#C93B32'},
       {label:'Not a victim in the past year', pct:93, color:'#A9A69E'},
@@ -823,6 +872,7 @@ const ENTRIES = [
     id: 'occupation-breakdown',
     cat: 'society', catLabel: 'Society', date: '2021',
     question: 'What kind of work does Britain actually do?',
+    tags: 'jobs work employment careers workers',
     groups: [
       {label:'Professional occupations', pct:26, color:'#2E5FB7'},
       {label:'Associate professional & technical', pct:15, color:'#2AA198'},
@@ -842,6 +892,7 @@ const ENTRIES = [
     id: 'farage-sleaze',
     cat: 'society', catLabel: 'Society', date: '2026',
     question: "Do Britons see Nigel Farage as 'sleazy'?",
+    tags: 'trust corruption scandal standards honesty',
     groups: [
       {label:'Yes, very sleazy', pct:56, color:'#C93B32'},
       {label:'Yes, somewhat sleazy', pct:17, color:'#E28A2B'},
@@ -855,6 +906,7 @@ const ENTRIES = [
     id: 'government-sleaze',
     cat: 'society', catLabel: 'Society', date: '2026',
     question: 'Do people think British governments are generally sleazy?',
+    tags: 'trust corruption scandal standards honesty',
     groups: [
       {label:'Say governments are generally sleazy', pct:77, color:'#C93B32'},
       {label:'Disagree or unsure', pct:23, color:'#A9A69E'},
@@ -867,6 +919,7 @@ const ENTRIES = [
     id: 'labour-2024-voting-intention',
     cat: 'society', catLabel: 'Society', date: '2026',
     question: 'Where would 2024 Labour voters vote now?',
+    tags: 'voting intention election polling',
     groups: [
       {label:'Labour', pct:59, color:'#DC241F'},
       {label:'Reform UK', pct:10, color:'#12B6CF'},
@@ -884,6 +937,7 @@ const ENTRIES = [
     id: 'us-ally',
     cat: 'society', catLabel: 'Society', date: '2026',
     question: 'Do Britons still see the United States as an ally?',
+    tags: 'america trump nato foreign policy special relationship',
     groups: [
       {label:'An ally', pct:38, color:'#2E5FB7'},
       {label:'An enemy', pct:17, color:'#C93B32'},
@@ -897,6 +951,7 @@ const ENTRIES = [
     id: 'english-identity',
     cat: 'society', catLabel: 'Society', date: '2026',
     question: 'Are expressions of English identity celebrated enough?',
+    tags: 'national identity england patriotism flag culture',
     groups: [
       {label:'Not celebrated enough', pct:40, color:'#E28A2B'},
       {label:'About the right amount', pct:37, color:'#2AA198'},
@@ -910,6 +965,7 @@ const ENTRIES = [
     id: 'eu-rejoin',
     cat: 'politics', catLabel: 'Politics', date: 'Jun 2026',
     question: 'Would Britain vote to rejoin the EU?',
+    tags: 'brexit europe european union',
     groups: [
       {label:'Rejoin', pct:55, color:'#2E5FB7'},
       {label:'Stay out', pct:34, color:'#C93B32'},
@@ -923,6 +979,7 @@ const ENTRIES = [
     id: 'eu-optouts',
     cat: 'politics', catLabel: 'Politics', date: 'Jun 2026',
     question: 'And if rejoining meant losing our old opt-outs?',
+    tags: 'brexit europe european union',
     groups: [
       {label:'Support rejoining', pct:35, color:'#2E5FB7'},
       {label:'Oppose', pct:43, color:'#C93B32'},
@@ -952,6 +1009,7 @@ const ENTRIES = [
     id: 'monarchy',
     cat: 'politics', catLabel: 'Politics', date: 'Jan 2026',
     question: 'Should the UK keep the monarchy?',
+    tags: 'king royal family royals head of state constitution',
     groups: [
       {label:'Keep the monarchy', pct:64, color:'#D9B417'},
       {label:'Elected head of state', pct:23, color:'#2E5FB7'},
@@ -965,6 +1023,7 @@ const ENTRIES = [
     id: 'water-nationalisation',
     cat: 'economy', catLabel: 'Economy', date: 'May 2026',
     question: 'Who should run the water companies?',
+    tags: 'sewage utilities nationalisation public ownership privatisation',
     groups: [
       {label:'Public sector', pct:82, color:'#2E5FB7'},
       {label:'Private companies', pct:8, color:'#C93B32'},
@@ -978,6 +1037,7 @@ const ENTRIES = [
     id: 'social-media-ban',
     cat: 'society', catLabel: 'Society', date: 'Jun 2026',
     question: 'Ban under-16s from social media (via age verification)?',
+    tags: 'children kids teenagers online safety screen time phones age verification',
     groups: [
       {label:'Support a ban', pct:69, color:'#4C9A3F'},
       {label:'Oppose / unsure', pct:31, color:'#A9A69E'},
@@ -990,6 +1050,7 @@ const ENTRIES = [
     id: 'net-zero',
     cat: 'society', catLabel: 'Society', date: 'Jun 2026',
     question: 'Should the UK try to meet net zero by 2050?',
+    tags: 'climate climate change environment emissions energy carbon',
     groups: [
       {label:'Yes, keep the target', pct:63, color:'#4C9A3F'},
       {label:'No / scrap it', pct:29, color:'#C93B32'},
@@ -1003,6 +1064,7 @@ const ENTRIES = [
     id: 'immigration-decade',
     cat: 'politics', catLabel: 'Politics', date: 'Jan 2026',
     question: 'Has immigration over the last decade been too high?',
+    tags: 'migration migrants borders asylum net migration',
     groups: [
       {label:'Too high', pct:70, color:'#C93B32'},
       {label:"About right / too low / don't know", pct:30, color:'#A9A69E'},
@@ -1015,6 +1077,7 @@ const ENTRIES = [
     id: 'assisted-dying-bsa43',
     cat: 'health', catLabel: 'Health & Ethics', date: 'Feb 2026',
     question: 'Should doctors be allowed to help someone with an incurable, painful terminal illness end their life, if they ask?',
+    tags: 'dying euthanasia terminal illness right to die end of life',
     groups: [
       {label:'Definitely allow', pct:47, color:'#4C9A3F'},
       {label:'Probably allow', pct:32, color:'#2AA198'},
@@ -1029,6 +1092,7 @@ const ENTRIES = [
     id: 'lgb-identity-ons-2024',
     cat: 'society', catLabel: 'Society', date: '2024 (published 2026)',
     question: 'How would you describe your sexual identity?',
+    tags: 'lgbt gay lesbian bisexual sexuality census',
     groups: [
       {label:'Heterosexual or straight', pct:93.4, color:'#2E5FB7'},
       {label:'Gay or lesbian', pct:2.1, color:'#2AA198'},
@@ -1044,6 +1108,7 @@ const ENTRIES = [
     id: 'personal-optimism-2026',
     cat: 'society', catLabel: 'Society', date: 'Dec 2025',
     question: 'Do you think 2026 will be a better year for you personally than 2025 was?',
+    tags: 'mood optimism hope happiness future',
     groups: [
       {label:'Yes, optimistic', pct:58, color:'#4C9A3F'},
       {label:'Not optimistic / unsure', pct:42, color:'#A9A69E'},
@@ -1056,6 +1121,7 @@ const ENTRIES = [
     id: 'unrest-expectation-2026',
     cat: 'society', catLabel: 'Society', date: 'Dec 2025',
     question: 'Do you expect large-scale public unrest in Britain in 2026?',
+    tags: 'protests riots disorder tension',
     groups: [
       {label:'Yes, expect unrest', pct:75, color:'#C93B32'},
       {label:"Don't expect it / unsure", pct:25, color:'#A9A69E'},
@@ -1085,6 +1151,7 @@ const ENTRIES = [
     id: 'religion-2021',
     cat: 'society', catLabel: 'Society', date: 'Census 2021',
     question: 'What is your religion?',
+    tags: 'faith christian muslim census diversity minorities',
     groups: [
       {label:'Christian', pct:46.2, color:'#2E5FB7'},
       {label:'No religion', pct:37.2, color:'#4C9A3F'},
@@ -1100,6 +1167,7 @@ const ENTRIES = [
     id: 'ethnicity-2021',
     cat: 'society', catLabel: 'Society', date: 'Census 2021',
     question: 'Which ethnic group do you belong to?',
+    tags: 'race diversity minorities census',
     groups: [
       {label:'White', pct:81.7, color:'#2E5FB7'},
       {label:'Asian', pct:9.3, color:'#E28A2B'},
@@ -1115,6 +1183,7 @@ const ENTRIES = [
     id: 'housing-tenure-2021',
     cat: 'economy', catLabel: 'Economy', date: 'Census 2021',
     question: 'Do you own or rent the home you live in?',
+    tags: 'homeowners renters mortgage housing census',
     groups: [
       {label:'Owned outright', pct:33, color:'#4C9A3F'},
       {label:'Owned with a mortgage', pct:30, color:'#2AA198'},
@@ -1129,6 +1198,7 @@ const ENTRIES = [
     id: 'general-health-2021',
     cat: 'health', catLabel: 'Health & Ethics', date: 'Census 2021',
     question: 'How is your health in general?',
+    tags: 'health wellbeing census illness',
     groups: [
       {label:'Very good', pct:48.4, color:'#4C9A3F'},
       {label:'Good', pct:33.5, color:'#2AA198'},
@@ -1144,6 +1214,7 @@ const ENTRIES = [
     id: 'country-of-birth-2021',
     cat: 'society', catLabel: 'Society', date: 'Census 2021',
     question: 'Were you born in the United Kingdom?',
+    tags: 'immigration migrants born abroad census diversity',
     groups: [
       {label:'Born in the UK', pct:83.2, color:'#2E5FB7'},
       {label:'Born abroad', pct:16.8, color:'#E28A2B'},
@@ -1156,6 +1227,7 @@ const ENTRIES = [
     id: 'nhs-satisfaction-2025',
     cat: 'health', catLabel: 'Health & Ethics', date: 'Mar 2026',
     question: 'All in all, how satisfied or dissatisfied would you say you are with the way in which the National Health Service runs nowadays?',
+    tags: 'health hospital doctors waiting lists patients',
     groups: [
       {label:'Satisfied', pct:26, color:'#4C9A3F'},
       {label:'Neither / not stated', pct:23, color:'#A9A69E'},
@@ -1169,6 +1241,7 @@ const ENTRIES = [
     id: 'wealth-tax-2025',
     cat: 'economy', catLabel: 'Economy', date: 'Jul 2025',
     question: 'Would you support a 2% wealth tax on assets above £10 million?',
+    tags: 'rich millionaires billionaires inequality tax fairness',
     groups: [
       {label:'Strongly support', pct:49, color:'#4C9A3F'},
       {label:'Somewhat support', pct:26, color:'#2AA198'},
@@ -1183,6 +1256,7 @@ const ENTRIES = [
     id: 'smoking-ban-2025',
     cat: 'health', catLabel: 'Health & Ethics', date: 'Mar 2025',
     question: 'Do you support a smoke-free generation — never selling tobacco to anyone born after 2009?',
+    tags: 'tobacco cigarettes smoking public health',
     groups: [
       {label:'Support', pct:67, color:'#4C9A3F'},
       {label:'Oppose', pct:14, color:'#C93B32'},
@@ -1196,6 +1270,7 @@ const ENTRIES = [
     id: 'two-child-cap-2024',
     cat: 'economy', catLabel: 'Economy', date: 'Jul 2024',
     question: 'Should the two-child limit on benefits be kept or scrapped?',
+    tags: 'poverty child poverty children families welfare benefits universal credit low income',
     groups: [
       {label:'Keep the cap', pct:60, color:'#2E5FB7'},
       {label:'Scrap it', pct:25, color:'#E28A2B'},
@@ -1209,6 +1284,7 @@ const ENTRIES = [
     id: 'rail-ownership-2024',
     cat: 'economy', catLabel: 'Economy', date: '2024',
     question: 'Should the railways be run in the public sector?',
+    tags: 'railways trains transport nationalisation public ownership',
     groups: [
       {label:'Run in the public sector', pct:76, color:'#4C9A3F'},
       {label:"Private / don't know", pct:24, color:'#A9A69E'},
@@ -1221,6 +1297,7 @@ const ENTRIES = [
     id: 'four-day-week-2024',
     cat: 'economy', catLabel: 'Economy', date: 'May 2024',
     question: 'Would you support a four-day working week on the same pay?',
+    tags: 'jobs work workers employment working week',
     groups: [
       {label:'In favour', pct:67, color:'#4C9A3F'},
       {label:'Opposed', pct:7, color:'#C93B32'},
@@ -1234,6 +1311,7 @@ const ENTRIES = [
     id: 'death-penalty-2024',
     cat: 'politics', catLabel: 'Politics', date: '2024',
     question: 'Should the death penalty be available for some crimes?',
+    tags: 'crime punishment justice capital punishment prison',
     groups: [
       {label:'Support', pct:50, color:'#C93B32'},
       {label:'Oppose', pct:45, color:'#2E5FB7'},
@@ -1247,6 +1325,7 @@ const ENTRIES = [
     id: 'cannabis-2025',
     cat: 'society', catLabel: 'Society', date: 'Jan 2025',
     question: 'What should the law on cannabis be?',
+    tags: 'drugs legalisation marijuana',
     groups: [
       {label:'Fully legalise', pct:33, color:'#4C9A3F'},
       {label:'Decriminalise', pct:23, color:'#2AA198'},
@@ -1261,6 +1340,7 @@ const ENTRIES = [
     id: 'electoral-reform-2024',
     cat: 'politics', catLabel: 'Politics', date: '2024',
     question: 'Should the UK switch from first-past-the-post to proportional representation?',
+    tags: 'democracy voting elections proportional representation first past the post',
     groups: [
       {label:'Switch to PR', pct:45, color:'#4C9A3F'},
       {label:'Keep first-past-the-post', pct:25, color:'#2E5FB7'},
@@ -1274,6 +1354,7 @@ const ENTRIES = [
     id: 'votes-at-16-2025',
     cat: 'politics', catLabel: 'Politics', date: 'Jul 2025',
     question: 'Should the voting age be lowered to 16?',
+    tags: 'young people teenagers democracy voting age',
     groups: [
       {label:'Support', pct:32, color:'#4C9A3F'},
       {label:'Oppose', pct:57, color:'#C93B32'},
@@ -1287,6 +1368,7 @@ const ENTRIES = [
     id: 'brexit-hindsight-2025',
     cat: 'politics', catLabel: 'Politics', date: 'Jan 2025',
     question: 'In hindsight, was Britain right or wrong to vote to leave the EU?',
+    tags: 'brexit eu referendum leave remain',
     groups: [
       {label:'Wrong to leave', pct:55, color:'#2E5FB7'},
       {label:'Right to leave', pct:30, color:'#4C9A3F'},
@@ -1313,6 +1395,7 @@ const ENTRIES = [
     id: 'prison-release-scheme',
     cat: 'politics', catLabel: 'Politics', date: 'Aug 2026',
     question: 'Do you support the early release of prisoners to ease overcrowding?',
+    tags: 'crime prisoners prison justice overcrowding sentencing',
     groups: [
       {label:'Support', pct:8, color:'#4C9A3F'},
       {label:'Oppose', pct:69, color:'#C93B32'},
@@ -1339,6 +1422,7 @@ const ENTRIES = [
     id: 'tax-cuts-vs-spending',
     cat: 'economy', catLabel: 'Economy', date: 'Jul 2026',
     question: 'Would you rather have tax cuts or more public spending?',
+    tags: 'public services taxation budget',
     groups: [
       {label:'Prefer tax cuts', pct:45, color:'#E28A2B'},
       {label:'Prefer more spending', pct:32, color:'#2E5FB7'},
@@ -1352,6 +1436,7 @@ const ENTRIES = [
     id: 'immigration-vs-growth',
     cat: 'economy', catLabel: 'Economy', date: 'Aug 2026',
     question: 'Strictly limit immigration, even if it slows economic growth?',
+    tags: 'migration migrants borders economy growth',
     groups: [
       {label:'Limit immigration regardless', pct:48, color:'#C93B32'},
       {label:'Allow growth-driven immigration', pct:32, color:'#4C9A3F'},
@@ -1365,6 +1450,7 @@ const ENTRIES = [
     id: 'social-care-funding',
     cat: 'health', catLabel: 'Health & Ethics', date: 'Aug 2026',
     question: 'How should the cost of social care be met?',
+    tags: 'elderly older people care homes tax funding',
     groups: [
       {label:'Through general taxation', pct:70, color:'#2AA198'},
       {label:'Individuals pay their own', pct:15, color:'#E28A2B'},
@@ -1378,6 +1464,7 @@ const ENTRIES = [
     id: 'triple-lock-care-service',
     cat: 'health', catLabel: 'Health & Ethics', date: 'Sep 2026',
     question: 'Change the pensions triple lock in 2030 to help fund a National Care Service?',
+    tags: 'pensioners pensions elderly older people retirement social care',
     groups: [
       {label:'Support', pct:48, color:'#2AA198'},
       {label:'Oppose', pct:28, color:'#E28A2B'},
@@ -1406,6 +1493,7 @@ const ENTRIES = [
     id: 'eu-rejoin-ten-years',
     cat: 'politics', catLabel: 'Politics', date: 'Oct 2026',
     question: 'Will the UK rejoin the EU within the next 10 years?',
+    tags: 'brexit europe european union',
     groups: [
       {label:'Likely', pct:44, color:'#2E5FB7'},
       {label:'Unlikely', pct:37, color:'#C93B32'},
@@ -1448,6 +1536,7 @@ const ENTRIES = [
     id: 'rent-cap-three-years',
     cat: 'economy', catLabel: 'Economy', date: 'Oct 2026',
     question: 'Cap private rent rises at the lowest of inflation, wage growth or 2% for three years?',
+    tags: 'housing renters tenants landlords cost of living affordability',
     groups: [
       {label:'Support', pct:65, color:'#2AA198'},
       {label:'Oppose', pct:19, color:'#E28A2B'},
@@ -1909,7 +1998,14 @@ const CABINET_STANDFIRST = "When Andy Burnham became prime minister on 20 July 2
 
 function render(){
   container.innerHTML = '';
-  let visible = ENTRIES.filter(e => (currentFilter==='all' || e.cat===currentFilter) && matchesSearch(e));
+  matchInfo = new Map();
+  let visible = ENTRIES.filter(e => {
+    if(currentFilter !== 'all' && e.cat !== currentFilter) return false;
+    if(!searchPlan) return true;
+    const m = scoreEntry(e, searchPlan);
+    if(m) matchInfo.set(e.id, m);
+    return !!m;
+  });
   if(currentSort !== 'default'){
     // keep the Burnham's Cabinet block together at the end; sort the rest by date
     const cab = visible.filter(e => e.cat === 'cabinet');
@@ -1919,17 +2015,20 @@ function render(){
       : entryDateValue(a) - entryDateValue(b));
     visible = rest.concat(cab);
   }
-  if(searchTerms.length && currentSort === 'default'){
-    // under Featured order, polls whose question matches come before those matching only in the commentary
-    const inQuestion = e => { const ix = SEARCH_INDEX.get(e.id); return !!ix && searchTerms.every(t => ix.q.includes(t)); };
-    visible = visible.filter(inQuestion).concat(visible.filter(e => !inQuestion(e)));
+  let directCount = visible.length;
+  if(searchPlan){
+    // exact matches first (best match first under Featured order), then polls found by word association
+    const info = e => matchInfo.get(e.id);
+    if(currentSort === 'default') visible = visible.slice().sort((a, b) => (info(b).direct - info(a).direct) || (info(b).score - info(a).score));
+    else visible = visible.filter(e => info(e).direct).concat(visible.filter(e => !info(e).direct));
+    directCount = visible.filter(e => info(e).direct).length;
   }
-  updateSearchStatus(visible.length);
+  updateSearchStatus(visible.length, directCount, searchPlan ? topVia(visible) : []);
   if(visible.length === 0){
     const none = document.createElement('div');
     none.className = 'search-empty';
     none.innerHTML = searchTerms.length
-      ? '<p class="search-empty-title">No polls match that search.</p><p>Try a shorter or different word, or <button type="button" class="search-link" id="searchEmptyClear">clear the search</button>.</p>'
+      ? '<p class="search-empty-title">No polls match that search.</p><p>Try a different word, pick a topic below, or <button type="button" class="search-link" id="searchEmptyClear">clear the search</button>.</p>' + topicChipsHtml(8, null).replace('class="sg-chips"', 'class="sg-chips sg-chips-center"')
       : '<p class="search-empty-title">No polls in this section yet.</p>';
     container.appendChild(none);
     const emptyClear = document.getElementById('searchEmptyClear');
@@ -1937,8 +2036,16 @@ function render(){
     return;
   }
   let cabinetHeaderAdded = false;
+  let relatedHeaderAdded = false;
   for(let i=0;i<visible.length;i++){
     const e = visible[i];
+    if(searchPlan && !relatedHeaderAdded && directCount > 0 && !matchInfo.get(e.id).direct){
+      const div = document.createElement('div');
+      div.className = 'search-divider';
+      div.innerHTML = '<span class="search-divider-title">Related polls</span><span class="search-divider-note">Not an exact match, but connected to what you searched for.</span>';
+      container.appendChild(div);
+      relatedHeaderAdded = true;
+    }
     if(e.cat === 'cabinet' && !cabinetHeaderAdded && !searchTerms.length){
       const head = document.createElement('div');
       head.className = 'section-head';
@@ -2042,6 +2149,7 @@ function render(){
         ${footerHtml}
       `;
       container.appendChild(wrap);
+      tagRelated(wrap, e);
       const rcounts0 = getReactionCounts(e.id);
       wrap.querySelectorAll('.react-btn').forEach(btn=>{
         const kind = btn.getAttribute('data-kind');
@@ -2086,6 +2194,7 @@ function render(){
       ${footerHtml}
     `;
     container.appendChild(wrap);
+    tagRelated(wrap, e);
 
     const rcounts = getReactionCounts(e.id);
     wrap.querySelectorAll('.react-btn').forEach(btn=>{
@@ -2108,6 +2217,7 @@ tabs.forEach(tab=>{
       sortbar.hidden = true;
       searchbar.hidden = true;
       searchStatus.hidden = true;
+      closeSuggest();
     } else {
       aboutSection.hidden = true;
       container.hidden = false;
@@ -2118,13 +2228,18 @@ tabs.forEach(tab=>{
   });
 });
 
-// ----- search (filters the polls as you type, within the current section) -----
+// ----- search: word association, spelling help and suggestions -----
 const searchbar = document.getElementById('searchbar');
 const searchInput = document.getElementById('searchInput');
 const searchClear = document.getElementById('searchClear');
 const searchStatus = document.getElementById('searchStatus');
-let searchTerms = [];
+const searchSuggest = document.getElementById('searchSuggest');
+let searchTerms = [];       // the words typed, normalised
+let searchPlan = null;      // each typed word with the related words / spelling fixes it can also match
 let searchTimer = null;
+let matchInfo = new Map();  // poll id -> {score, direct, via} for the search currently shown
+let suggestActive = -1;
+let suppressSuggest = false;
 
 // lower-case, strip tags/entities/accents/apostrophes so "Burnham's", "burnhams" and "Burnham’s" all match
 function normaliseText(str){
@@ -2142,41 +2257,375 @@ function normaliseText(str){
 function escapeForHtml(str){
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-// one searchable string per poll: question, section, date, commentary, source and every group/person label
-const SEARCH_INDEX = new Map();
-ENTRIES.forEach(e => {
-  const parts = [e.question, e.catLabel, e.date, e.analysis, e.source, e.who, e.badge, e.tags];
-  (e.groups || []).forEach(g => parts.push(g.label));
-  (e.pairing || []).forEach(p => {
-    parts.push(p.name, p.status);
-    (p.groups || []).forEach(g => parts.push(g.label));
+
+// little words that mean nothing on their own, dropped from multi-word searches ("cost of living")
+const SEARCH_STOP = new Set(['of','the','and','for','to','in','on','a','an','is','are','or','do','does','we','our','about','with','what','how','why']);
+
+// Word association. Each group is a set of words that belong together: searching for one finds polls
+// containing the others too. A leading "?" means "searching this word opens the group, but don't pull
+// in polls that merely contain it" (for words too common or ambiguous to count as a connection).
+const SEARCH_THESAURUS_RAW = [
+  // money worries
+  ['poverty','poor','deprivation','destitution','hardship','low income','cost of living','inequality','welfare','benefits','universal credit','two child','child poverty','food banks','austerity','rowntree','?income','?struggling','?hunger'],
+  ['tax','taxes','taxation','wealth tax','wealth','rich','richest','millionaires','billionaires','income tax','tax cuts','public spending','spending','budget','revenue','fiscal','deficit','chancellor','?inequality','?inheritance'],
+  ['economy','economic','growth','inflation','prices','wages','wage','pay','gdp','recession','productivity','living standards','?business','?businesses','?spending','?money','?investment'],
+  ['jobs','job','work','working','workers','worker','employment','unemployment','employers','graduates','graduate','occupation','careers','four day week','working week','wages','wage','pay','automation','labour market','?workplace','?salary'],
+  ['housing','rent','rents','renting','renters','landlord','landlords','tenants','tenant','mortgage','mortgages','house prices','homeowners','homes','rent cap','private rent','tenure','own or rent','?property'],
+  ['pension','pensions','pensioner','pensioners','triple lock','retirement','retired','state pension','older people','elderly','old age','ageing','?retire'],
+  // people and equality
+  ['children','child','kids','childhood','teenagers','teens','teenage','under 16','under 16s','minors','pupils','schools','school','parents','childcare','voting age','votes at 16','social media ban','?youngsters','?babies'],
+  ['women','woman','female','girls','feminist','feminism','gender','equal pay','pay gap','sexism','misogyny','equality','equal rights','mothers','?womens'],
+  ['racism','racist','racial','racially','ethnic','ethnicity','ethnic minorities','hate crime','hate','discrimination','prejudice','bigotry','islamophobia','antisemitism','?diversity','?equality','?race','?black','?asian','?muslim'],
+  ['lgbt','lgb','gay','lesbian','bisexual','sexual orientation','sexual identity','sexuality','transgender','trans','queer','same sex','homosexual','?pride','?gender identity'],
+  ['religion','religious','christian','christianity','muslim','islam','jewish','hindu','sikh','buddhist','faith','church','atheist','no religion','?secular'],
+  ['census','demographics','ethnicity','ethnic group','religion','country of birth','born','housing tenure','general health','sexual identity','ons'],
+  ['national identity','english identity','british identity','englishness','britishness','patriotism','patriotic','nationalism','flag','english','england','?identity','?culture','?heritage'],
+  ['immigration','immigrant','immigrants','migrants','migration','asylum','refugees','borders','border','small boats','net migration','visa','visas','deportation','country of birth','foreign born','?foreigners'],
+  ['education','university','universities','graduates','graduate','students','student','degree','degrees','schools','school','pupils','teachers','tuition','skills','apprenticeships'],
+  // health and care
+  ['nhs','health','healthcare','hospital','hospitals','doctors','doctor','nurses','gp','gps','waiting lists','waiting times','patients','national health service','medical','illness','sick','disability','disabled','general health','wellbeing','?ambulance'],
+  ['social care','care','carers','carer','unpaid care','care homes','national care service','elderly','older people','old age','dementia','ageing','disabled','?caring'],
+  ['assisted dying','assisted suicide','euthanasia','right to die','terminal illness','terminally ill','end of life','dignity in dying','hospice','palliative','dying','?death','?die','?terminal'],
+  ['cannabis','marijuana','weed','drugs','drug','legalise','legalisation','decriminalise','smoking','smoke','tobacco','cigarettes','vaping','vapes','vape','alcohol','addiction','smoke free','smoking ban','?legalize'],
+  // law, tech, environment
+  ['crime','crimes','criminal','police','policing','prison','prisons','prisoners','prisoner','jail','sentencing','death penalty','capital punishment','fraud','scam','scams','victims','victim','cybercrime','hate crime','justice','courts','law and order','early release','overcrowding','?facial recognition','?surveillance','?safety','?offenders'],
+  ['ai','artificial intelligence','machine learning','chatbots','chatbot','algorithm','algorithms','technology','tech','automation','robots','digital','internet','big tech','ai safety','ai regulation','chatgpt','digital id','data','?online','?software','?computers'],
+  ['privacy','surveillance','facial recognition','cameras','identity card','identity cards','id card','id cards','digital id','civil liberties','data protection','tracking','?biometric','?cctv'],
+  ['social media','smartphone','smartphones','phone','phones','mobile','screen time','screens','online','internet','tiktok','instagram','facebook','age verification','under 16','under 16s','online safety','focus','attention','?addiction'],
+  ['net zero','climate','climate change','environment','environmental','emissions','carbon','renewable','renewables','clean energy','fossil fuels','pollution','global warming','energy','sustainability','wind farms','?green','?greens'],
+  ['water','water companies','sewage','utilities','nationalisation','nationalise','nationalised','privatisation','privatised','public ownership','railways','railway','rail','trains','train','transport','public sector','private sector','energy','?bills'],
+  // politics
+  ['eu','europe','european','european union','brexit','rejoin','rejoining','single market','customs union','referendum','opt outs','free movement','?leave','?remain'],
+  ['election','elections','general election','voting intention','vote','votes','voting','voters','ballot','swing','electoral reform','first past the post','proportional representation','voting age','votes at 16','democracy','democratic','turnout','political parties','political party','party membership','?labour','?conservatives','?conservative','?tories','?tory','?reform','?greens','?lib dems','?snp'],
+  ['prime minister','pm','leadership','?leader','?leaders','cabinet','minister','ministers','chancellor','foreign secretary','home secretary','health secretary','defence secretary','housing secretary','reshuffle','favourability','approval','popularity'],
+  ['sleaze','sleazy','corruption','corrupt','scandal','trust','trusted','honest','honesty','integrity','standards','government approval','approve','?politicians','?lying'],
+  ['monarchy','king','queen','royal','royals','royalty','crown','head of state','republic','republican','constitution','constitutional','prince','?charles'],
+  ['united states','america','american','trump','ally','allies','nato','ukraine','russia','china','foreign policy','special relationship','defence','military','war','foreign secretary','?us','?usa','?abroad'],
+  // mood of the country
+  ['optimism','optimistic','pessimism','pessimistic','mood','hope','hopeful','wellbeing','happiness','happy','unrest','protest','protests','riots','riot','disorder','tension','fear','worried','worry','anxious','better year','public unrest','?future']
+];
+const THESAURUS = SEARCH_THESAURUS_RAW.map(list => {
+  const trig = [], expand = [];
+  list.forEach(raw => {
+    const only = raw.charAt(0) === '?';
+    const t = normaliseText(only ? raw.slice(1) : raw);
+    if(!t) return;
+    trig.push(t);
+    if(!only) expand.push(t);
   });
-  SEARCH_INDEX.set(e.id, {
-    q: normaliseText(e.question),
-    all: normaliseText(parts.filter(Boolean).join(' '))
-  });
+  return {trig, expand};
 });
-function matchesSearch(e){
-  if(!searchTerms.length) return true;
-  const ix = SEARCH_INDEX.get(e.id);
-  return !!ix && searchTerms.every(t => ix.all.includes(t));
+// topics offered when the box is empty
+const SEARCH_TOPICS = [
+  {label:'Poverty', q:'poverty'}, {label:"Women's equality", q:'women'}, {label:'Racism', q:'racism'}, {label:'Children', q:'children'},
+  {label:'NHS & health', q:'nhs'}, {label:'Tax & wealth', q:'tax'}, {label:'Immigration', q:'immigration'}, {label:'AI & technology', q:'ai'},
+  {label:'Housing & rent', q:'housing'}, {label:'Europe & Brexit', q:'brexit'}, {label:'Monarchy', q:'monarchy'}, {label:'Climate', q:'climate'}
+];
+
+// one searchable string per poll. "strong" = question, hidden tags, people and group labels; "all" adds the commentary and source
+const SEARCH_INDEX = new Map();
+const WORD_FREQ = new Map();    // every word in the polls -> how many polls use it (for spelling help)
+const STRONG_FREQ = new Map();  // words in questions, tags and labels -> how many polls (for completions)
+function countWords(text, into){
+  new Set(text.split(' ')).forEach(w => { if(w && !/\d/.test(w)) into.set(w, (into.get(w) || 0) + 1); });
 }
-function updateSearchStatus(n){
-  if(!searchTerms.length){ searchStatus.hidden = true; searchStatus.textContent = ''; return; }
-  let html = n + (n === 1 ? ' poll matches ' : ' polls match ') + '&ldquo;' + escapeForHtml(searchInput.value.trim()) + '&rdquo;';
+ENTRIES.forEach(e => {
+  const strongParts = [e.question, e.tags, e.who, e.badge];
+  (e.groups || []).forEach(g => strongParts.push(g.label));
+  (e.statChips || []).forEach(g => strongParts.push(g.label));
+  (e.pairing || []).forEach(p => {
+    strongParts.push(p.name, p.status);
+    (p.groups || []).forEach(g => strongParts.push(g.label));
+  });
+  const weakParts = [e.catLabel, e.date, e.analysis, e.source];
+  const strong = normaliseText(strongParts.filter(Boolean).join(' '));
+  const all = normaliseText(strongParts.concat(weakParts).filter(Boolean).join(' '));
+  SEARCH_INDEX.set(e.id, { q: ' ' + normaliseText(e.question) + ' ', strong: ' ' + strong + ' ', all: ' ' + all + ' ' });
+  countWords(all, WORD_FREQ);
+  countWords(strong, STRONG_FREQ);
+});
+THESAURUS.forEach(g => g.trig.forEach(t => t.split(' ').forEach(w => { if(w.length >= 4 && !WORD_FREQ.has(w)) WORD_FREQ.set(w, 0.5); })));
+
+// does the (space-padded) text contain the word? whole = whole word (plus a plural "s"); otherwise any word starting with it
+function hasWord(text, term, whole){
+  if(whole) return text.includes(' ' + term + ' ') || text.includes(' ' + term + 's ');
+  return text.includes(' ' + term);
+}
+// very short typed words (uk, eu, ai, pm) must match a whole word, but only if such a word really exists (so "t" or "ta" still work as the start of "tax")
+function wholeFor(tok){ return tok.length <= 2 && WORD_FREQ.has(tok); }
+function inSection(e){ return currentFilter === 'all' || e.cat === currentFilter; }
+function tokensOf(raw){
+  const all = normaliseText(raw).split(' ').filter(Boolean);
+  const kept = all.filter(t => !SEARCH_STOP.has(t));
+  return kept.length ? kept : all;
+}
+
+// ---- association: which related words does a typed word open up? ----
+function termMatchesToken(term, tok){
+  if(term === tok) return true;
+  if(tok.length >= 3 && term.startsWith(tok)) return true;
+  return term.indexOf(' ') > 0 && tok.length >= 4 && term.split(' ').some(w => w === tok || w.startsWith(tok));
+}
+const RELATED_CACHE = new Map();
+function relatedTerms(tok){
+  if(RELATED_CACHE.has(tok)) return RELATED_CACHE.get(tok);
+  const out = new Set();
+  THESAURUS.forEach(g => {
+    if(g.trig.some(t => termMatchesToken(t, tok))) g.expand.forEach(t => { if(t !== tok) out.add(t); });
+  });
+  const arr = Array.from(out);
+  RELATED_CACHE.set(tok, arr);
+  return arr;
+}
+
+// ---- spelling help: nearest real words (a swapped pair of letters counts as one slip) ----
+function editDistance(a, b){
+  const al = a.length, bl = b.length, d = [];
+  for(let i = 0; i <= al; i++) d[i] = [i];
+  for(let j = 1; j <= bl; j++) d[0][j] = j;
+  for(let i = 1; i <= al; i++){
+    for(let j = 1; j <= bl; j++){
+      d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+      if(i > 1 && j > 1 && a[i-1] === b[j-2] && a[i-2] === b[j-1]) d[i][j] = Math.min(d[i][j], d[i-2][j-2] + 1);
+    }
+  }
+  return d[al][bl];
+}
+function fuzzyTerms(tok){
+  if(tok.length < 4 || /\d/.test(tok)) return [];
+  const limit = tok.length >= 8 ? 2 : 1;
+  const found = [];
+  WORD_FREQ.forEach((freq, w) => {
+    if(w === tok || Math.abs(w.length - tok.length) > limit) return;
+    const d = editDistance(tok, w);
+    if(d <= limit) found.push({w, d, freq});
+  });
+  found.sort((x, y) => (x.d - y.d) || (y.freq - x.freq));
+  return found.slice(0, 3).map(x => x.w);
+}
+function anyDirect(tok){
+  const whole = wholeFor(tok);
+  for(const ix of SEARCH_INDEX.values()) if(hasWord(ix.all, tok, whole)) return true;
+  return false;
+}
+// multi-word terms in the thesaurus ("wealth tax", "hate crime", "cost of living") are searched as one phrase, not as separate words
+const PHRASES = new Set();
+THESAURUS.forEach(g => g.trig.forEach(t => { if(t.indexOf(' ') > 0) PHRASES.add(t); }));
+function planFor(raw, withFuzzy){
+  const norm = normaliseText(raw);
+  if(PHRASES.has(norm)) return [{tok: norm, related: relatedTerms(norm), fuzzy: []}];
+  return buildSearchPlan(tokensOf(raw), withFuzzy);
+}
+function buildSearchPlan(tokens, withFuzzy){
+  return tokens.map(tok => {
+    const related = relatedTerms(tok);
+    const p = {tok, related, fuzzy: []};
+    if(withFuzzy && !related.length && !anyDirect(tok)){
+      p.fuzzy = fuzzyTerms(tok);
+      if(p.fuzzy.length) p.related = relatedTerms(p.fuzzy[0]);   // a corrected word brings its own associations along
+    }
+    return p;
+  });
+}
+// the query with any misspelt word swapped for its nearest real word ('' if nothing needed fixing)
+function correctedQuery(plan){
+  return plan.some(p => p.fuzzy.length) ? plan.map(p => p.fuzzy.length ? p.fuzzy[0] : p.tok).join(' ') : '';
+}
+
+// ---- scoring: every typed word must be satisfied, directly, by a spelling fix, or by related words ----
+const REL_STRONG = 30, REL_WEAK = 12, REL_MIN = 30;   // one strong hit, or three separate weak ones
+function scoreEntry(e, plan){
+  const ix = SEARCH_INDEX.get(e.id);
+  if(!ix) return null;
+  if(!plan || !plan.length) return {score: 0, direct: true, via: []};
+  let score = 0, direct = true;
+  const via = [];
+  for(const p of plan){
+    const whole = wholeFor(p.tok);
+    if(hasWord(ix.q, p.tok, whole)){ score += 100; continue; }
+    if(hasWord(ix.all, p.tok, whole)){ score += hasWord(ix.strong, p.tok, whole) ? 80 : 60; continue; }
+    let fz = 0;
+    for(const t of p.fuzzy){
+      if(hasWord(ix.q, t, false)) fz = Math.max(fz, 50);
+      else if(hasWord(ix.all, t, false)) fz = Math.max(fz, 40);
+    }
+    if(fz){ score += fz; continue; }
+    // related words found in this poll; strong hits (question, tags, labels) first, and near-duplicates ("ethnic" / "ethnicity") count once
+    const found = [];
+    for(const t of p.related){
+      const w = t.length <= 4;
+      if(hasWord(ix.strong, t, w)) found.push({t, v: REL_STRONG});
+      else if(hasWord(ix.all, t, w)) found.push({t, v: REL_WEAK});
+    }
+    found.sort((x, y) => y.v - x.v);
+    const kept = [];
+    let rel = 0;
+    found.forEach(f => {
+      if(kept.some(k => k.t.startsWith(f.t) || f.t.startsWith(k.t))) return;
+      kept.push(f);
+      rel += f.v;
+    });
+    if(rel < REL_MIN) return null;
+    score += Math.min(rel, 54);
+    direct = false;
+    kept.forEach(f => via.push(f.t));
+  }
+  return {score, direct, via};
+}
+function matchesSearch(e){
+  return !searchPlan || !!scoreEntry(e, searchPlan);
+}
+// how many polls in the section being viewed a search would show
+function countFor(q){
+  const plan = planFor(q, false);
+  if(!plan.length) return 0;
+  let n = 0;
+  ENTRIES.forEach(e => { if(inSection(e) && scoreEntry(e, plan)) n++; });
+  return n;
+}
+function directCountFor(term){
+  const whole = term.length <= 4;
+  let n = 0;
+  ENTRIES.forEach(e => { if(inSection(e) && hasWord(SEARCH_INDEX.get(e.id).all, term, whole)) n++; });
+  return n;
+}
+function chipHtml(q, label, count, counter){
+  const attrs = counter ? ' role="option" aria-selected="false" id="sg-opt-' + (counter.n++) + '"' : '';
+  return '<button type="button"' + attrs + ' class="sg-chip" data-searchq="' + escapeForHtml(q) + '">' + escapeForHtml(label) +
+    (count != null ? '<span class="sg-n">' + count + '</span>' : '') + '</button>';
+}
+// the topic chips shown in the empty box and on the "nothing found" screen (counter = give them option ids for the dropdown)
+function topicChipsHtml(limit, counter){
+  const chips = SEARCH_TOPICS.map(t => ({t, c: countFor(t.q)})).filter(x => x.c > 0).slice(0, limit);
+  if(!chips.length) return '';
+  return '<div class="sg-chips">' + chips.map(x => chipHtml(x.t.q, x.t.label, x.c, counter)).join('') + '</div>';
+}
+
+// ---- the line under the search box ----
+function topVia(list){
+  const freq = new Map();
+  list.forEach(e => {
+    const m = matchInfo.get(e.id);
+    if(m && !m.direct) new Set(m.via).forEach(t => freq.set(t, (freq.get(t) || 0) + 1));
+  });
+  return Array.from(freq.entries()).sort((a, b) => (b[1] - a[1]) || (a[0].length - b[0].length)).slice(0, 4).map(x => x[0]);
+}
+function updateSearchStatus(n, directCount, via){
+  if(!searchPlan){ searchStatus.hidden = true; searchStatus.textContent = ''; return; }
+  const q = '&ldquo;' + escapeForHtml(searchInput.value.trim()) + '&rdquo;';
+  const scope = currentFilter !== 'all' ? ' in this section' : '';
+  const polls = k => k + (k === 1 ? ' poll' : ' polls');
+  let html;
+  if(n === 0) html = 'No polls match ' + q + scope;
+  else if(directCount === n) html = polls(n) + (n === 1 ? ' matches ' : ' match ') + q + scope;
+  else if(directCount === 0) html = 'No exact matches for ' + q + scope + ' &middot; showing ' + polls(n) + ' that ' + (n === 1 ? 'is' : 'are') + ' related';
+  else html = polls(directCount) + (directCount === 1 ? ' matches ' : ' match ') + q + scope + ' &middot; plus ' + (n - directCount) + ' related';
+  if(via.length) html += ' <span class="search-via">(also looked for ' + via.map(escapeForHtml).join(', ') + ')</span>';
   if(currentFilter !== 'all'){
     const elsewhere = ENTRIES.filter(e => e.cat !== currentFilter && matchesSearch(e)).length;
-    html += ' in this section';
     if(elsewhere) html += ' &middot; <button type="button" class="search-link" id="searchAllSections">' + elsewhere + ' more in other sections</button>';
   }
+  const fixed = correctedQuery(searchPlan);
+  if(fixed) html += ' &middot; Did you mean <button type="button" class="search-link" data-searchq="' + escapeForHtml(fixed) + '">' + escapeForHtml(fixed) + '</button>?';
   searchStatus.innerHTML = html;
   searchStatus.hidden = false;
   const all = document.getElementById('searchAllSections');
   if(all) all.addEventListener('click', () => document.querySelector('.tab[data-cat="all"]').click());
 }
+
+// ---- the suggestions dropdown ----
+function closeSuggest(){
+  searchSuggest.hidden = true;
+  searchSuggest.innerHTML = '';
+  suggestActive = -1;
+  searchInput.setAttribute('aria-expanded', 'false');
+  searchInput.removeAttribute('aria-activedescendant');
+}
+function suggestOptions(){ return Array.from(searchSuggest.querySelectorAll('[role="option"]')); }
+function setSuggestActive(i){
+  const opts = suggestOptions();
+  opts.forEach(o => { o.classList.remove('active'); o.setAttribute('aria-selected', 'false'); });
+  suggestActive = i;
+  if(i >= 0 && opts[i]){
+    opts[i].classList.add('active');
+    opts[i].setAttribute('aria-selected', 'true');
+    searchInput.setAttribute('aria-activedescendant', opts[i].id);
+    opts[i].scrollIntoView({block: 'nearest'});
+  } else {
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+// words that complete what is being typed: curated terms first, then words used in poll questions and labels
+function completionsFor(last){
+  if(last.length < 2) return [];
+  const out = [];
+  const add = w => { if(w !== last && w.length > last.length && !SEARCH_STOP.has(w) && out.indexOf(w) < 0) out.push(w); };
+  THESAURUS.forEach(g => g.trig.forEach(t => { if(t.startsWith(last)) add(t); }));
+  Array.from(STRONG_FREQ.entries()).sort((a, b) => b[1] - a[1]).forEach(x => { if(x[0].startsWith(last) && x[0].length >= 4) add(x[0]); });
+  return out;
+}
+function refreshSuggest(){
+  if(currentFilter === 'about'){ closeSuggest(); return; }
+  const raw = searchInput.value;
+  const tokens = tokensOf(raw);
+  const counter = {n: 0};
+  let html = '';
+  if(!tokens.length){
+    const chips = topicChipsHtml(12, counter);
+    if(chips) html = '<div class="sg-title">Try searching for</div>' + chips;
+  } else {
+    const plan = planFor(raw, true);
+    const row = (q, inner, count) => '<button type="button" role="option" aria-selected="false" id="sg-opt-' + (counter.n++) +
+      '" class="sg-item" data-searchq="' + escapeForHtml(q) + '"><span>' + inner + '</span><span class="sg-count">' + count + (count === 1 ? ' poll' : ' polls') + '</span></button>';
+    const seen = new Set([tokens.join(' ')]);
+    // spelling
+    const fixed = correctedQuery(plan);
+    if(fixed && !seen.has(fixed)){
+      const c = countFor(fixed);
+      if(c){ seen.add(fixed); html += '<div class="sg-title">Did you mean</div>' + row(fixed, escapeForHtml(fixed), c); }
+    }
+    // completions of the word being typed
+    if(!/\s$/.test(raw)){
+      const last = tokens[tokens.length - 1];
+      const head = tokens.slice(0, -1).join(' ');
+      let rows = '';
+      let k = 0;
+      completionsFor(last).forEach(w => {
+        if(k >= 5) return;
+        const q = head ? head + ' ' + w : w;
+        if(seen.has(q) || !directCountFor(w)) return;   // only offer words that really appear in this section's polls
+        const c = countFor(q);
+        if(!c) return;
+        seen.add(q);
+        k++;
+        const typed = (head ? head + ' ' : '') + last;
+        rows += row(q, '<b>' + escapeForHtml(typed) + '</b>' + escapeForHtml(q.slice(typed.length)), c);
+      });
+      if(rows) html += '<div class="sg-title">Complete your search</div>' + rows;
+    }
+    // related searches, drawn from the word groups the query belongs to (only words that really appear in this section's polls)
+    const cand = [];
+    plan.forEach(p => p.related.forEach(t => { if(cand.indexOf(t) < 0 && tokens.indexOf(t) < 0 && !seen.has(t) && t !== normaliseText(raw)) cand.push(t); }));
+    const scored = cand.map(t => ({t, d: directCountFor(t)})).filter(x => x.d > 0)
+      .sort((a, b) => (b.d - a.d) || (a.t.length - b.t.length)).slice(0, 7);
+    if(scored.length){
+      html += '<div class="sg-title">Related searches</div><div class="sg-chips">' +
+        scored.map(x => chipHtml(x.t, x.t, null, counter)).join('') + '</div>';
+    }
+  }
+  if(!html){ closeSuggest(); return; }
+  searchSuggest.innerHTML = html;
+  searchSuggest.hidden = false;
+  suggestActive = -1;
+  searchInput.setAttribute('aria-expanded', 'true');
+  searchInput.removeAttribute('aria-activedescendant');
+}
+
+// ---- applying a search ----
 function applySearch(){
   clearTimeout(searchTimer);
-  searchTerms = normaliseText(searchInput.value).split(' ').filter(Boolean);
+  searchTerms = tokensOf(searchInput.value);
+  searchPlan = searchTerms.length ? planFor(searchInput.value, true) : null;
   searchClear.hidden = !searchInput.value;
   if(currentFilter !== 'about') render();
 }
@@ -2188,15 +2637,54 @@ function resetSearchQuietly(){
   clearTimeout(searchTimer);
   searchInput.value = '';
   searchTerms = [];
+  searchPlan = null;
+  matchInfo = new Map();
   searchClear.hidden = true;
+  closeSuggest();
+}
+// pick a suggestion / chip / "did you mean": put it in the box and search for it
+function chooseQuery(q){
+  clearTimeout(searchTimer);
+  searchInput.value = q;
+  applySearch();
+  closeSuggest();
+  if(window.matchMedia && window.matchMedia('(pointer:coarse)').matches){ searchInput.blur(); }
+  else { suppressSuggest = true; searchInput.focus(); suppressSuggest = false; }
 }
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(applySearch, 150);
+  refreshSuggest();
 });
+searchInput.addEventListener('focus', () => { if(!suppressSuggest) refreshSuggest(); });
+searchInput.addEventListener('click', () => { if(searchSuggest.hidden) refreshSuggest(); });
+searchInput.addEventListener('blur', closeSuggest);
 searchInput.addEventListener('keydown', ev => {
-  if(ev.key === 'Enter'){ ev.preventDefault(); applySearch(); }
-  else if(ev.key === 'Escape'){ clearSearch(); }
+  const opts = suggestOptions();
+  if(ev.key === 'ArrowDown'){
+    ev.preventDefault();
+    if(searchSuggest.hidden) refreshSuggest();
+    else if(opts.length) setSuggestActive((suggestActive + 1) % opts.length);
+  } else if(ev.key === 'ArrowUp'){
+    ev.preventDefault();
+    if(opts.length) setSuggestActive(suggestActive <= 0 ? opts.length - 1 : suggestActive - 1);
+  } else if(ev.key === 'Enter'){
+    ev.preventDefault();
+    if(suggestActive >= 0 && opts[suggestActive]) chooseQuery(opts[suggestActive].getAttribute('data-searchq'));
+    else { applySearch(); closeSuggest(); }
+  } else if(ev.key === 'Escape'){
+    ev.preventDefault();   // stop the browser's own "clear a search field" so the first press only closes the suggestions
+    if(!searchSuggest.hidden) closeSuggest(); else clearSearch();
+  } else if(ev.key === 'Tab'){
+    closeSuggest();
+  }
+});
+// keep focus in the box while clicking inside the dropdown
+searchSuggest.addEventListener('mousedown', ev => ev.preventDefault());
+// any suggestion, topic chip or "did you mean" link carries its query in data-searchq
+document.addEventListener('click', ev => {
+  const b = ev.target.closest ? ev.target.closest('[data-searchq]') : null;
+  if(b) chooseQuery(b.getAttribute('data-searchq'));
 });
 searchClear.addEventListener('click', () => { clearSearch(); searchInput.focus(); });
 // press "/" anywhere to jump to the search box
@@ -2207,6 +2695,19 @@ document.addEventListener('keydown', ev => {
   ev.preventDefault();
   searchInput.focus();
 });
+
+
+// small "Related" label on polls shown because of word association rather than an exact match
+function tagRelated(wrap, e){
+  const m = matchInfo.get(e.id);
+  if(!m || m.direct || !m.via.length) return;
+  const meta = wrap.querySelector('.entry-meta');
+  if(!meta) return;
+  const tag = document.createElement('span');
+  tag.className = 'search-rel-tag';
+  tag.textContent = ' \u00b7 Related: ' + Array.from(new Set(m.via)).slice(0, 3).join(', ');
+  meta.appendChild(tag);
+}
 
 // ----- sort control (Featured / Newest / Oldest) -----
 const sortbar = document.getElementById('sortbar');
