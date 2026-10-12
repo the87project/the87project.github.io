@@ -810,6 +810,8 @@ nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
 .wk-card:hover .wk-meta,.wk-card:focus-visible .wk-meta{color:var(--bg); opacity:.75;}
 .wk-card:hover .wk-bar,.wk-card:focus-visible .wk-bar{border-color:var(--bg);}
 @media (max-width:760px){ .wk-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .wk-card:nth-child(2n){border-right:0;} .wk-card:nth-child(-n+2){border-bottom:1px solid var(--ink);} .wk-q{-webkit-line-clamp:4;} }
+.hero-rule{display:block; margin-top:14px; padding:2px 0 2px 14px; border-left:3px solid var(--accent); font-size:14px; line-height:1.45; color:var(--ink);}
+.hero-rule b{font-weight:700;}
 .tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
 .tunnel.live img{visibility:hidden}
 .tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; overflow:hidden; background:#D9D8D2;}
@@ -996,7 +998,7 @@ body.has-tray{padding-bottom:110px;}
 <figure class="tunnel"><img src="tunnel-1200.jpg" srcset="tunnel-1200.jpg 1200w, tunnel-2400.jpg 2400w" sizes="100vw" width="2400" height="1181" alt="Type receding into a tunnel towards a red 87: upper deck 40, lower deck 47, one double-decker, eighty-seven seats" fetchpriority="high" decoding="async"></figure>
 <section class="hero" aria-label="Introduction">
   <h1>Put <span class="n87" style="font-family:inherit;font-weight:inherit;text-transform:inherit">87</span> people on one double-decker <span>and ask them the big questions.</span></h1>
-  <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.</p>
+  <p>A standard London double-decker carries exactly 87 people: 40 seated on the upper deck, and 47 below &mdash; 22 seated and 25 standing. By mapping abstract public opinion data onto these physical places, we turn cold percentages into a tangible, human-scale reality.<span class="hero-rule"><b>One seat, one whole person.</b> People can&rsquo;t be split, so every percentage is rounded to a whole passenger (one seat is about 1.15%), and no group in the source polling is ever rounded off the bus.</span></p>
 <dl class="hero-spec" aria-label="The bus in numbers"><div><dt>Seats</dt><dd>87</dd></div><div><dt>Upper deck</dt><dd>40</dd></div><div><dt>Lower deck</dt><dd>47</dd></div><div><dt>Polls</dt><dd id="specPolls">&ndash;</dd></div></dl>
 <p class="hero-updated">Last updated <span id="lastUpdated"></span> &middot; polls last checked <span id="lastChecked"></span></p>
 
