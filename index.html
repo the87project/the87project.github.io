@@ -4037,6 +4037,15 @@ openFromHash();
     const s = document.createElement('span'); s.className = 'tab-n'; s.textContent = n; t.appendChild(s);
   });
 })();
+/* order sections by number of polls (All first, About last) */
+(function(){
+  const box = document.getElementById('tabs'); if(!box) return;
+  const num = t => { const n = t.querySelector('.tab-n'); return n ? parseInt(n.textContent, 10) || 0 : 0; };
+  const tabs = Array.from(box.querySelectorAll('.tab'));
+  const all = tabs.find(t => t.dataset.cat === 'all'), about = tabs.find(t => t.dataset.cat === 'about');
+  const rest = tabs.filter(t => t !== all && t !== about).sort((a, b) => num(b) - num(a));
+  [all].concat(rest, [about]).filter(Boolean).forEach(t => box.appendChild(t));
+})();
 
 /* ---------- live tunnel cover ---------- */
 (function(){
