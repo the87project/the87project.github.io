@@ -3782,7 +3782,7 @@ async function saveBusImage(btn){
     const W = 1200, PAD = 56;
     const cv = document.createElement('canvas'); const ctx = cv.getContext('2d');
     ctx.font = '700 40px "Playfair Display", Georgia, serif';
-    const qLines = wrapLines(e.question, ctx, W - PAD * 2);
+    const qLines = wrapLines(e.question, ctx, (W - PAD * 2) * 0.86);  // margin of safety: the saved picture can use a wider fallback font
     ctx.font = '500 20px Inter, Arial, sans-serif';
     const legend = Array.from(art.querySelectorAll('.legend .legend-item')).map(li => ({
       color: li.querySelector('.legend-swatch').style.background, text: li.textContent.replace(/\s+/g, ' ').trim()
