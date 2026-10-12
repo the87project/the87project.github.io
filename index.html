@@ -322,6 +322,7 @@ nav{
   border-top:2px solid var(--line);
   margin-top:24px;
 }
+.section-head:first-child{border-top:none; margin-top:0; padding-top:32px;}
 .section-head .section-title{
   font-family:'Playfair Display',serif;
   font-weight:700;
@@ -2006,14 +2007,16 @@ function render(){
     if(m) matchInfo.set(e.id, m);
     return !!m;
   });
-  if(currentSort !== 'default'){
-    // keep the Burnham's Cabinet block together at the end; sort the rest by date
+  {
+    // the Burnham's Cabinet block always comes first and stays together; the rest follow in the chosen order
     const cab = visible.filter(e => e.cat === 'cabinet');
     const rest = visible.filter(e => e.cat !== 'cabinet');
-    rest.sort((a,b) => currentSort === 'new'
-      ? entryDateValue(b) - entryDateValue(a)
-      : entryDateValue(a) - entryDateValue(b));
-    visible = rest.concat(cab);
+    if(currentSort !== 'default'){
+      rest.sort((a,b) => currentSort === 'new'
+        ? entryDateValue(b) - entryDateValue(a)
+        : entryDateValue(a) - entryDateValue(b));
+    }
+    visible = cab.concat(rest);
   }
   let directCount = visible.length;
   if(searchPlan){
@@ -2037,6 +2040,7 @@ function render(){
   }
   let cabinetHeaderAdded = false;
   let relatedHeaderAdded = false;
+  let restHeaderAdded = false;
   for(let i=0;i<visible.length;i++){
     const e = visible[i];
     if(searchPlan && !relatedHeaderAdded && directCount > 0 && !matchInfo.get(e.id).direct){
@@ -2056,6 +2060,17 @@ function render(){
       `;
       container.appendChild(head);
       cabinetHeaderAdded = true;
+    }
+    if(cabinetHeaderAdded && !restHeaderAdded && e.cat !== 'cabinet'){
+      // the cabinet block sits first, so mark where the ordinary polls begin
+      const head = document.createElement('div');
+      head.className = 'section-head';
+      head.innerHTML = `
+        <span class="entry-meta">Everything else on the bus</span>
+        <h2 class="section-title">More polls</h2>
+      `;
+      container.appendChild(head);
+      restHeaderAdded = true;
     }
     const wrap = document.createElement('article');
     wrap.className = 'entry';
