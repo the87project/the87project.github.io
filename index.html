@@ -767,6 +767,13 @@ nav[aria-label="Site header"].scrolled .nav-right{width:auto; gap:8px;}
 /* giant wordmark */
 .tunnel{margin:0; border-bottom:1px solid var(--ink); background:#D9D8D2; line-height:0; overflow:hidden;}
 .tunnel img{display:block; width:100%; height:auto;}
+nav[aria-label="Site header"] .brand{display:inline; font-family:var(--mono); font-weight:500; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); text-decoration:none;}
+nav[aria-label="Site header"] .nav-inner{justify-content:space-between;}
+nav[aria-label="Site header"] .nav-right{width:auto; margin-left:auto; gap:22px;}
+.nav-link{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); text-decoration:none; padding:6px 0; border-bottom:1px solid transparent;}
+.nav-link:hover{border-bottom-color:var(--ink);}
+nav[aria-label="Site header"].scrolled .nav-link{display:none;}
+nav[aria-label="Site header"].scrolled .nav-right{gap:8px;}
 .tunnel{position:relative; aspect-ratio:2/1; contain:layout paint;}
 .tunnel.live img{visibility:hidden}
 .tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; perspective-origin:50% 50%; overflow:hidden; background:#D9D8D2;}
@@ -939,7 +946,7 @@ body.has-tray{padding-bottom:110px;}
   <div class="nav-inner">
     <span class="brand">The <span class="brand-87">87</span></span>
     <div class="nav-right">
-      <span class="nav-note">What Britain actually thinks, one double-decker at a time.</span>
+      <a class="nav-link" href="#entries" id="navIndex">Index</a><a class="nav-link" href="#about" id="navAbout">About</a>
       <button id="navSearch" class="nav-search" type="button" aria-label="Jump to search" title="Search the polls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></button>
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -4095,6 +4102,14 @@ openFromHash();
   window.addEventListener('resize', () => { cur = target = 0; aim(); });
   if('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; if(visible) aim(); }).observe(host);
   aim();
+})();
+
+/* ---------- top-bar links ---------- */
+(function(){
+  const idx = document.getElementById('navIndex'), ab = document.getElementById('navAbout');
+  const go = (t) => { const L = window.the87Lenis; if(L && L.scrollTo) L.scrollTo(t, {offset:-70}); else t.scrollIntoView({behavior:'smooth'}); };
+  if(idx) idx.addEventListener('click', e => { e.preventDefault(); const all = document.querySelector('.tab[data-cat="all"]'); if(all) all.click(); go(document.querySelector('.layout')); });
+  if(ab) ab.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector('.tab-about'); if(t) t.click(); const a = document.getElementById('about'); setTimeout(() => go(document.querySelector('.layout')), 30); });
 })();
 </script>
 
