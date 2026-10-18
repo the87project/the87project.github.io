@@ -8,20 +8,20 @@
 <meta name="theme-color" content="#0E0E0D" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-title" content="The 87">
 <meta name="description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
-<link rel="canonical" href="https://the87project.github.io/">
+<link rel="canonical" href="https://the87project.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The 87 Project">
 <meta property="og:title" content="The 87 Project: public opinion, one full bus at a time">
 <meta property="og:description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
-<meta property="og:url" content="https://the87project.github.io/">
-<meta property="og:image" content="https://the87project.github.io/og-image.png">
+<meta property="og:url" content="https://the87project.com/">
+<meta property="og:image" content="https://the87project.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="THE 87 PROJECT in bold cream letters on London-bus red, above a double-decker bus">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The 87 Project: public opinion, one full bus at a time">
 <meta name="twitter:description" content="UK public opinion and official statistics turned into one full London double-decker: 87 people, colour-coded by their answer. Every figure sourced.">
-<meta name="twitter:image" content="https://the87project.github.io/og-image.png">
+<meta name="twitter:image" content="https://the87project.com/og-image.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -1125,6 +1125,8 @@ body.has-tray{padding-bottom:110px;}
       <a href="#about" data-goto="about">About</a>
       <a href="#methodology" data-goto="about" data-anchor="methodology">Methodology &amp; sources</a>
       <a href="#our-buses" data-goto="about" data-anchor="our-buses">Our buses</a>
+      <a href="#" data-download="csv">Download the data (CSV)</a>
+      <a href="#" data-download="json">Download the data (JSON)</a>
       <a href="mailto:support@the87project.com?subject=The%2087%20correction">Report a correction</a>
       <a href="mailto:support@the87project.com">Contact</a>
     </div>
@@ -1193,7 +1195,7 @@ const ENTRIES = [
       {label:'Employed, non-graduate-level job', pct:20, color:'#E28A2B'},
       {label:'Unemployed or economically inactive', pct:12, color:'#8C8A80'},
     ],
-    analysis: "This week's talk of collapsing graduate vacancies makes it sound like the whole bus is jobless — but the government's own figures paint a steadier picture: 59 of 87 working-age graduates are in a genuinely graduate-level job, a share that actually inched up on the year before. The more interesting seats are the 17 who took a degree and ended up somewhere that never needed one, and the 11 not working at all. Worth flagging: this bus is every working-age graduate in England, not just this year's leavers — so the newest, most anxious graduates are only a handful of these passengers, not the whole load.",
+    analysis: "This week's talk of collapsing graduate vacancies makes it sound like the whole bus is jobless — but the government's own figures paint a steadier picture: 60 of 87 working-age graduates are in a genuinely graduate-level job, a share that actually inched up on the year before. The more interesting seats are the 17 who took a degree and ended up somewhere that never needed one, and the 10 not working at all. Worth flagging: this bus is every working-age graduate in England, not just this year's leavers — so the newest, most anxious graduates are only a handful of these passengers, not the whole load.",
     source: 'Department for Education: Graduate Labour Market Statistics, 2024',
     url: 'https://explore-education-statistics.service.gov.uk/find-statistics/graduate-labour-markets/2024'
   },
@@ -1332,7 +1334,7 @@ const ENTRIES = [
       {label:'Oppose', pct:13, color:'#C93B32'},
       {label:'Undecided', pct:22, color:'#A9A69E'},
     ],
-    analysis: "A separate, much larger poll — over 17,000 people, roughly 200 times the size of a bus — lands on the same side as the YouGov figure above, but with a bigger undecided section. Twenty of the eighty-seven here still haven't settled, riding alongside two much larger camps that mostly agree with each other. Two pollsters, two different sample sizes, and the same basic shape of opinion.",
+    analysis: "A separate, much larger poll — over 17,000 people, roughly 200 times the size of a bus — lands on the same side as the YouGov figure above, but with a bigger undecided section. Nineteen of the eighty-seven here still haven't settled, riding alongside two much larger camps that mostly agree with each other. Two pollsters, two different sample sizes, and the same basic shape of opinion.",
     source: 'More in Common: Assisted Dying – Public Opinion Tracker',
     url: 'https://www.moreincommon.org.uk/'
   },
@@ -2037,7 +2039,7 @@ const ENTRIES = [
       {label:'Some other party', pct:3, color:'#6B7280'},
       {label:"Don't know", pct:32, color:'#A9A69E'},
     ],
-    analysis: "Nobody owns the opposition. The Conservatives edge it with 23 of the 87 passengers, Reform UK is close behind on 19, and the Greens and Lib Dems manage 8 and 5. The biggest group by far is the 28 who can't name an effective opposition at all. That the party polling third in voting intention is still seen as the best opposition suggests Reform's recent slide has cost it more than votes.",
+    analysis: "Nobody owns the opposition. The Conservatives edge it with 23 of the 87 passengers, Reform UK is close behind on 19, and the Greens and Lib Dems manage 8 and 5. The biggest group by far is the 29 who can't name an effective opposition at all. That the party polling third in voting intention is still seen as the best opposition suggests Reform's recent slide has cost it more than votes.",
     source: 'YouGov daily question, 5 October 2026 (n=5,125; figures sum to 99% as published)',
     url: 'https://yougov.com/en-gb/daily-results/20261005-6ec94-1'
   },
@@ -2050,7 +2052,7 @@ const ENTRIES = [
       {label:'Not ready', pct:59, color:'#C93B32'},
       {label:'Neither / not stated', pct:21, color:'#A9A69E'},
     ],
-    analysis: "Seventeen of the 87 passengers think the Conservatives are ready to govern again, and 51 do not. That is still a clear thumbs-down, but it is nearly double the 11% who said so a year ago, one of several measures on which Kemi Badenoch's party has recovered ground. Her net favourability is still negative (32% favourable, 47% unfavourable), so it is a recovery from a very low base. The remaining 18 are the residual, since YouGov does not publish a don't-know figure for this question.",
+    analysis: "Seventeen of the 87 passengers think the Conservatives are ready to govern again, and 52 do not. That is still a clear thumbs-down, but it is nearly double the 11% who said so a year ago, one of several measures on which Kemi Badenoch's party has recovered ground. Her net favourability is still negative (32% favourable, 47% unfavourable), so it is a recovery from a very low base. The remaining 18 are the residual, since YouGov does not publish a don't-know figure for this question.",
     source: 'YouGov, 31 August–1 September 2026 (n=2,008); residual calculated, not published',
     url: 'https://yougov.com/en-gb/articles/55673-how-do-britons-see-the-conservatives-and-kemi-badenoch-ahead-of-the-partys-2026-conference'
   },
@@ -2064,7 +2066,7 @@ const ENTRIES = [
       {label:'Oppose', pct:19, color:'#E28A2B'},
       {label:"Don't know", pct:17, color:'#A9A69E'},
     ],
-    analysis: "Put a firm limit on what landlords can charge and 57 of the 87 say yes, against 17 who object. The support is not lukewarm either: 34 are 'strongly' for it, while only 8 are strongly against. Fifteen have no view. The groups here add to 101% as published because of rounding, but the message is clear: a rent cap is one of the least contested ideas on this bus, even if the details of any real policy would be far harder to agree.",
+    analysis: "Put a firm limit on what landlords can charge and 55 of the 87 say yes, against 17 who object. The support is not lukewarm either: 34 are 'strongly' for it, while only 8 are strongly against. Fifteen have no view. The groups here add to 101% as published because of rounding, but the message is clear: a rent cap is one of the least contested ideas on this bus, even if the details of any real policy would be far harder to agree.",
     source: 'YouGov daily question, 2 October 2026 (n=5,367; sums to 101% from rounding)',
     url: 'https://yougov.com/en-gb/daily-results/20261002-1e97e-2'
   },
@@ -2384,8 +2386,8 @@ const ENTRIES = [
       ]},
     ],
     analysis: "A near-even swap on paper: Cooper leaves the Foreign Office at net −21, Miliband takes it at −26. Sixteen years after leading the party, he returns to the great offices better known than the woman he replaces — a smaller grey section — and slightly less liked. Few politicians get a second act at this level; the numbers say the public is reserving judgement on this one.",
-    source: 'Ipsos, June 2026',
-    url: 'https://www.ipsos.com/en-uk'
+    source: 'Ipsos Political Pulse, June 2026 (fieldwork 5-9 June, 2,247 GB adults aged 18+), favourability slides for Yvette Cooper and Ed Miliband; Don\'t know = everyone who did not give a favourable or unfavourable view (neither plus don\'t know), calculated',
+    url: 'https://www.ipsos.com/sites/default/files/ct/news/documents/2026-06/Ipsos_June%2026_Political%20Pulse_v1d5_Int%20Use%20Only.pdf'
   },
   {
     id: 'cabinet-health',
@@ -3828,9 +3830,18 @@ function buildFleet(){
 }
 buildFleet();
 
-// update these two when the site changes or the polls have been re-checked
-const SITE_LAST_UPDATED = '12 October 2026';
-const SITE_LAST_CHECKED = '12 October 2026';
+// SITE_LAST_CHECKED is the one date to edit by hand: change it when the polls have been re-checked.
+// "Last updated" now reads itself from the date the host last deployed this page (the Last-Modified
+// header), so it can no longer go stale. SITE_LAST_UPDATED is only the fallback if that is unavailable.
+const SITE_LAST_UPDATED = '18 October 2026';
+const SITE_LAST_CHECKED = '18 October 2026';
+function deployedOn(){
+  try{
+    const d = new Date(document.lastModified);
+    if(isNaN(d) || Math.abs(Date.now() - d.getTime()) < 60000) return SITE_LAST_UPDATED; // no header: browsers return "now"
+    return d.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric', timeZone:'Europe/London'});
+  }catch(_){ return SITE_LAST_UPDATED; }
+}
 
 (function(){
   const C=['#DC241F','#2E5FB7','#2AA198','#E28A2B','#4C9A3F','#D9B417','#A9A69E'], N=[24,20,14,11,9,5,4];
@@ -3843,11 +3854,44 @@ const SITE_LAST_CHECKED = '12 October 2026';
   const tt=document.getElementById('tickerTrack');
   if(tt){ const q=ENTRIES.filter(e=>e.cat!=='cabinet').slice(0,14).map((e,i)=>`<span style="--dc:${C[i%6]}">${e.question.replace(/</g,'&lt;')}</span>`).join(''); tt.innerHTML=q+q; }
 })();
-document.getElementById('lastUpdated').textContent = SITE_LAST_UPDATED;
+document.getElementById('lastUpdated').textContent = deployedOn();
 document.getElementById('lastChecked').textContent = SITE_LAST_CHECKED;
 
+// ----- data download: every poll, group, percentage and seat count, as CSV or JSON -----
+(function(){
+  function seatCounts(groups){
+    const c = groups.map(g => Math.max(1, Math.round(g.pct / 100 * 87)));
+    let d = c.reduce((a, b) => a + b, 0) - 87;
+    while(d !== 0){ const i = c.indexOf(Math.max(...c)); c[i] += d > 0 ? -1 : 1; d += d > 0 ? -1 : 1; }
+    return c;
+  }
+  function rows(){
+    const out = [];
+    ENTRIES.forEach(e => {
+      if(!e.groups) return;
+      const seats = seatCounts(e.groups);
+      e.groups.forEach((g, i) => out.push({id:e.id, section:e.catLabel, date:e.date, question:e.question, group:g.label, percent:g.pct, seats:seats[i], source:e.source, source_url:e.url, page:'https://the87project.com/#poll-' + e.id}));
+    });
+    return out;
+  }
+  function csvCell(v){ v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function save(name, type, text){
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], {type}));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  document.addEventListener('click', ev => {
+    const a = ev.target.closest && ev.target.closest('[data-download]'); if(!a) return;
+    ev.preventDefault();
+    const r = rows();
+    if(a.dataset.download === 'json') save('the87project-polls.json', 'application/json', JSON.stringify({site:'https://the87project.com/', note:'Each poll is redrawn as 87 seats; seats = percent x 87, rounded, adjusted so every poll totals 87.', rows:r}, null, 1));
+    else { const keys = Object.keys(r[0]); save('the87project-polls.csv', 'text/csv;charset=utf-8', '\ufeff' + [keys.join(',')].concat(r.map(x => keys.map(k => csvCell(x[k])).join(','))).join('\r\n')); }
+  });
+})();
+
 // ----- sharing: link to one poll, and save one bus as an image -----
-const SITE_HOME = 'https://the87project.github.io/';
+const SITE_HOME = 'https://the87project.com/';
 function pollUrl(id){ return SITE_HOME + '#poll-' + id; }
 function actStatus(btn, msg){
   const el = btn.parentElement && btn.parentElement.querySelector('.act-status');
@@ -3939,7 +3983,7 @@ async function saveBusImage(btn){
       + busSvg.replace('<svg ', `<svg x="${PAD}" y="${busY}" width="${W - PAD * 2}" height="${busH}" `)
       + legendRows.map((row, ri) => row.map(l => `<rect x="${l.x}" y="${legY + ri * 36 - 14}" width="18" height="18" rx="3" fill="${xmlEsc(l.color)}"/><text x="${l.x + 26}" y="${legY + ri * 36 + 1}" font-family="Inter,Arial,sans-serif" font-weight="500" font-size="20" fill="#1A1A1A">${xmlEsc(l.text)}</text>`).join('')).join('')
       + srcLines.map((l, i) => `<text x="${PAD}" y="${srcY + i * 24}" font-family="Inter,Arial,sans-serif" font-size="17" fill="#6A7077">${xmlEsc(l)}</text>`).join('')
-      + `<text x="${PAD}" y="${footY}" font-family="Archivo,Arial,sans-serif" font-weight="700" font-size="18" fill="#DC241F">the87project.github.io</text>`
+      + `<text x="${PAD}" y="${footY}" font-family="Archivo,Arial,sans-serif" font-weight="700" font-size="18" fill="#DC241F">the87project.com</text>`
       + `</svg>`;
     const img = new Image();
     await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
