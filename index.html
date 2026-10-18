@@ -824,9 +824,9 @@ nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
 .tunnel .stage{position:absolute; left:0; top:0; transform-origin:0 0; overflow:hidden; background:#D9D8D2;}
 .tunnel .tun{position:absolute; left:50%; top:50%; width:0; height:0; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
 .tunnel .wall{position:absolute; left:0; top:0; -webkit-transform-style:preserve-3d; will-change:transform;}
-.tunnel .ln{position:absolute; display:flex; align-items:center; overflow:visible; font-family:'Archivo Black',sans-serif; color:#111; white-space:nowrap; line-height:1; text-transform:uppercase;}
+.tunnel .ln{position:absolute; display:flex; align-items:center; overflow:visible; font-family:'Archivo Black',sans-serif; color:#111; white-space:nowrap; line-height:1; text-transform:uppercase; will-change:transform;}
 .tunnel .ln span{display:block; transform-origin:0 50%;}
-.tunnel .core{position:absolute; left:0; top:0; background:#E3342B; color:#D9D8D2; display:flex; align-items:center; justify-content:center; font-family:'Archivo Black',sans-serif;}
+.tunnel .core{position:absolute; left:0; top:0; background:#E3342B; color:#D9D8D2; display:flex; align-items:center; justify-content:center; font-family:'Archivo Black',sans-serif; will-change:transform;}
 
 /* framed cover: one screen, tunnel inside a frame, tagline + CTA below */
 .cover{padding:10px clamp(16px,2.25vw,45px) 0;}
@@ -4272,15 +4272,24 @@ openFromHash();
     }
     const core = document.createElement('div'); core.className = 'core';
     stage.appendChild(core); core.textContent = '87';
+    // the red 87 is sized ONCE at its resting depth and zoomed with a transform. Rewriting
+    // width/height/left/top/font-size every scroll frame forced layout and repaint each time.
+    const s0 = sc(D), cw0 = W * s0, ch0 = H * s0;
+    core.style.cssText = 'width:'+cw0+'px;height:'+ch0+'px;left:'+(cx - cw0/2)+'px;top:'+(cy - ch0/2)+'px;font-size:'+(ch0*0.62)+'px;';
     layoutFn = dz => {
       items.forEach(it => { it.el.style.transform = homography(it.bw, it.bh, quad(it.wi, it.a, it.b, dz)); });
-      const s = sc(D - dz), cw = W * s, ch = H * s;
-      core.style.cssText = 'width:'+cw+'px;height:'+ch+'px;left:'+(cx - cw/2)+'px;top:'+(cy - ch/2)+'px;font-size:'+(ch*0.62)+'px;';
+      core.style.transform = 'scale(' + (sc(D - dz) / s0) + ')';
     };
     layoutFn(0);
     host.appendChild(stage);
     host.__ride = layoutFn;
-    const fit = () => { items.forEach(it => { it.sp.style.transform = 'none'; const tw = it.sp.offsetWidth || 1; it.sp.style.transform = 'scaleX('+(it.bw/tw)+')'; }); host.classList.add('live'); };
+    // batch: all writes, then all reads, then all writes (was a forced reflow per line, 32 in a row)
+    const fit = () => {
+      items.forEach(it => { it.sp.style.transform = 'none'; });
+      const tws = items.map(it => it.sp.offsetWidth || 1);
+      items.forEach((it, i) => { it.sp.style.transform = 'scaleX('+(it.bw/tws[i])+')'; });
+      host.classList.add('live');
+    };
     if(document.fonts && document.fonts.load){ document.fonts.load("100px 'Archivo Black'").then(fit, fit); } else fit();
     host.setAttribute('role','img');
     host.setAttribute('aria-label','Type receding into a tunnel towards a red 87: '+N+' polls on one double-decker bus');
@@ -4294,7 +4303,10 @@ openFromHash();
   const host = document.querySelector('.tunnel'); if(!host) return;
   if(!document.documentElement.classList.contains('motion')) return;
   const MAX = 850; let cur = 0, target = 0, raf = 0, visible = true;
-  function aim(){ const h = host.offsetHeight || 1; target = Math.max(0, Math.min(1, (window.scrollY || 0) / (h * 0.95))) * MAX; if(!raf && visible) raf = requestAnimationFrame(step); }
+  // cache the height instead of reading offsetHeight (a layout read) on every scroll event
+  let hostH = host.offsetHeight || 1;
+  if('ResizeObserver' in window) new ResizeObserver(() => { hostH = host.offsetHeight || 1; aim(); }).observe(host);
+  function aim(){ const h = hostH; target = Math.max(0, Math.min(1, (window.scrollY || 0) / (h * 0.95))) * MAX; if(!raf && visible) raf = requestAnimationFrame(step); }
   function step(){
     raf = 0; cur += (target - cur) * 0.12; if(Math.abs(target - cur) < 0.4) cur = target;
     if(host.__ride) host.__ride(cur);
