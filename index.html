@@ -830,20 +830,32 @@ nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
 
 /* framed cover: one screen, tunnel inside a frame, tagline + CTA below */
 .cover{padding:10px clamp(16px,2.25vw,45px) 0;}
-.cover .frame{position:relative; border:1px solid var(--ink); height:calc(100vh - 64px - 96px); height:calc(100svh - 64px - 96px); min-height:360px;}
+.cover .frame{position:relative; border:1px solid var(--ink); height:calc(100vh - 64px - 142px); height:calc(100svh - 64px - 142px); min-height:360px;}
 .cover .tunnel{position:absolute; inset:0; aspect-ratio:auto; border-bottom:0; background:var(--bg);}
 .cover .tunnel img{width:100%; height:100%; object-fit:cover;}
 .cover .tunnel .stage{background:var(--bg);}
 .cover .diag{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:2;}
 .cover .diag line{stroke:var(--ink); stroke-width:1; opacity:.9;}
-.cover .cl{position:absolute; z-index:3; background:var(--bg); padding:0 12px; font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; line-height:1; color:var(--ink);}
-.cover .cl.tl{top:-6px; left:32px;} .cover .cl.tr{top:-6px; right:32px;}
-.cover .cl.bl{bottom:-6px; left:32px;} .cover .cl.br{bottom:-6px; right:32px;}
-.cover-bar{display:flex; align-items:center; justify-content:space-between; gap:24px; height:86px;}
+.cover .cl{position:absolute; z-index:3; background:var(--bg); padding:0 12px; font-family:var(--mono); font-size:13.5px; letter-spacing:.08em; text-transform:uppercase; line-height:1; color:var(--ink);}
+.cover .cl.tl{top:-7px; left:32px;} .cover .cl.tr{top:-7px; right:32px;}
+.cover .cl.bl{bottom:-7px; left:32px;} .cover .cl.br{bottom:-7px; right:32px;}
+.cover-bar{display:flex; align-items:center; justify-content:space-between; gap:32px; min-height:128px; padding:10px 0; box-sizing:border-box;}
+.cover-main{display:flex; flex-direction:column; gap:12px; min-width:0;}
+.cover-actions{display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+.cover-proof{margin:0; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft);}
+.cover-latest{flex:none; width:min(380px,36vw); display:flex; flex-direction:column; gap:7px; padding:11px 14px 12px; border:1px solid var(--ink); text-decoration:none; color:var(--ink); transition:background .25s;}
+.cover-latest[hidden]{display:none;}
+.cover-latest:hover,.cover-latest:focus-visible{background:var(--panel,var(--bg)); outline:2px solid var(--ink); outline-offset:2px;}
+.cover-latest .cl-k{font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft);}
+.cover-latest .cl-q{font-family:'Archivo',sans-serif; font-weight:700; font-size:15px; line-height:1.2; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;}
+.cover-latest .cl-dots{display:grid; grid-template-columns:repeat(29,1fr); gap:2px;}
+.cover-latest .cl-dots i{display:block; aspect-ratio:1; border-radius:50%;}
+.cover-latest .cl-n{font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; color:var(--ink-soft);}
 .cover-tag{margin:0; font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(17px,1.7vw,26px); letter-spacing:-.015em; line-height:1.15; color:var(--ink);}
-.cover-cta{flex:none; display:inline-flex; align-items:center; padding:15px 26px; border:1px solid var(--ink); border-radius:999px; font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); text-decoration:none; transition:background .25s, color .25s;}
-.cover-cta:hover,.cover-cta:focus-visible{background:var(--ink); color:var(--bg); outline:none;}
-@media (max-width:640px){ .cover .cl.br{display:none;} .cover-bar{flex-direction:column; align-items:stretch; height:auto; padding:14px 0 16px; gap:12px;} .cover-cta{justify-content:center;} .cover .frame{height:calc(100svh - 64px - 150px);} }
+.cover-cta{flex:none; display:inline-flex; align-items:center; padding:15px 28px; border:1px solid var(--accent); border-radius:999px; background:var(--accent); font-family:var(--mono); font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--on-accent,#fff); text-decoration:none; transition:background .25s, color .25s, border-color .25s;}
+.cover-cta:hover,.cover-cta:focus-visible{background:var(--ink); border-color:var(--ink); color:var(--bg); outline:none;}
+@media (max-width:900px){ .cover-bar{flex-direction:column; align-items:stretch; gap:14px;} .cover-latest{width:auto;} }
+@media (max-width:640px){ .cover-latest .cl-q{-webkit-line-clamp:2;} .cover .cl.br{display:none;} .cover-bar{padding:14px 0 16px;} .cover-cta{justify-content:center;} .cover-actions{flex-direction:column; align-items:stretch; gap:8px;} .cover-proof{text-align:center;} .cover .frame{height:calc(100svh - 64px - 260px); min-height:300px;} .cover-latest .cl-q{font-size:14px;} }
 .mega{font-family:'Archivo Black',sans-serif; font-size:26.4vw; line-height:.78; letter-spacing:-.05em; white-space:nowrap; padding:2vw 16px 0; margin-bottom:-1.2vw; color:var(--ink); user-select:none; overflow:hidden;}
 .mega .m87{color:var(--accent);}
 .hero{max-width:none; margin:0; padding:20px 16px 28px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink) !important; display:grid !important; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(170px,.55fr); gap:20px 40px; align-items:start;}
@@ -1029,8 +1041,14 @@ body.has-tray{padding-bottom:110px;}
   <span class="cl tl">Upper deck 40</span><span class="cl tr">Lower deck 47</span><span class="cl bl" id="coverQ">86 questions</span><span class="cl br">1 passenger &asymp; 1.15%</span>
 </div>
 <div class="cover-bar">
-  <p class="cover-tag">Put 87 people on one double-decker and ask them the big questions.</p>
-  <a class="cover-cta" href="#weekly" id="coverCta">Board the index &darr;</a>
+  <div class="cover-main">
+    <p class="cover-tag">Put 87 people on one double-decker and ask them the big questions.</p>
+    <div class="cover-actions">
+      <a class="cover-cta" href="#weekly" id="coverCta">See the polls &darr;</a>
+      <p class="cover-proof" id="coverProof">Every source linked</p>
+    </div>
+  </div>
+  <a class="cover-latest" id="coverLatest" href="#weekly" hidden aria-label="Latest poll"></a>
 </div>
 </div>
 <section class="hero" aria-label="Introduction">
@@ -2316,158 +2334,158 @@ const ENTRIES = [
   },
   {
     id: 'cabinet-pm',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun–Sep 2026',
     question: 'Prime Minister',
     groups: [
-      {label:'Favourable', pct:34, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:38, color:'#E28A2B'},
-      {label:"Don't know", pct:28, color:'#A9A69E'},
+      {label:'Favourable', pct:46, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:39, color:'#E28A2B'},
+      {label:"Don't know", pct:15, color:'#A9A69E'},
     ],
     pairing: [
       {name:'Keir Starmer', status:'outgoing', groups:[
-        {label:'Favourable', pct:22, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:67, color:'#E28A2B'},
-        {label:"Don't know", pct:11, color:'#A9A69E'},
+      {label:'Favourable', pct:22, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:67, color:'#E28A2B'},
+      {label:"Don't know", pct:11, color:'#A9A69E'},
       ]},
       {name:'Andy Burnham', status:'incoming', groups:[
-        {label:'Favourable', pct:34, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:38, color:'#E28A2B'},
-        {label:"Don't know", pct:28, color:'#A9A69E'},
+      {label:'Favourable', pct:46, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:39, color:'#E28A2B'},
+      {label:"Don't know", pct:15, color:'#A9A69E'},
       ]},
     ],
-    analysis: "Burnham arrives at net −4, the least-unpopular front-line politician YouGov polled; Starmer leaves at −45, an exit in the same territory as Rishi Sunak (−53) and Boris Johnson (−40) at theirs. Prime ministers rarely leave office popular — what's unusual is a successor starting this close to level, with 24 of 87 passengers still to make up their minds about him.",
-    source: 'YouGov, June 2026',
-    url: 'https://yougov.com/en-gb/topics/politics'
+    analysis: "Burnham now sits at net +7 in YouGov's September ratings: down from the record +13 of August, the highest for any prime minister in over six years, but still the only politician in that month's list with a positive score. Starmer left at −45, in the same territory as Rishi Sunak (−53) and Boris Johnson (−40) at theirs. Prime ministers rarely start popular; what is unusual is one still above water two months in, with 13 of 87 passengers yet to make up their minds.",
+    source: "YouGov: Political favourability ratings, September 2026 (published 14 September 2026; the article does not state fieldwork dates or sample size). Burnham's don't know = the remainder, calculated. Starmer: YouGov, June 2026.",
+    url: 'https://yougov.com/en-gb/articles/55550-political-favourability-ratings-september-2026'
   },
   {
     id: 'cabinet-chancellor',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Mar–Jun 2026',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun–Sep 2026',
     question: 'Chancellor',
     groups: [
-      {label:'Favourable', pct:24, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:35, color:'#E28A2B'},
-      {label:"Don't know", pct:41, color:'#A9A69E'},
+      {label:'Favourable', pct:16, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:24, color:'#E28A2B'},
+      {label:"Don't know", pct:60, color:'#A9A69E'},
     ],
     pairing: [
       {name:'Rachel Reeves', status:'outgoing', groups:[
-        {label:'Favourable', pct:14, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:64, color:'#E28A2B'},
-        {label:"Don't know", pct:22, color:'#A9A69E'},
+      {label:'Favourable', pct:14, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:64, color:'#E28A2B'},
+      {label:"Don't know", pct:22, color:'#A9A69E'},
       ]},
       {name:'John Healey', status:'incoming', groups:[
-        {label:'Favourable', pct:24, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:35, color:'#E28A2B'},
-        {label:"Don't know", pct:41, color:'#A9A69E'},
+      {label:'Favourable', pct:16, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:24, color:'#E28A2B'},
+      {label:"Don't know", pct:60, color:'#A9A69E'},
       ]},
     ],
-    analysis: "The single biggest popularity jump of the reshuffle: Rachel Reeves leaves as the lowest-rated chancellor YouGov has recorded, at net −50, and John Healey arrives at −11 as the least-unpopular member of Burnham's senior team. Note his grey section — 36 of 87 passengers hold no view of the Treasury's surprise appointment, which is room to fall as well as room to grow.",
-    source: 'YouGov (Reeves Jun 2026, Healey Mar 2026)',
-    url: 'https://yougov.com/en-gb/topics/politics'
+    analysis: "The single biggest popularity jump of the reshuffle: Rachel Reeves left as the lowest-rated chancellor YouGov has recorded, at net −50, and John Healey is at −8 in September. More people dislike him than like him (24% to 16%), but the headline is the grey section — 52 of 87 passengers still hold no view of the man running the Treasury, which is room to fall as well as room to grow.",
+    source: "YouGov: Political favourability ratings, September 2026 (published 14 September 2026; Healey, as Chancellor); Reeves: YouGov, June 2026.",
+    url: 'https://yougov.com/en-gb/articles/55550-political-favourability-ratings-september-2026'
   },
   {
     id: 'cabinet-foreign',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun–Sep 2026',
     question: 'Foreign Secretary',
     groups: [
-      {label:'Favourable', pct:19, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:45, color:'#E28A2B'},
-      {label:"Don't know", pct:36, color:'#A9A69E'},
+      {label:'Favourable', pct:20, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:40, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:40, color:'#A9A69E'},
     ],
     pairing: [
       {name:'Yvette Cooper', status:'outgoing', groups:[
-        {label:'Favourable', pct:17, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:38, color:'#E28A2B'},
-        {label:"Don't know", pct:45, color:'#A9A69E'},
+      {label:'Favourable', pct:17, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:38, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:45, color:'#A9A69E'},
       ]},
       {name:'Ed Miliband', status:'incoming', groups:[
-        {label:'Favourable', pct:19, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:45, color:'#E28A2B'},
-        {label:"Don't know", pct:36, color:'#A9A69E'},
+      {label:'Favourable', pct:20, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:40, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:40, color:'#A9A69E'},
       ]},
     ],
-    analysis: "A near-even swap on paper: Cooper leaves the Foreign Office at net −21, Miliband takes it at −26. Sixteen years after leading the party, he returns to the great offices better known than the woman he replaces — a smaller grey section — and slightly less liked. Few politicians get a second act at this level; the numbers say the public is reserving judgement on this one.",
-    source: 'Ipsos Political Pulse, June 2026 (fieldwork 5-9 June, 2,247 GB adults aged 18+), favourability slides for Yvette Cooper and Ed Miliband; Don\'t know = everyone who did not give a favourable or unfavourable view (neither plus don\'t know), calculated',
-    url: 'https://www.ipsos.com/sites/default/files/ct/news/documents/2026-06/Ipsos_June%2026_Political%20Pulse_v1d5_Int%20Use%20Only.pdf'
+    analysis: "A near-even swap: Cooper left the Foreign Office at net −21 (Ipsos, June) and Miliband, who took it, is at −20 in Ipsos's late-September poll. YouGov's September ratings, on their own scale, put him at 27% favourable to 52% unfavourable. Sixteen years after leading the party, he returns to one of the great offices better known than the woman he replaced — a smaller grey section — and no better liked. Few politicians get a second act at this level; the numbers say the public has not been won over.",
+    source: "Miliband: Ipsos Political Pulse, 18-23 September 2026 (2,284 GB adults aged 18+). Cooper: Ipsos Political Pulse, 5-9 June 2026 (2,247 adults). Neither / don't know = everyone who gave neither a favourable nor an unfavourable view, calculated.",
+    url: 'https://www.ipsos.com/en-uk/public-prefer-burnham-led-labour-government-main-alternatives'
   },
   {
     id: 'cabinet-health',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jul 2026',
     question: 'Health Secretary',
     groups: [
-      {label:'Favourable', pct:17, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:38, color:'#E28A2B'},
-      {label:"Don't know", pct:45, color:'#A9A69E'},
+      {label:'Favourable', pct:18, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:34, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:48, color:'#A9A69E'},
     ],
     pairing: [
       {name:'Wes Streeting', status:'outgoing', groups:[
-        {label:'Favourable', pct:13, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:51, color:'#E28A2B'},
-        {label:"Don't know", pct:36, color:'#A9A69E'},
+      {label:'Favourable', pct:17, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:40, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:43, color:'#A9A69E'},
       ]},
       {name:'Yvette Cooper', status:'incoming', groups:[
-        {label:'Favourable', pct:17, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:38, color:'#E28A2B'},
-        {label:"Don't know", pct:45, color:'#A9A69E'},
+      {label:'Favourable', pct:18, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:34, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:48, color:'#A9A69E'},
       ]},
     ],
-    analysis: "Streeting leaves Health at net −38; Cooper arrives at −21. But the caveat matters more here than anywhere on this page: the two figures come from different pollsters using different question wording, so read the direction of the swap rather than the size of the gap. What's not in dispute is that the NHS brief changes hands from the cabinet's most unfavourably-viewed minister to one of its least examined.",
-    source: 'Streeting: YouGov Jun 2026; Cooper: Ipsos Jun 2026 — different pollsters, not directly comparable',
-    url: 'https://yougov.com/en-gb/topics/politics'
+    analysis: "Both figures now come from the same Ipsos poll (17-22 July), so this swap is a like-for-like comparison: Streeting left Health at net −23 and Cooper arrived at −16, seven points better. It was taken the week Burnham took office, before either had time in the job, and Cooper's grey section is the bigger one, 41 of 87 passengers against Streeting's 37. The NHS brief moves from one of the cabinet's most unfavourably viewed ministers to one of its least examined.",
+    source: "Ipsos Political Pulse, July 2026 (fieldwork 17-22 July, 2,255 GB adults aged 18+); Neither / don't know = everyone who gave neither a favourable nor an unfavourable view, calculated.",
+    url: 'https://www.ipsos.com/sites/default/files/ct/news/documents/2026-08/Ipsos_July%2026_Political%20Pulse_v1d4_Int%20Use%20Only.pdf'
   },
   {
     id: 'cabinet-defence',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Mar–Jun 2026',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jul 2026',
     question: 'Defence Secretary',
     groups: [
-      {label:'Favourable', pct:13, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:51, color:'#E28A2B'},
-      {label:"Don't know", pct:36, color:'#A9A69E'},
+      {label:'Favourable', pct:17, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:40, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:43, color:'#A9A69E'},
     ],
     pairing: [
       {name:'John Healey', status:'outgoing', groups:[
-        {label:'Favourable', pct:24, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:35, color:'#E28A2B'},
-        {label:"Don't know", pct:41, color:'#A9A69E'},
+      {label:'Favourable', pct:19, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:25, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:56, color:'#A9A69E'},
       ]},
       {name:'Wes Streeting', status:'incoming', groups:[
-        {label:'Favourable', pct:13, color:'#4C9A3F'},
-        {label:'Unfavourable', pct:51, color:'#E28A2B'},
-        {label:"Don't know", pct:36, color:'#A9A69E'},
+      {label:'Favourable', pct:17, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:40, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:43, color:'#A9A69E'},
       ]},
     ],
-    analysis: "An inversion: the least-unpopular senior minister vacated this seat, and the most unpopular took it. Healey leaves Defence at net −11 for the Treasury; Streeting arrives at −38, carrying the heaviest red section in the cabinet into the ministry most insulated from day-to-day headlines — which, depending on your reading, is either where a bruised reputation goes to recover or where the new Prime Minister parked his loudest rival.",
-    source: 'YouGov (Healey Mar 2026, Streeting Jun 2026)',
-    url: 'https://yougov.com/en-gb/topics/politics'
+    analysis: "An inversion, now measured in one poll: the least-unpopular senior minister vacated this seat and one of the most unpopular took it. Healey leaves Defence at net −6 for the Treasury; Streeting arrives at −23, carrying a heavy red section into the ministry most insulated from day-to-day headlines — which, depending on your reading, is either where a bruised reputation goes to recover or where the new Prime Minister parked his loudest rival.",
+    source: "Ipsos Political Pulse, July 2026 (fieldwork 17-22 July, 2,255 GB adults aged 18+); Neither / don't know = everyone who gave neither a favourable nor an unfavourable view, calculated.",
+    url: 'https://www.ipsos.com/sites/default/files/ct/news/documents/2026-08/Ipsos_July%2026_Political%20Pulse_v1d4_Int%20Use%20Only.pdf'
   },
   {
     id: 'cabinet-home',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jul 2026',
     question: 'Home Secretary',
     badge: 'STAYS',
     who: 'Mahmood',
     groups: [
-      {label:'Favourable', pct:14, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:39, color:'#E28A2B'},
-      {label:"Don't know", pct:47, color:'#A9A69E'},
+      {label:'Favourable', pct:17, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:35, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:48, color:'#A9A69E'},
     ],
-    analysis: "The only great office of state to keep its holder across the reshuffle. Shabana Mahmood rides at net −25, with 41 of 87 passengers holding no view — which, for the occupant of the cabinet's most reliably bruising job, is its own quiet achievement. Continuity at the Home Office while everything above it changed is one of the reshuffle's more deliberate signals.",
-    source: 'YouGov, June 2026',
-    url: 'https://yougov.com/en-gb/topics/politics'
+    analysis: "The only great office of state to keep its holder across the reshuffle. Shabana Mahmood sits at net −18, with 42 of 87 passengers holding no view — which, for the occupant of the cabinet's most reliably bruising job, is its own quiet achievement. Continuity at the Home Office while everything above it changed is one of the reshuffle's more deliberate signals.",
+    source: "Ipsos Political Pulse, July 2026 (fieldwork 17-22 July, 2,255 GB adults aged 18+); Neither / don't know = everyone who gave neither a favourable nor an unfavourable view, calculated.",
+    url: 'https://www.ipsos.com/sites/default/files/ct/news/documents/2026-08/Ipsos_July%2026_Political%20Pulse_v1d4_Int%20Use%20Only.pdf'
   },
   {
     id: 'cabinet-housing',
-    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jun 2026',
+    cat: 'cabinet', catLabel: "Burnham's Cabinet", date: 'Jul 2026',
     question: 'Housing Secretary',
     badge: 'INCOMING',
     who: 'Rayner',
     groups: [
-      {label:'Favourable', pct:21, color:'#4C9A3F'},
-      {label:'Unfavourable', pct:54, color:'#E28A2B'},
-      {label:"Don't know", pct:25, color:'#A9A69E'},
+      {label:'Favourable', pct:20, color:'#4C9A3F'},
+      {label:'Unfavourable', pct:46, color:'#E28A2B'},
+      {label:"Neither / don't know", pct:34, color:'#A9A69E'},
     ],
-    analysis: "Angela Rayner returns to the exact role she resigned from last year, at net −33 — the most unfavourable-heavy single bus in this section — but also with the best recognition on the front bench: only 22 of 87 passengers hold no view of her. Her predecessor Steve Reed isn't individually polled by the major houses, so no outgoing bus is shown; this page draws real buses or none.",
-    source: 'YouGov, June 2026',
-    url: 'https://yougov.com/en-gb/topics/politics'
+    analysis: "Angela Rayner returns to the exact role she resigned from last year, at net −26 — a clear lean to the unfavourable side, but with the best recognition on the front bench: only 30 of 87 passengers hold no view of her. Her predecessor Steve Reed isn't individually polled by the major houses, so no outgoing bus is shown; this page draws real buses or none.",
+    source: "Ipsos Political Pulse, July 2026 (fieldwork 17-22 July, 2,255 GB adults aged 18+); Neither / don't know = everyone who gave neither a favourable nor an unfavourable view, calculated.",
+    url: 'https://www.ipsos.com/sites/default/files/ct/news/documents/2026-08/Ipsos_July%2026_Political%20Pulse_v1d4_Int%20Use%20Only.pdf'
   },
 ];
 
@@ -2765,7 +2783,7 @@ function bumpReaction(id, kind, btnEl, countEl){
   btnEl.disabled = true;
 }
 
-const CABINET_STANDFIRST = "When Andy Burnham became prime minister on 20 July 2026, he reshaped the cabinet. Each role below shows the minister leaving and the minister arriving — where both have been polled, their buses pass in opposite directions. One caveat: these are favourability ratings taken <strong>before</strong> the reshuffle, so they show the standing each figure brought into or out of the role, not approval of their performance in it — the cabinet is only days old. Figures marked Ipsos and YouGov use different question wording and are not directly comparable.";
+const CABINET_STANDFIRST = "When Andy Burnham became prime minister on 20 July 2026, he reshaped the cabinet. Each role below shows the minister leaving and the minister arriving — where both have been polled, their buses pass in opposite directions. One caveat: these are favourability ratings, so they show how well known and how liked each figure is, not approval of their performance in the job. Figures are the latest published from Ipsos and YouGov (July to September 2026); outgoing ministers' figures are from before they left. The two pollsters use different question wording and are not directly comparable, so each entry says which one it uses.";
 
 function render(){
   container.innerHTML = '';
@@ -4238,6 +4256,30 @@ openFromHash();
 })();
 
 /* ---------- live tunnel cover ---------- */
+/* cover: proof line and the latest poll drawn as its own 87-seat bus (3 rows of 29) */
+(function(){
+  const proof = document.getElementById('coverProof');
+  if(proof){
+    let d = ''; try{ d = deployedOn(); }catch(_){ d = SITE_LAST_UPDATED; }
+    proof.textContent = ENTRIES.length + ' polls \u00b7 updated ' + d + ' \u00b7 every source linked';
+  }
+  const box = document.getElementById('coverLatest'); if(!box) return;
+  const list = ENTRIES.map((e, i) => [e, i]).filter(x => x[0].cat !== 'cabinet' && x[0].groups);
+  list.sort((a, b) => (entryDateValue(b[0]) - entryDateValue(a[0])) || (b[1] - a[1]));
+  if(!list.length) return;
+  const e = list[0][0];
+  const c = e.groups.map(g => Math.max(1, Math.round(g.pct / 100 * 87)));
+  let diff = c.reduce((a, b) => a + b, 0) - 87;
+  while(diff !== 0){ const k = c.indexOf(Math.max(...c)); c[k] += diff > 0 ? -1 : 1; diff += diff > 0 ? -1 : 1; }
+  const kEl = document.createElement('span'); kEl.className = 'cl-k'; kEl.textContent = 'Latest poll \u00b7 ' + e.date + ' \u00b7 87 seats';
+  const qEl = document.createElement('span'); qEl.className = 'cl-q'; qEl.textContent = e.question;
+  const dots = document.createElement('span'); dots.className = 'cl-dots'; dots.setAttribute('aria-hidden', 'true');
+  e.groups.forEach((g, gi) => { for(let n = 0; n < c[gi]; n++){ const i = document.createElement('i'); i.style.background = g.color; dots.appendChild(i); } });
+  [kEl, qEl, dots].forEach(x => box.appendChild(x));
+  box.href = '#poll-' + e.id;
+  box.addEventListener('click', ev => { ev.preventDefault(); history.replaceState(null, '', location.pathname + location.search); location.hash = 'poll-' + e.id; });
+  box.hidden = false;
+})();
 (function(){ const q = document.getElementById('coverQ'); if(q) q.textContent = ENTRIES.length + ' questions'; const c = document.getElementById('coverCta'); if(c) c.addEventListener('click', function(e){ e.preventDefault(); const t = document.getElementById('weekly') || document.querySelector('.layout'); const L = window.the87Lenis; if(L && L.scrollTo) L.scrollTo(t, {offset:-70}); else t.scrollIntoView({behavior:'smooth'}); }); })();
 (function(){
   const host = document.querySelector('.tunnel'); if(!host) return;
