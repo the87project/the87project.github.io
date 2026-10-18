@@ -4039,7 +4039,10 @@ openFromHash();
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root = document.documentElement;
   let lenis = null;
-  if(!reduce && window.Lenis){
+  // Safari: leave scrolling to the browser. Lenis moves the page from JavaScript on the main thread,
+  // which on Safari is visibly choppier than its own native inertial scrolling on a page this size.
+  const isSafari = /^((?!chrome|chromium|crios|fxios|android).)*safari/i.test(navigator.userAgent);
+  if(!reduce && !isSafari && window.Lenis){
     try{
       lenis = new Lenis({lerp: 0.1, smoothWheel: true, anchors: false});
       const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
