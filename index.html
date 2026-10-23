@@ -164,18 +164,18 @@ nav{
 
 
 /* ---------- HERO BAND + SECTION COLOURS ---------- */
-:root{--c-tech:#2E5FB7; --c-health:#2AA198; --c-economy:#E28A2B; --c-society:#4C9A3F; --c-politics:#D9B417; --c-cabinet:#DC241F; --hero-bg:#B91C18; --hero-ink:#FFF8EA;}
-:root[data-theme="dark"]{--hero-bg:#8F1713; --c-cabinet:#EF4A43;}
+:root{--c-tech:#2E5FB7; --c-health:#2AA198; --c-economy:#E28A2B; --c-society:#4C9A3F; --c-politics:#D9B417; --c-cabinet:#DC241F; --c-votingintention:#6B4FA0; --hero-bg:#B91C18; --hero-ink:#FFF8EA;}
+:root[data-theme="dark"]{--hero-bg:#8F1713; --c-cabinet:#EF4A43; --c-votingintention:#A47BDB;}
 .tab::before{content:''; width:9px; height:9px; border-radius:50%; flex-shrink:0; background:var(--tc, transparent);}
 .tab[data-cat="tech"]{--tc:var(--c-tech);} .tab[data-cat="health"]{--tc:var(--c-health);} .tab[data-cat="economy"]{--tc:var(--c-economy);}
-.tab[data-cat="society"]{--tc:var(--c-society);} .tab[data-cat="politics"]{--tc:var(--c-politics);} .tab[data-cat="cabinet"]{--tc:var(--c-cabinet);}
+.tab[data-cat="society"]{--tc:var(--c-society);} .tab[data-cat="politics"]{--tc:var(--c-politics);} .tab[data-cat="cabinet"]{--tc:var(--c-cabinet);} .tab[data-cat="votingintention"]{--tc:var(--c-votingintention);}
 .tab[data-cat="all"]::before,.tab-about::before{display:none;}
 .tab.active::before{box-shadow:0 0 0 2px var(--on-accent);}
 .entry{position:relative;}
 .entry[data-cat]::before{content:''; position:absolute; top:-8px; left:0; width:9px; height:9px; border:3px solid var(--cc); border-radius:50%; background:var(--bg); box-sizing:content-box;}
 .entry:first-child[data-cat]::before{display:none;}
 .entry[data-cat="tech"]{--cc:var(--c-tech);} .entry[data-cat="health"]{--cc:var(--c-health);} .entry[data-cat="economy"]{--cc:var(--c-economy);}
-.entry[data-cat="society"]{--cc:var(--c-society);} .entry[data-cat="politics"]{--cc:var(--c-politics);} .entry[data-cat="cabinet"]{--cc:var(--c-cabinet);}
+.entry[data-cat="society"]{--cc:var(--c-society);} .entry[data-cat="politics"]{--cc:var(--c-politics);} .entry[data-cat="cabinet"]{--cc:var(--c-cabinet);} .entry[data-cat="votingintention"]{--cc:var(--c-votingintention);}
 .entry-meta::before{content:''; display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--cc, var(--slate)); margin-right:8px; vertical-align:baseline;}
 .entry-meta{display:inline-flex; align-items:center;}
 
@@ -1072,6 +1072,7 @@ body.has-tray{padding-bottom:110px;}
       <button class="tab" data-cat="economy">Economy</button>
       <button class="tab" data-cat="society">Society</button>
       <button class="tab" data-cat="politics">Politics</button>
+      <button class="tab" data-cat="votingintention">Voting Intention</button>
       <button class="tab" data-cat="cabinet">Burnham's Cabinet</button>
       <button class="tab tab-about" data-cat="about">About</button>
     </nav>
@@ -1519,7 +1520,7 @@ const ENTRIES = [
   },
   {
     id: 'voting-intention',
-    cat: 'politics', catLabel: 'Politics', date: 'Oct 2026',
+    cat: 'votingintention', catLabel: 'Voting Intention', date: 'Oct 2026',
     question: 'If there were an election tomorrow?',
     groups: [
       {label:'Labour', pct:27, color:'#DC241F'},
@@ -1660,7 +1661,7 @@ const ENTRIES = [
   },
   {
     id: 'voting-swing-2025',
-    cat: 'politics', catLabel: 'Politics', date: 'Dec 2025',
+    cat: 'votingintention', catLabel: 'Voting Intention', date: 'Dec 2025',
     question: 'Westminster voting intention: January 2025 → December 2025',
     video: 'videos/bus-voting-swing.mp4',
     statChips: [
@@ -3549,13 +3550,14 @@ sortbar.querySelectorAll('.sortbtn').forEach(btn => {
 });
 
 // ----- "Our buses" fleet pictogram in the About section -----
-const CAT_ORDER = ['tech','health','economy','society','politics','cabinet'];
+const CAT_ORDER = ['tech','health','economy','society','politics','votingintention','cabinet'];
 const CAT_META = {
   tech:    {label:'Technology & AI',  color:'#2E5FB7'},
   health:  {label:'Health & Ethics',  color:'#2AA198'},
   economy: {label:'Economy',          color:'#E28A2B'},
   society: {label:'Society',          color:'#4C9A3F'},
   politics:{label:'Politics',         color:'#C93B32'},
+  votingintention:{label:'Voting Intention',color:'#6B4FA0'},
   cabinet: {label:"Burnham's Cabinet",color:'#D9B417'},
 };
 function buildFleet(){
