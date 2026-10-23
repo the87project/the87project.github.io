@@ -2810,16 +2810,16 @@ function render(){
     if(m) matchInfo.set(e.id, m);
     return !!m;
   });
-  {
-    // polls are grouped by section, in the same order as the section list (biggest first); the chosen sort applies within each section
+  if(currentSort !== 'default'){
+    // Newest/oldest first: one flat list across all sections, by date
+    visible.sort((a,b) => currentSort === 'new'
+      ? entryDateValue(b) - entryDateValue(a)
+      : entryDateValue(a) - entryDateValue(b));
+  } else {
+    // Featured: polls are grouped by section, in the same order as the section list (biggest first)
     const counts = {}; ENTRIES.forEach(e => { counts[e.cat] = (counts[e.cat] || 0) + 1; });
     const cats = Object.keys(counts).sort((x, y) => counts[y] - counts[x]);
     const rank = c => cats.indexOf(c);
-    if(currentSort !== 'default'){
-      visible.sort((a,b) => currentSort === 'new'
-        ? entryDateValue(b) - entryDateValue(a)
-        : entryDateValue(a) - entryDateValue(b));
-    }
     visible = visible.map((e, i) => [e, i]).sort((x, y) => (rank(x[0].cat) - rank(y[0].cat)) || (x[1] - y[1])).map(x => x[0]);
   }
   let directCount = visible.length;
@@ -4108,7 +4108,7 @@ openFromHash();
   };
   window.addEventListener('scroll', setScrolled, {passive:true}); setScrolled();
   const ns = document.getElementById('navSearch'), si = document.getElementById('searchInput'), sb = document.getElementById('searchbar');
-  const closeNavSearch = () => { if(!navEl) return; navEl.classList.remove('search-open'); ns.setAttribute('aria-expanded', 'false'); };
+  const closeNavSearch = () => { if(!navEl) return; navEl.classList.remove('search-open'); ns.setAttribute('aria-expanded', 'false'); if(si.value) clearSearch(); };
   const openNavSearch = () => { if(!navEl) return; navEl.classList.add('search-open', 'nav-peek'); ns.setAttribute('aria-expanded', 'true'); setTimeout(() => si.focus({preventScroll:true}), 50); };
   if(ns && si && sb){
     ns.addEventListener('click', () => { navEl.classList.contains('search-open') ? closeNavSearch() : openNavSearch(); });
