@@ -220,11 +220,9 @@ html.lenis,html.lenis body{height:auto;}
 .lenis.lenis-stopped{overflow:hidden;}
 nav[aria-label="Site header"]{height:64px;}
 .nav-inner{height:100%; align-items:center; transition:max-width .45s cubic-bezier(.2,.7,.2,1), margin .45s cubic-bezier(.2,.7,.2,1), padding .45s cubic-bezier(.2,.7,.2,1), border-radius .45s ease, background-color .3s ease-in-out, box-shadow .3s ease-in-out, height .45s cubic-bezier(.2,.7,.2,1), transform .3s cubic-bezier(.2,.7,.2,1), opacity .3s ease;}
-/* desktop: the floating pill tucks away while reading, and comes back when the pointer nears the top */
-@media (pointer:fine){
-  nav[aria-label="Site header"].scrolled:not(.nav-peek) .nav-inner{transform:translateY(-90px); opacity:0; pointer-events:none;}
-  nav[aria-label="Site header"].scrolled.nav-peek .nav-inner{transform:translateY(0); opacity:1;}
-}
+/* the floating pill tucks away while scrolling down, and comes back on scroll up */
+nav[aria-label="Site header"].scrolled:not(.nav-peek) .nav-inner{transform:translateY(-90px); opacity:0; pointer-events:none;}
+nav[aria-label="Site header"].scrolled.nav-peek .nav-inner{transform:translateY(0); opacity:1;}
 .nav-search{width:32px; height:32px; flex-shrink:0; display:none; align-items:center; justify-content:center; border:1px solid var(--line-soft); background:var(--bg); border-radius:999px; color:var(--ink-soft); cursor:pointer;}
 .nav-search svg{width:15px; height:15px;}
 .nav-search:hover{border-color:var(--accent); color:var(--accent);}
@@ -4092,7 +4090,22 @@ openFromHash();
   }
   // pill bar
   const navEl = document.querySelector('nav[aria-label="Site header"]');
-  const setScrolled = () => { if(navEl) navEl.classList.toggle('scrolled', (window.scrollY || 0) > 260); };
+  // the pill hides on scroll down, reappears on scroll up (or while search is open)
+  let navLastY = window.scrollY || 0, navWasScrolled = false;
+  const setScrolled = () => {
+    if(!navEl) return;
+    const y = window.scrollY || 0, scrolled = y > 260;
+    navEl.classList.toggle('scrolled', scrolled);
+    if(scrolled && !navWasScrolled) navEl.classList.add('nav-peek');
+    else if(navEl.classList.contains('search-open')) navEl.classList.add('nav-peek');
+    else if(scrolled){
+      const delta = y - navLastY;
+      if(delta < -4) navEl.classList.add('nav-peek');
+      else if(delta > 4) navEl.classList.remove('nav-peek');
+    }
+    navWasScrolled = scrolled;
+    navLastY = y;
+  };
   window.addEventListener('scroll', setScrolled, {passive:true}); setScrolled();
   const ns = document.getElementById('navSearch'), si = document.getElementById('searchInput'), sb = document.getElementById('searchbar');
   const closeNavSearch = () => { if(!navEl) return; navEl.classList.remove('search-open'); ns.setAttribute('aria-expanded', 'false'); };
@@ -4117,19 +4130,6 @@ openFromHash();
       if(ev.key !== 'Escape' || document.activeElement !== si) return;
       if(navEl.classList.contains('search-open') && searchSuggest.hidden && !si.value) closeNavSearch();
     });
-  }
-  // desktop: the pill hides while scrolling/reading, and reappears when the pointer nears the top of the screen
-  if(navEl && window.matchMedia && window.matchMedia('(pointer:fine)').matches){
-    let near = false;
-    const setPeek = v => {
-      near = v;
-      navEl.classList.toggle('nav-peek', v || navEl.classList.contains('search-open'));
-    };
-    window.addEventListener('mousemove', ev => {
-      if(!near && ev.clientY <= 64) setPeek(true);
-      else if(near && ev.clientY > 160) setPeek(false);
-    }, {passive:true});
-    window.addEventListener('mouseleave', () => setPeek(false));
   }
   // reveals + count-up
   if(!root.classList.contains('motion') || !('IntersectionObserver' in window)) return;
