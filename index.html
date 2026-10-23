@@ -855,7 +855,7 @@ nav[aria-label="Site header"].scrolled .nav-menu{display:none;}
 .cover-cta{flex:none; display:inline-flex; align-items:center; padding:15px 28px; border:1px solid var(--accent); border-radius:999px; background:var(--accent); font-family:var(--mono); font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--on-accent,#fff); text-decoration:none; transition:background .25s, color .25s, border-color .25s;}
 .cover-cta:hover,.cover-cta:focus-visible{background:var(--ink); border-color:var(--ink); color:var(--bg); outline:none;}
 @media (max-width:900px){ .cover-bar{flex-direction:column; align-items:stretch; gap:14px;} .cover-latest{width:auto;} }
-@media (max-width:640px){ .cover-latest .cl-q{-webkit-line-clamp:2;} .cover .cl.br{display:none;} .cover-bar{padding:14px 0 16px;} .cover-cta{justify-content:center;} .cover-actions{flex-direction:column; align-items:stretch; gap:8px;} .cover-proof{text-align:center;} .cover .frame{height:calc(100svh - 64px - 260px); min-height:300px;} .cover-latest .cl-q{font-size:14px;} }
+@media (max-width:640px){ .cover-latest .cl-q{-webkit-line-clamp:2;} .cover .cl.br{display:none;} .cover-bar{padding:14px 0 16px;} .cover-cta{justify-content:center;} .cover-actions{flex-direction:column; align-items:stretch; gap:8px;} .cover-proof{text-align:center;} .cover .frame{height:min(calc(100svh - 64px - 260px), 58vw); min-height:160px;} .cover-latest .cl-q{font-size:14px;} .cover .tunnel img{object-fit:contain;} }
 .mega{font-family:'Archivo Black',sans-serif; font-size:26.4vw; line-height:.78; letter-spacing:-.05em; white-space:nowrap; padding:2vw 16px 0; margin-bottom:-1.2vw; color:var(--ink); user-select:none; overflow:hidden;}
 .mega .m87{color:var(--accent);}
 .hero{max-width:none; margin:0; padding:20px 16px 28px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink) !important; display:grid !important; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(170px,.55fr); gap:20px 40px; align-items:start;}
@@ -4327,7 +4327,7 @@ openFromHash();
     stage = document.createElement('div'); stage.className = 'stage'; stage.setAttribute('aria-hidden','true');
     stage.style.width = W+'px'; stage.style.height = H+'px';
     stage.style.transform = 'scale('+(w/W)+')';
-    const rings = Math.min(R.length, 8);
+    const rings = Math.min(R.length, w < 560 ? 4 : 8);
     const zs = []; for(let k=0;k<=rings;k++) zs.push(P*(Math.pow(1/r,k)-1));
     const D = zs[rings];
     // (frame fills the screen; H follows the frame's shape)
