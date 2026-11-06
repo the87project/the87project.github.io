@@ -1219,6 +1219,47 @@ window.THE87_GOATCOUNTER = 'the87project';
 
 const ENTRIES = [
   {
+    id: 'us-midterms-party',
+    cat: 'politics', catLabel: 'Politics', date: 'Nov 2026',
+    question: 'If you could vote in the US midterm elections, which party would you back?',
+    groups: [
+      {label:'Democratic Party', pct:42, color:'#2E5FB7'},
+      {label:'Republican Party', pct:10, color:'#C93B32'},
+      {label:'Neither', pct:17, color:'#E28A2B'},
+      {label:'Not sure', pct:31, color:'#A9A69E'},
+    ],
+    analysis: "Given an American ballot, this bus breaks four to one: 36 passengers would back the Democrats against just 9 for the Republicans. But the louder number is the 42 who decline the choice altogether \u2014 27 not sure and 15 who would back neither \u2014 very nearly half the bus. Britons are perfectly willing to tell you which way they lean on US politics; rather fewer are willing to actually get on board.",
+    source: 'YouGov, 1\u20132 November 2026 (n=2,355)',
+    url: 'https://yougov.com/en-gb/articles/55889-what-do-britons-make-of-the-us-midterm-elections'
+  },
+  {
+    id: 'midterms-impact-uk',
+    cat: 'politics', catLabel: 'Politics', date: 'Nov 2026',
+    question: 'How much impact will the US midterm results have on the UK?',
+    groups: [
+      {label:'At least a fair amount', pct:41, color:'#C93B32'},
+      {label:'Little or none', pct:36, color:'#2AA198'},
+      {label:"Don't know", pct:23, color:'#A9A69E'},
+    ],
+    analysis: "Sit this bus next to the one asking which US party Britons would vote for and the pair tells a tidy story: people are happy to pick a side, far less sure it changes anything here. Thirty-six passengers expect the midterms to land on Britain in some real way, 31 think barely or not at all, and 20 simply don't know \u2014 one of the bigger shrugs on this site for an event that dominated a week of front pages.",
+    source: 'YouGov daily question, 3 November 2026 (n=4,869; \u2018a lot\u2019/\u2018a fair amount\u2019 and \u2018not very much\u2019/\u2018none at all\u2019 combined as YouGov published them)',
+    url: 'https://yougov.com/en-gb/daily-results/20261103-00903-1'
+  },
+  {
+    id: 'white-poppy-acceptability',
+    cat: 'society', catLabel: 'Society', date: 'Nov 2026',
+    question: 'Is wearing a white poppy during remembrance season acceptable?',
+    groups: [
+      {label:'Completely acceptable', pct:44, color:'#4C9A3F'},
+      {label:'Somewhat acceptable', pct:20, color:'#2AA198'},
+      {label:'Unacceptable', pct:15, color:'#C93B32'},
+      {label:"Don't know", pct:22, color:'#A9A69E'},
+    ],
+    analysis: "The white poppy is supposed to be the controversial one, and 13 passengers do think wearing it is unacceptable \u2014 but they are outnumbered better than four to one by the 55 who are fine with it. The seats worth looking at are the 19 marked don't know: on a symbol that reappears every single November, more than one in five of the bus has never landed on a view. Drawn from 8,024 respondents, one of the largest samples on this site.",
+    source: 'YouGov daily question, 4 November 2026 (n=8,024; published figures sum to 101 from rounding)',
+    url: 'https://yougov.com/en-gb/daily-results/20261104-57214-5'
+  },
+  {
     id: 'graduate-employment',
     cat: 'economy', catLabel: 'Economy', date: '2024',
     question: 'What jobs do UK graduates actually end up in?',
@@ -2554,15 +2595,32 @@ const tabs = document.querySelectorAll('.tab');
 let currentFilter = 'all';
 let currentSort = 'default';
 
-// turn a free-text date label ('Aug 2026', 'Census 2021', 'Mar–Jun 2026', '2024 (published 2026)') into a sortable number
+// Sort by when the poll was actually taken, not when it was added to the site.
+// The date label ('Oct 2026') is only month-precise, so we also read the fieldwork
+// dates out of `source` ('25–26 October 2026', '9–13 October 2026') for day precision.
 const MONTHS = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,sept:9,oct:10,nov:11,dec:12};
+const FIELDWORK_RE = /(\d{1,2})(?:\s*(?:[–—-]|\s+to\s+)\s*(\d{1,2}))?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?,?\s*(\d{4})?/g;
+// take the LAST day+month mentioned — fieldwork ranges end on the most recent day
+function fieldworkDate(s){
+  if(!s) return null;
+  FIELDWORK_RE.lastIndex = 0;
+  let m, last = null;
+  while((m = FIELDWORK_RE.exec(s.toLowerCase()))) last = m;
+  if(!last) return null;
+  return {day: parseInt(last[2] || last[1], 10), month: MONTHS[last[3]], year: last[4] ? parseInt(last[4], 10) : null};
+}
 function entryDateValue(e){
-  const s = e.date || '';
-  const ym = s.match(/\d{4}/);
+  const label = e.date || '';
+  const ym = label.match(/\d{4}/);
   const year = ym ? parseInt(ym[0], 10) : 0;
-  const mm = s.toLowerCase().match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)/);
-  const month = mm ? MONTHS[mm[1]] : 6;   // undated/census entries sort to mid-year
-  return year * 100 + month;
+  const lm = label.toLowerCase().match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)/);
+  const labelMonth = lm ? MONTHS[lm[1]] : 0;
+  const f = fieldworkDate(e.source);
+  // only trust the fieldwork date when it agrees with the label (guards publication-vs-fieldwork drift)
+  if(f && (f.year === null || f.year === year) && (labelMonth === 0 || f.month === labelMonth)){
+    return year * 10000 + f.month * 100 + f.day;
+  }
+  return year * 10000 + (labelMonth || 6) * 100;   // undated/census entries sort to mid-year
 }
 
 // deterministic pseudo-random for stable jitter
