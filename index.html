@@ -2855,9 +2855,10 @@ function render(){
   });
   if(currentSort !== 'default'){
     // Newest/oldest first: one flat list across all sections, by date
+    // dates are month-level, so ties fall back to the order entries were added (later in ENTRIES = newer)
     visible.sort((a,b) => currentSort === 'new'
-      ? entryDateValue(b) - entryDateValue(a)
-      : entryDateValue(a) - entryDateValue(b));
+      ? (entryDateValue(b) - entryDateValue(a)) || (ENTRIES.indexOf(b) - ENTRIES.indexOf(a))
+      : (entryDateValue(a) - entryDateValue(b)) || (ENTRIES.indexOf(a) - ENTRIES.indexOf(b)));
   } else {
     // Featured: polls are grouped by section, in the same order as the section list (biggest first)
     const counts = {}; ENTRIES.forEach(e => { counts[e.cat] = (counts[e.cat] || 0) + 1; });
