@@ -541,9 +541,10 @@ main[hidden]{display:none;}
 .room-wrap:not(:empty){padding:calc(4px + var(--room-card-pad)) var(--room-card-pad) var(--room-card-pad);}
 .room{width:100%; display:block;}
 .room-wrap{position:relative;}
-.entry svg.room,.entry svg.plan{cursor:pointer;}
-.entry svg.plan{display:block; width:100%; height:auto; max-height:660px;}
-.entry svg.plan[hidden]{display:none;}
+.entry svg.room,.entry svg.plan,.route-card svg.room,.route-card svg.plan{cursor:pointer;}
+/* not scoped to .entry: the compare panel renders these same buses inside .route-card */
+svg.plan{display:block; width:100%; height:auto; max-height:660px;}
+svg.plan[hidden]{display:none !important;}
 .plan-toggle{position:absolute; right:10px; top:8px; z-index:2; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:var(--bg); border:1px solid var(--ink); border-radius:999px; padding:6px 12px; cursor:pointer; transition:background .2s, color .2s;}
 .plan-toggle:hover,.plan-toggle:focus-visible{background:var(--ink); color:var(--bg); outline:none;}
 @media (max-width:640px){ .room-wrap{display:flex; flex-direction:column;} .plan-toggle{position:static; order:-1; align-self:flex-end; margin:0 0 6px; padding:5px 10px; font-size:10px;} }
@@ -2901,6 +2902,32 @@ function bumpReaction(id, kind, btnEl, countEl){
 
 const CABINET_STANDFIRST = "When Andy Burnham became prime minister on 20 July 2026, he reshaped the cabinet. Each role below shows the minister leaving and the minister arriving — where both have been polled, their buses pass in opposite directions. One caveat: these are favourability ratings, so they show how well known and how liked each figure is, not approval of their performance in the job. Figures are the latest published from Ipsos and YouGov (July to September 2026); outgoing ministers' figures are from before they left. The two pollsters use different question wording and are not directly comparable, so each entry says which one it uses.";
 
+// Wire the bird's-eye toggle inside `scope`. Split out of render() so the compare panel can
+// re-wire its cloned cards: cloneNode(true) copies the button but not its click handler.
+function wirePlanToggle(scope, data){
+  if(!scope || !data) return;
+  const btn = scope.querySelector('.plan-toggle'), roomEl = scope.querySelector('svg.room');
+  if(!btn || !roomEl) return;
+  const host = roomEl.parentNode;                      // scope to this bus, not the whole panel
+  let planEl = host.querySelector('svg.plan');         // a clone may already carry one
+  const toggle = () => {
+    if(!planEl){                                        // built on first use
+      roomEl.insertAdjacentHTML('afterend', planSvg(data.groups, data.counts, data.lists, data.seed));
+      planEl = host.querySelector('svg.plan');
+      planEl.addEventListener('click', toggle);
+    }
+    const on = planEl.hasAttribute('hidden');
+    planEl.toggleAttribute('hidden', !on);
+    roomEl.style.display = on ? 'none' : '';
+    scope.classList.toggle('plan-on', on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.textContent = on ? 'Side view' : 'Bird\'s-eye view';
+  };
+  btn.addEventListener('click', toggle);
+  roomEl.addEventListener('click', toggle);
+  if(planEl) planEl.addEventListener('click', toggle);  // cloned plan needs its handler back too
+}
+
 function render(){
   container.innerHTML = '';
   matchInfo = new Map();
@@ -3123,16 +3150,10 @@ function render(){
     `;
     container.appendChild(wrap);
     tagRelated(wrap, e);
-    (function(){
-      const btn = wrap.querySelector('.plan-toggle'), roomEl = wrap.querySelector('svg.room'); let planEl = null;
-      if(!btn || !roomEl) return;
-      const toggle = () => {
-        if(!planEl){ roomEl.insertAdjacentHTML('afterend', planSvg(e.groups, counts, lists, planSeed)); planEl = wrap.querySelector('svg.plan'); planEl.addEventListener('click', toggle); }   // built on first use
-        const on = planEl.hasAttribute('hidden'); planEl.toggleAttribute('hidden', !on); roomEl.style.display = on ? 'none' : '';
-        wrap.classList.toggle('plan-on', on); btn.setAttribute('aria-pressed', String(on)); btn.textContent = on ? 'Side view' : 'Bird\'s-eye view';
-      };
-      btn.addEventListener('click', toggle); roomEl.addEventListener('click', toggle);
-    })();
+    // the compare panel clones these cards, and cloneNode drops listeners, so the data the
+    // bird's-eye view needs is parked on the element and the toggle is re-wired per copy.
+    wrap.__planData = {groups: e.groups, counts: counts, lists: lists, seed: planSeed};
+    wirePlanToggle(wrap, wrap.__planData);
 
 
     const rcounts = getReactionCounts(e.id);
@@ -4194,16 +4215,31 @@ openFromHash();
   const navEl = document.querySelector('nav[aria-label="Site header"]');
   // the pill hides on scroll down, reappears on scroll up (or while search is open)
   let navLastY = window.scrollY || 0, navWasScrolled = false;
+  // mark the icon's state without going through openNavSearch/closeNavSearch, which focus
+  // the input and clear the query - neither is wanted when the reader is only scrolling
+  const setSearchExpanded = on => { const b = document.getElementById('navSearch'); if(b) b.setAttribute('aria-expanded', String(on)); };
   const setScrolled = () => {
     if(!navEl) return;
     const y = window.scrollY || 0, scrolled = y > 260;
     navEl.classList.toggle('scrolled', scrolled);
-    if(scrolled && !navWasScrolled) navEl.classList.add('nav-peek');
-    else if(navEl.classList.contains('search-open')) navEl.classList.add('nav-peek');
-    else if(scrolled){
+    const inp = document.getElementById('searchInput');
+    const searchBusy = !!(inp && (inp.value || document.activeElement === inp));   // never interrupt a live search
+    if(!scrolled){
+      navEl.classList.remove('nav-peek');
+      if(!searchBusy){ navEl.classList.remove('search-open'); setSearchExpanded(false); }
+    } else if(!navWasScrolled){
+      navEl.classList.add('nav-peek');
+    } else if(searchBusy){
+      navEl.classList.add('nav-peek');
+    } else {
       const delta = y - navLastY;
-      if(delta < -4) navEl.classList.add('nav-peek');
-      else if(delta > 4) navEl.classList.remove('nav-peek');
+      if(delta < -4){                     // scrolling up anywhere on the page opens the search bar
+        navEl.classList.add('nav-peek', 'search-open');
+        setSearchExpanded(true);
+      } else if(delta > 4){               // scrolling down tucks it back to the icon
+        navEl.classList.remove('nav-peek', 'search-open');
+        setSearchExpanded(false);
+      }
     }
     navWasScrolled = scrolled;
     navLastY = y;
@@ -4338,6 +4374,7 @@ openFromHash();
       body.querySelectorAll('.reactions,.entry-actions,.cmp-bar').forEach(x => x.remove());
       body.innerHTML = body.innerHTML.replace(/(wp\d+f?)/g, '$1r' + n);
       card.appendChild(body); rideBody.appendChild(card);
+      wirePlanToggle(card, src.__planData);   // clones lost their listeners; give this copy its own
     });
     ride.classList.add('on'); document.documentElement.style.overflow = 'hidden'; if(window.the87Lenis) window.the87Lenis.stop(); ride.scrollTop = 0;
     requestAnimationFrame(() => requestAnimationFrame(() => rideBody.querySelectorAll('.route-card').forEach(c => c.classList.add('go'))));
