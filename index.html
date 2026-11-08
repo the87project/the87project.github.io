@@ -3076,11 +3076,12 @@ function render(){
     if(e.pairing){
       // two buses per role: outgoing minister driving left (mirrored), incoming driving right
       const rendered = e.pairing.map((p, pi) => {
-        const {svg, counts} = roomSvg(p.groups, 42 + i*7 + pi*3, p.status === 'outgoing');
+        const seed = 42 + i*7 + pi*3;
+        const {svg, counts, lists} = roomSvg(p.groups, seed, p.status === 'outgoing');
         const legendHtml = p.groups.map((g, gi) => `
           <span class="legend-item"><span class="legend-swatch" style="background:${g.color}"></span>${g.label} (${counts[gi]}) &middot; ${g.pct}%</span>
         `).join('');
-        return {p, svg, legendHtml, counts};
+        return {p, svg, legendHtml, counts, lists, seed};
       });
 
       wrap.innerHTML = `
@@ -3095,7 +3096,7 @@ function render(){
             <span class="pair-name">${r.p.name}</span>
             <span class="pair-net">${netStr(r.p.groups)}</span>
           </div>
-          <div class="room-wrap">${r.svg}</div>
+          <div class="room-wrap">${r.svg}<button type="button" class="plan-toggle" aria-pressed="false">Bird's-eye view</button></div>
           <div class="legend">${r.legendHtml}</div>
           ${viewNote(r.p.name, r.p.groups, r.counts)}
         `).join('')}
@@ -3104,6 +3105,12 @@ function render(){
       `;
       container.appendChild(wrap);
       tagRelated(wrap, e);
+      // a pairing holds two buses, so scope each toggle to its own .room-wrap rather than the entry
+      wrap.querySelectorAll('.room-wrap').forEach((rw, ri) => {
+        const r = rendered[ri]; if(!r) return;
+        rw.__planData = {groups: r.p.groups, counts: r.counts, lists: r.lists, seed: r.seed};
+        wirePlanToggle(rw, rw.__planData);
+      });
       const rcounts0 = getReactionCounts(e.id);
       wrap.querySelectorAll('.react-btn').forEach(btn=>{
         const kind = btn.getAttribute('data-kind');
@@ -3152,8 +3159,11 @@ function render(){
     tagRelated(wrap, e);
     // the compare panel clones these cards, and cloneNode drops listeners, so the data the
     // bird's-eye view needs is parked on the element and the toggle is re-wired per copy.
-    wrap.__planData = {groups: e.groups, counts: counts, lists: lists, seed: planSeed};
-    wirePlanToggle(wrap, wrap.__planData);
+    const singleWrap = wrap.querySelector('.room-wrap');
+    if(singleWrap){
+      singleWrap.__planData = {groups: e.groups, counts: counts, lists: lists, seed: planSeed};
+      wirePlanToggle(singleWrap, singleWrap.__planData);
+    }
 
 
     const rcounts = getReactionCounts(e.id);
@@ -4374,7 +4384,9 @@ openFromHash();
       body.querySelectorAll('.reactions,.entry-actions,.cmp-bar').forEach(x => x.remove());
       body.innerHTML = body.innerHTML.replace(/(wp\d+f?)/g, '$1r' + n);
       card.appendChild(body); rideBody.appendChild(card);
-      wirePlanToggle(card, src.__planData);   // clones lost their listeners; give this copy its own
+      // clones lost their listeners; re-wire each bus, pairing the copies to their sources by order
+      const srcWraps = src.querySelectorAll('.room-wrap'), cardWraps = card.querySelectorAll('.room-wrap');
+      cardWraps.forEach((cw, wi) => { const sw = srcWraps[wi]; if(sw && sw.__planData) wirePlanToggle(cw, sw.__planData); });
     });
     ride.classList.add('on'); document.documentElement.style.overflow = 'hidden'; if(window.the87Lenis) window.the87Lenis.stop(); ride.scrollTop = 0;
     requestAnimationFrame(() => requestAnimationFrame(() => rideBody.querySelectorAll('.route-card').forEach(c => c.classList.add('go'))));
