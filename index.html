@@ -1103,8 +1103,8 @@ body.has-tray{padding-bottom:110px;}
     <p class="search-status" id="searchStatus" aria-live="polite" hidden></p>
     <div class="sortbar" id="sortbar" role="region" aria-label="Sort polls">
       <span class="sortbar-label">Sort</span>
-      <button class="sortbtn active" data-sort="default" type="button">Featured</button>
-      <button class="sortbtn" data-sort="new" type="button">Newest first</button>
+      <button class="sortbtn" data-sort="default" type="button">Featured</button>
+      <button class="sortbtn active" data-sort="new" type="button">Newest first</button>
       <button class="sortbtn" data-sort="old" type="button">Oldest first</button>
     </div>
     <main id="entries" tabindex="-1"></main>
@@ -1219,6 +1219,34 @@ window.THE87_GOATCOUNTER = 'the87project';
 })();
 
 const ENTRIES = [
+  {
+    id: 'self-driving-cars-gb-2026',
+    cat: 'tech', catLabel: 'Technology & AI', date: 'Jun 2026',
+    question: 'Would you be comfortable riding in a self-driving car?',
+    tags: 'autonomous vehicles driverless robotaxi cars transport ai',
+    groups: [
+      {label:'Uncomfortable', pct:73, color:'#C93B32'},
+      {label:'Comfortable', pct:20, color:'#2AA198'},
+      {label:"Don't know", pct:7, color:'#A9A69E'},
+    ],
+    analysis: "Sixty-four of the 87 would not get in, 17 would, and only 6 are undecided \u2014 one of the most settled verdicts on this site, and a bad one for an industry that keeps announcing its arrival. Britain is also among the most sceptical of the eight countries YouGov tested. Note the fieldwork: May and June 2026, before this autumn's trials made the news, so the honest reading is that this is the baseline rather than a reaction to anything. The companion London bus on this site finds Londoners noticeably warmer \u2014 which is the usual pattern for a technology people can actually picture on their own street.",
+    source: 'YouGov eight-country survey, 6 May \u2013 7 June 2026 (GB n=2,107). Comfortable and uncomfortable are as published; the 7% don\u2019t know is the unprinted remainder.',
+    url: 'https://yougov.com/en-gb/articles/55949-how-do-people-in-eight-countries-feel-about-self-driving-cars-buses-trains-and-metros'
+  },
+  {
+    id: 'self-driving-london-2026',
+    cat: 'tech', catLabel: 'Technology & AI', date: 'Jul 2026',
+    question: 'Londoners: would you be comfortable riding in a self-driving car?',
+    tags: 'autonomous vehicles driverless london tube underground buses transport ai',
+    groups: [
+      {label:'Uncomfortable', pct:59, color:'#C93B32'},
+      {label:'Comfortable', pct:29, color:'#2AA198'},
+      {label:"Don't know", pct:12, color:'#A9A69E'},
+    ],
+    analysis: "This is the one bus on the site carrying only Londoners, and it is worth the exception: 52 passengers uncomfortable against 25 comfortable is still a clear no, but it is fourteen points warmer than Britain as a whole. Familiarity, apparently, counts for something. The sting is further down the same survey \u2014 asked about driverless buses specifically, 67% of Londoners were uncomfortable, a harder no than for cars, and only 39% thought a self-driving bus would ever be as safe as a driven one, against 41% who thought it wouldn\u2019t. The city most used to automated transport trusts the Underground version (64% think it will get there) and not the bus. Which, for a project built on a double-decker, is the finding that stings.",
+    source: 'YouGov, 17\u201324 July 2026 (n=1,005 adults in London \u2014 a London sample, not GB). Comfortable and uncomfortable are as published; the 12% don\u2019t know is the unprinted remainder.',
+    url: 'https://yougov.com/en-gb/articles/55954-how-do-londoners-feel-about-self-driving-cars'
+  },
   {
     id: 'voting-intention-nov-2026',
     cat: 'votingintention', catLabel: 'Voting Intention', date: 'Nov 2026',
@@ -2651,7 +2679,7 @@ const container = document.getElementById('entries');
 const aboutSection = document.getElementById('about');
 const tabs = document.querySelectorAll('.tab');
 let currentFilter = 'all';
-let currentSort = 'default';
+let currentSort = 'new';   // the feed opens newest-first; 'Featured' is still one click away
 
 // Sort by when the poll was actually taken, not when it was added to the site.
 // The date label ('Oct 2026') is only month-precise, so we also read the fieldwork
