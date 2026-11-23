@@ -3054,7 +3054,7 @@ function planPerson(x, y, color, rand, hollow, ang){
     + `<path d="M 1 -9.2 A 9.2 9.2 0 0 0 1 9.2 Q -3 5 -3 0 Q -3 -5 1 -9.2 Z" fill="${hair}" ${S}/>`
     + `</g>`;
 }
-function planSvg(groups, counts, lists, seedNum){
+function planSvg(groups, counts, lists, seedNum, stableFaces){
   const W = 1370, UH = 302, LH = 326, TOP = 34, GAP = 70;
   const rand = seeded(seedNum + 1000);
   const upY = TOP, loY = TOP + UH + GAP;
@@ -3077,11 +3077,17 @@ function planSvg(groups, counts, lists, seedNum){
     lists[d].forEach((gi, k) => { if(arr[k]) out.push({s: arr[k], gi}); });
   });
   out.sort((a, b) => a.s.y - b.s.y);
-  out.forEach(o => {
+  // stableFaces: as in the side view, give each place its own stream so a person's face and the way
+  // they are turned do not shift when the grouping changes. planPerson skips its skin and hair draws
+  // for a hollow figure, so the shared stream's consumption depends on the don't-know count and the
+  // decks would otherwise be recast on every switch. The place order here is purely geometric, so it
+  // is the same for every cut.
+  out.forEach((o, oi) => {
     const s = o.s, g = groups[o.gi];
-    const jx = (rand() - .5) * (s.seated ? 4 : 12), jy = (rand() - .5) * (s.seated ? 3 : 10);
-    const ang = s.seated ? (rand() - .5) * 10 : rand() * 360;
-    svg += planPerson(s.x + jx, s.y + jy, g.color, rand, hollowGroup(o.gi), ang);
+    const r = stableFaces ? seeded(seedNum + 1000 + (oi + 1) * 7919) : rand;
+    const jx = (r() - .5) * (s.seated ? 4 : 12), jy = (r() - .5) * (s.seated ? 3 : 10);
+    const ang = s.seated ? (r() - .5) * 10 : r() * 360;
+    svg += planPerson(s.x + jx, s.y + jy, g.color, r, hollowGroup(o.gi), ang);
   });
   return svg + '</svg>';
 }
@@ -3114,7 +3120,7 @@ function wirePlanToggle(scope, data){
   let planEl = host.querySelector('svg.plan');         // a clone may already carry one
   const toggle = () => {
     if(!planEl){                                        // built on first use
-      roomEl.insertAdjacentHTML('afterend', planSvg(data.groups, data.counts, data.lists, data.seed));
+      roomEl.insertAdjacentHTML('afterend', planSvg(data.groups, data.counts, data.lists, data.seed, data.stable));
       planEl = host.querySelector('svg.plan');
       planEl.addEventListener('click', toggle);
     }
@@ -3381,7 +3387,7 @@ function render(){
     // bird's-eye view needs is parked on the element and the toggle is re-wired per copy.
     const singleWrap = wrap.querySelector('.room-wrap');
     if(singleWrap){
-      singleWrap.__planData = {groups: openGroups, counts: counts, lists: lists, seed: planSeed};
+      singleWrap.__planData = {groups: openGroups, counts: counts, lists: lists, seed: planSeed, stable: !!views};
       wirePlanToggle(singleWrap, singleWrap.__planData);
     }
 
@@ -3402,9 +3408,17 @@ function render(){
           const v = views[vi];
           const next = roomSvg(v.groups, planSeed, false, true);
           singleWrap.classList.remove('plan-on');
+          // stay in whichever view the reader already has open, rather than dropping them back
+          // to the side view. The bus is rebuilt either way, so the plan is re-entered through the
+          // button's own handler: that builds the new plan SVG and gets the label and aria state right.
+          const wasPlan = singleWrap.classList.contains('plan-on');
           singleWrap.innerHTML = next.svg + '<button type="button" class="plan-toggle" aria-pressed="false">Bird\'s-eye view</button>';
-          singleWrap.__planData = {groups: v.groups, counts: next.counts, lists: next.lists, seed: planSeed};
+          singleWrap.__planData = {groups: v.groups, counts: next.counts, lists: next.lists, seed: planSeed, stable: true};
           wirePlanToggle(singleWrap, singleWrap.__planData);
+          if(wasPlan){
+            const pt = singleWrap.querySelector('.plan-toggle');
+            if(pt) pt.click();
+          }
           if(legendEl) legendEl.innerHTML = legendFor(v.groups, next.counts);
           if(cardsEl) cardsEl.innerHTML = cardsFor(v.groups, next.counts);
           if(baseEl) baseEl.textContent = v.base;
