@@ -558,6 +558,13 @@ svg.plan[hidden]{display:none !important;}
 .legend-item{display:flex; align-items:center; gap:6px;}
 .legend-swatch{width:8px; height:8px; flex-shrink:0;}
 
+/* ---------- BREAKDOWN SWITCHER ---------- */
+/* the chips carry .sortbtn as well, so they inherit the sort pills' look, their hover and
+   active states, and their overrides in dark mode and in the wide sidebar layout */
+.bdrow{display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:20px 0 2px;}
+.bdrow .sortbar-label{margin-right:4px;}
+.bd-base{margin:10px 0 0; font-size:12.5px; color:var(--slate);}
+
 /* ---------- CABINET PAIRINGS ---------- */
 .pair-head{
   display:flex; align-items:center; gap:12px;
@@ -1121,6 +1128,8 @@ body.has-tray{padding-bottom:110px;}
         <p>Every entry starts as a set of percentages from a single poll. Each percentage is multiplied by 87 to give that group's exact share of the bus, which is almost never a whole number: 4% is 3.48 passengers. Every group first gets the whole seats it has earned (3 in that example). The seats still unassigned are then handed out one at a time to the groups with the largest fractions left over, until the bus holds exactly 87 people. This is the &ldquo;largest remainder&rdquo; method. It does not favour the biggest group; a spare seat goes to whichever group was closest to earning one.</p>
         <p>Nothing is rounded up to make a group visible. A group only has a seat if its share earns one, so a very small group can have none: 0.1% of respondents is a tenth of one passenger, and drawing it as a whole person would overstate it more than tenfold. Its percentage is still printed in the entry.</p>
         <p><strong>Why the percentages don't always add up to 100.</strong> Pollsters round each figure to a whole number, so a published set can sum to 99 or 101. The figures are always shown as published. Where they don't sum to exactly 100, each group's share is scaled by the total so the bus still seats exactly 87 people. Where a poll doesn't print its &ldquo;don't know&rdquo; share, the entry says so and shows the remainder as a separate group.</p>
+        <p><strong>Where the tables give more than a percentage.</strong> Published percentages are rounded to whole numbers before anyone outside the polling company sees them, and on a smaller subgroup that rounding is sometimes enough to move a passenger from one group to another. Where a source publishes the underlying respondent counts as well, the seats are worked out from those counts instead, using the same method described above. The percentages shown in the entry are still the ones the pollster published.</p>
+        <p><strong>Buses you can re-sort.</strong> A few entries carry more than one cut of the same question, with buttons above the bus to switch between them &mdash; by age, say, or by the class people say they belong to. It is the same 87 seats and the same 87 people each time, in the same places, with only the groups they fall into changing. Each cut names the number of respondents it rests on, which is smaller than the full sample and so carries a wider margin of error.</p>
         <p><strong>Polls and official statistics.</strong> Most buses are opinion polls: a sample of people asked a question. Some are not. A few are counts of who actually holds a role or was admitted somewhere, such as the share of MPs who are women or who went to private school. Those come from official releases and published research, and the source line says which kind each one is. They are drawn the same way, but they describe a group of people rather than what people think.</p>
         <p><strong>Estimates.</strong> Where no official count exists and the figure rests on a published estimate or a think tank's own tally, the entry carries an <em>Estimate</em> tag, and its commentary explains how the number was reached and how firm it is.</p>
         <p><strong>Corrections.</strong> If a figure looks wrong, or a source has been updated, please say so: use <em>Report a correction</em> in the footer, or email <a href="mailto:support@the87project.com">support@the87project.com</a>. Fixes are made to the entry itself, and a note is added to its commentary when the change is more than a typo.</p>
@@ -1241,11 +1250,67 @@ const ENTRIES = [
     question: 'Is social class important to how you think about your own identity?',
     tags: 'class social class identity working class middle class generations mobility',
     groups: [
-      {label:'Very or fairly important', pct:36, color:'#2AA198'},
-      {label:'Not that or not at all important', pct:58, color:'#C93B32'},
-      {label:"Don't know / prefer not to say", pct:6, color:'#A9A69E'},
+      {label:'Very or fairly important', pct:36, share:783, color:'#2AA198'},
+      {label:'Not that or not at all important', pct:58, share:1272, color:'#C93B32'},
+      {label:"Don't know / prefer not to say", pct:6, share:136, color:'#A9A69E'},
     ],
-    analysis: "For a country with a reputation for being obsessed with class, this is a quiet bus: 51 of the 87 say class is not that or not at all important to who they are, against 31 who say it matters. Class finishes seventh of the eight characteristics Ipsos tested \u2014 behind gender (57% important), nationality (56%), regional background (51%), age (49%), sexual orientation (46%) and race or ethnicity (43%), ahead only of religion (30%). The twist is generational, and it runs the opposite way to the clich\u00e9: class matters to 48% of 16\u201334s and just 28% of 55\u201375s. The young, who are meant to have left class behind, are the ones still counting. The self-identified-class split runs against the grain too: 42% of passengers who call themselves middle or upper class say class shapes who they are, against 35% of those who call themselves working class. Same survey: 61% say they grew up in a working-class household and 50% call themselves working class now, and 40% of under-35s think their life would be better in a different class, against 14% of over-55s.",
+    breakdowns: [
+      {
+        label: 'Everyone',
+        base: 'Everyone: all 2,190 respondents, aged 16\u201375 in Great Britain.',
+        groups: [
+          {label:'Very or fairly important', pct:36, share:783, color:'#2AA198'},
+          {label:'Not that or not at all important', pct:58, share:1272, color:'#C93B32'},
+          {label:"Don't know / prefer not to say", pct:6, share:136, color:'#A9A69E'},
+        ]
+      },
+      {
+        label: '16\u201334',
+        base: 'Aged 16\u201334: 693 respondents. Class matters to 48% of them.',
+        groups: [
+          {label:'Very or fairly important', pct:48, share:341, color:'#2AA198'},
+          {label:'Not that or not at all important', pct:45, share:323, color:'#C93B32'},
+          {label:"Don't know / prefer not to say", pct:7, share:48, color:'#A9A69E'},
+        ]
+      },
+      {
+        label: '35\u201354',
+        base: 'Aged 35\u201354: 778 respondents. Class matters to 31% of them.',
+        groups: [
+          {label:'Very or fairly important', pct:31, share:241, color:'#2AA198'},
+          {label:'Not that or not at all important', pct:62, share:476, color:'#C93B32'},
+          {label:"Don't know / prefer not to say", pct:7, share:52, color:'#A9A69E'},
+        ]
+      },
+      {
+        label: '55\u201375',
+        base: 'Aged 55\u201375: 719 respondents. Class matters to 28% of them.',
+        groups: [
+          {label:'Very or fairly important', pct:28, share:201, color:'#2AA198'},
+          {label:'Not that or not at all important', pct:67, share:473, color:'#C93B32'},
+          {label:"Don't know / prefer not to say", pct:5, share:35, color:'#A9A69E'},
+        ]
+      },
+      {
+        label: 'Working class',
+        base: 'The 988 respondents who call themselves working class.',
+        groups: [
+          {label:'Very or fairly important', pct:35, share:377, color:'#2AA198'},
+          {label:'Not that or not at all important', pct:61, share:664, color:'#C93B32'},
+          {label:"Don't know / prefer not to say", pct:4, share:48, color:'#A9A69E'},
+        ]
+      },
+      {
+        label: 'Middle/upper class',
+        base: 'The 909 respondents who call themselves middle or upper class.',
+        groups: [
+          {label:'Very or fairly important', pct:42, share:329, color:'#2AA198'},
+          {label:'Not that or not at all important', pct:55, share:437, color:'#C93B32'},
+          {label:"Don't know / prefer not to say", pct:3, share:21, color:'#A9A69E'},
+        ]
+      },
+    ],
+    analysis: "For a country with a reputation for being obsessed with class, this is a quiet bus: 51 of the 87 say class is not that or not at all important to who they are, against 31 who say it matters. Class finishes seventh of the eight characteristics Ipsos tested \u2014 behind gender (57% important), nationality (56%), regional background (51%), age (49%), sexual orientation (46%) and race or ethnicity (43%), ahead only of religion (30%). Then press the age buttons and the same 87 people re-sort themselves. Among the under-35s, 42 put class somewhere in their sense of self; among the over-55s, 25 do. The young, who are meant to have left class behind, are the ones still counting. The class buttons run against the clich\u00e9 too: 37 of the passengers who call themselves middle or upper class say class shapes who they are, against 30 of those who call themselves working class \u2014 the people most likely to insist class matters are not the ones it is usually said to matter to. Same survey: 61% say they grew up in a working-class household and 50% call themselves working class now, and 40% of under-35s think their life would be better in a different class, against 14% of over-55s.",
     source: 'Ipsos with Politics JOE, 9\u201314 October 2026 (n=2,190 adults aged 16\u201375 in Great Britain). NET figures as published. The 6% combines don\u2019t know (5%) and prefer not to say (2%), which Ipsos publishes as separate rows: it is rounded once from the underlying weighted counts (101 + 35 of 2,190 = 6.2%) rather than twice from the printed parts.',
     url: 'https://www.ipsos.com/en-uk/young-britons-place-significantly-higher-importance-social-class-older-generations-new-ipsos-and'
   },
@@ -2709,13 +2774,21 @@ const TOTAL = 87;
 // Seats per group: largest-remainder method. Each share is scaled to the 87 seats, every group gets the
 // whole seats it has earned, and any seats still unassigned go one at a time to the groups with the biggest
 // leftover fractions (ties: the larger share, then list order). A group very close to zero can have zero seats.
+//
+// A group may carry `share`: the unrounded figure behind its published percentage, usually the weighted
+// respondent count straight off the pollster's tables. Published percentages are each rounded to a whole
+// number before we ever see them, and on a subgroup that rounding is enough to move a passenger between
+// groups. Where `share` is given it feeds the same method below, so the seats follow the real distribution
+// rather than the rounded print of it; `pct` is still what the entry displays. Only the ratios matter, so
+// raw counts work as well as percentages.
 function seatCounts(groups){
-  const total = groups.reduce((t, g) => t + g.pct, 0) || 1;
-  const quota = groups.map(g => g.pct / total * TOTAL);
+  const val = g => (typeof g.share === 'number' ? g.share : g.pct);
+  const total = groups.reduce((t, g) => t + val(g), 0) || 1;
+  const quota = groups.map(g => val(g) / total * TOTAL);
   const seats = quota.map(q => Math.floor(q + 1e-9));
   let left = TOTAL - seats.reduce((a, b) => a + b, 0);
   const order = quota.map((q, i) => i)
-    .sort((a, b) => ((quota[b] - seats[b]) - (quota[a] - seats[a])) || (groups[b].pct - groups[a].pct) || (a - b));
+    .sort((a, b) => ((quota[b] - seats[b]) - (quota[a] - seats[a])) || (val(groups[b]) - val(groups[a])) || (a - b));
   for(let k = 0; left > 0; k++, left--) seats[order[k % order.length]]++;
   return seats;
 }
@@ -2819,7 +2892,7 @@ function specHtml(e){
     + `</span>`;
 }
 
-function roomSvg(groups, seedNum, flipped){
+function roomSvg(groups, seedNum, flipped, stableFaces){
   // coordinate space matches the bus artwork: bus.png is 1792x592
   const W = 1792, IMGH = 592;
   const rand = seeded(seedNum);
@@ -2928,11 +3001,17 @@ function roomSvg(groups, seedNum, flipped){
   const drawSeat = (s, i) => {
     const g = groups[assign[i]];
     const hollow = /don'?t know|unsure|undecided/i.test(g.label);
-    const jx = (rand() - .5) * (s.seated ? 8 : 12);
-    const jy = (rand() - .5) * 7;
-    const sc = SC * (0.95 + rand() * 0.1);
+    // stableFaces: draw each seat from its own stream, keyed by seat index rather than by draw
+    // order, so a seat's face, fidget and scale do not depend on how the groups are sized. The
+    // shared `rand` stream is consumed in draw order, and the draw order shifts with the
+    // don't-know count, so regrouping the same bus would otherwise recast all 87 people.
+    // Off unless asked for: every existing entry keeps the faces it has today.
+    const r = stableFaces ? seeded(seedNum + (i + 1) * 7919) : rand;
+    const jx = (r() - .5) * (s.seated ? 8 : 12);
+    const jy = (r() - .5) * 7;
+    const sc = SC * (0.95 + r() * 0.1);
     if(s.seated) svg += chairSvg(s.x + jx, s.y + jy, sc);
-    svg += personSvg(s.x + jx, s.y + jy, g.color, rand, sc, hollow);
+    svg += personSvg(s.x + jx, s.y + jy, g.color, r, sc, hollow);
   };
   const isHollow = i => /don'?t know|unsure|undecided/i.test(groups[assign[i]].label);
   const wipeId = 'wp' + seedNum + (flipped ? 'f' : '');
@@ -3244,19 +3323,35 @@ function render(){
       continue;
     }
 
-    const {svg, counts, lists} = roomSvg(e.groups, 42 + i*7);
+    // An entry may carry alternative cuts of the same question in `breakdowns`. The first cut is what
+    // the page opens on, and every cut reuses this entry's seed, so the same 87 people keep their seats
+    // and their faces while only the shirt colours move. Entries without it behave exactly as before.
+    const views = (e.breakdowns && e.breakdowns.length > 1) ? e.breakdowns : null;
+    const openGroups = views ? views[0].groups : e.groups;
     const planSeed = 42 + i*7;
+    const {svg, counts, lists} = roomSvg(openGroups, planSeed, false, !!views);
 
-    const cardsHtml = e.groups.map((g, gi) => `
+    const cardsFor = (gs, cnts) => gs.map((g, gi) => `
       <div class="card">
-        <div class="card-num" data-count="${counts[gi]}">${counts[gi]}</div>
+        <div class="card-num" data-count="${cnts[gi]}">${cnts[gi]}</div>
         <div class="card-desc"><span class="card-swatch" style="background:${g.color}"></span>${g.label} &middot; ${g.pct}%</div>
       </div>
     `).join('');
 
-    const legendHtml = e.groups.map((g, gi) => `
-      <span class="legend-item"><span class="legend-swatch" style="background:${g.color}"></span>${g.label} (${counts[gi]})</span>
+    const legendFor = (gs, cnts) => gs.map((g, gi) => `
+      <span class="legend-item"><span class="legend-swatch" style="background:${g.color}"></span>${g.label} (${cnts[gi]})</span>
     `).join('');
+
+    const cardsHtml = cardsFor(openGroups, counts);
+    const legendHtml = legendFor(openGroups, counts);
+
+    // plain buttons rather than a tablist: there are no arrow-key tab semantics here
+    const bdHtml = views ? `
+      <div class="bdrow" role="group" aria-label="Show this question by group">
+        <span class="sortbar-label">Show</span>
+        ${views.map((v, vi) => `<button class="sortbtn bdchip${vi === 0 ? ' active' : ''}" type="button" aria-pressed="${vi === 0}" data-i="${vi}">${v.label}</button>`).join('')}
+      </div>
+    ` : '';
 
     const badgeHtml = e.badge ? `
       <div class="pair-head">
@@ -3271,8 +3366,10 @@ function render(){
         <h2>${e.question}</h2>
       </div>
       ${badgeHtml}
+      ${bdHtml}
       <div class="room-wrap">${svg}<button type="button" class="plan-toggle" aria-pressed="false">Bird's-eye view</button></div>
       <div class="legend">${legendHtml}</div>
+      ${views ? `<p class="bd-base" aria-live="polite">${views[0].base}</p>` : ''}
       ${e.who ? viewNote(e.who, e.groups, counts) : ''}
       <div class="cards">${cardsHtml}</div>
       <p class="analysis">${e.analysis}</p>
@@ -3284,8 +3381,40 @@ function render(){
     // bird's-eye view needs is parked on the element and the toggle is re-wired per copy.
     const singleWrap = wrap.querySelector('.room-wrap');
     if(singleWrap){
-      singleWrap.__planData = {groups: e.groups, counts: counts, lists: lists, seed: planSeed};
+      singleWrap.__planData = {groups: openGroups, counts: counts, lists: lists, seed: planSeed};
       wirePlanToggle(singleWrap, singleWrap.__planData);
+    }
+
+    // Breakdown chips: redraw this one bus for the chosen cut. The bus is rebuilt whole, back to the
+    // side view with a fresh bird's-eye button, and the plan toggle re-wired against the new elements
+    // the previous cut's plan SVG and its listeners hang off the nodes being replaced.
+    if(views && singleWrap){
+      const legendEl = wrap.querySelector('.legend');
+      const cardsEl = wrap.querySelector('.cards');
+      const baseEl = wrap.querySelector('.bd-base');
+      const chips = wrap.querySelectorAll('.bdchip');
+      let activeIdx = 0;
+      chips.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const vi = parseInt(btn.getAttribute('data-i'), 10);
+          if(vi === activeIdx) return;
+          activeIdx = vi;
+          const v = views[vi];
+          const next = roomSvg(v.groups, planSeed, false, true);
+          singleWrap.classList.remove('plan-on');
+          singleWrap.innerHTML = next.svg + '<button type="button" class="plan-toggle" aria-pressed="false">Bird\'s-eye view</button>';
+          singleWrap.__planData = {groups: v.groups, counts: next.counts, lists: next.lists, seed: planSeed};
+          wirePlanToggle(singleWrap, singleWrap.__planData);
+          if(legendEl) legendEl.innerHTML = legendFor(v.groups, next.counts);
+          if(cardsEl) cardsEl.innerHTML = cardsFor(v.groups, next.counts);
+          if(baseEl) baseEl.textContent = v.base;
+          chips.forEach(other => {
+            const on = (other === btn);
+            other.classList.toggle('active', on);
+            other.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+        });
+      });
     }
 
 
