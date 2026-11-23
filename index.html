@@ -1118,9 +1118,9 @@ body.has-tray{padding-bottom:110px;}
         <p>Furthermore, 87 is a mathematically stubborn number. Unlike 100, it doesn't cleanly divide into neat, round intervals. This is a deliberate feature: because your brain cannot effortlessly convert 87 back into a clinical percentage, it forces you to look at the visual data for what it truly represents &mdash; an indivisible group of human beings sharing a single space.</p>
 
         <h2 id="methodology" class="method-title">The methodology, briefly</h2>
-        <p>Every entry starts as a set of percentages from a single poll. Each percentage is converted to a seat count by multiplying by 87 and rounding to the nearest whole passenger &mdash; so 4% becomes roughly 3.5, which rounds up or down depending on what else is happening on the bus. Because real-world percentages rarely divide evenly into 87 seats, the rounded totals are then nudged, one seat at a time, from whichever group currently holds the most passengers, until the bus seats exactly 87 people.</p>
-        <p>No group that registered a genuine, non-zero share in the source polling is ever rounded down to zero. If 1% of respondents held a view, at least one person is on that bus holding it.</p>
-        <p><strong>Why the percentages don't always add up to 100.</strong> Pollsters round each figure to a whole number, so a published set can sum to 99 or 101. Where a source's figures sum to exactly 100, they are used as published. Where they don't, the figures are used as published, and the bus is still built to seat exactly 87 people using the rounding rule above.</p>
+        <p>Every entry starts as a set of percentages from a single poll. Each percentage is multiplied by 87 to give that group's exact share of the bus, which is almost never a whole number: 4% is 3.48 passengers. Every group first gets the whole seats it has earned (3 in that example). The seats still unassigned are then handed out one at a time to the groups with the largest fractions left over, until the bus holds exactly 87 people. This is the &ldquo;largest remainder&rdquo; method. It does not favour the biggest group; a spare seat goes to whichever group was closest to earning one.</p>
+        <p>Nothing is rounded up to make a group visible. A group only has a seat if its share earns one, so a very small group can have none: 0.1% of respondents is a tenth of one passenger, and drawing it as a whole person would overstate it more than tenfold. Its percentage is still printed in the entry.</p>
+        <p><strong>Why the percentages don't always add up to 100.</strong> Pollsters round each figure to a whole number, so a published set can sum to 99 or 101. The figures are always shown as published. Where they don't sum to exactly 100, each group's share is scaled by the total so the bus still seats exactly 87 people. Where a poll doesn't print its &ldquo;don't know&rdquo; share, the entry says so and shows the remainder as a separate group.</p>
         <p><strong>Polls and official statistics.</strong> Most buses are opinion polls: a sample of people asked a question. Some are not. A few are counts of who actually holds a role or was admitted somewhere, such as the share of MPs who are women or who went to private school. Those come from official releases and published research, and the source line says which kind each one is. They are drawn the same way, but they describe a group of people rather than what people think.</p>
         <p><strong>Estimates.</strong> Where no official count exists and the figure rests on a published estimate or a think tank's own tally, the entry carries an <em>Estimate</em> tag, and its commentary explains how the number was reached and how firm it is.</p>
         <p><strong>Corrections.</strong> If a figure looks wrong, or a source has been updated, please say so: use <em>Report a correction</em> in the footer, or email <a href="mailto:support@the87project.com">support@the87project.com</a>. Fixes are made to the entry itself, and a note is added to its commentary when the change is more than a typo.</p>
@@ -1273,7 +1273,7 @@ const ENTRIES = [
       {label:'Comfortable', pct:29, color:'#2AA198'},
       {label:"Don't know", pct:12, color:'#A9A69E'},
     ],
-    analysis: "This is the one bus on the site carrying only Londoners, and it is worth the exception: 52 passengers uncomfortable against 25 comfortable is still a clear no, but it is fourteen points warmer than Britain as a whole. Familiarity, apparently, counts for something. The sting is further down the same survey \u2014 asked about driverless buses specifically, 67% of Londoners were uncomfortable, a harder no than for cars, and only 39% thought a self-driving bus would ever be as safe as a driven one, against 41% who thought it wouldn\u2019t. The city most used to automated transport trusts the Underground version (64% think it will get there) and not the bus. Which, for a project built on a double-decker, is the finding that stings.",
+    analysis: "This is the one bus on the site carrying only Londoners, and it is worth the exception: 51 passengers uncomfortable against 25 comfortable is still a clear no, but it is fourteen points warmer than Britain as a whole. Familiarity, apparently, counts for something. The sting is further down the same survey \u2014 asked about driverless buses specifically, 67% of Londoners were uncomfortable, a harder no than for cars, and only 39% thought a self-driving bus would ever be as safe as a driven one, against 41% who thought it wouldn\u2019t. The city most used to automated transport trusts the Underground version (64% think it will get there) and not the bus. Which, for a project built on a double-decker, is the finding that stings.",
     source: 'YouGov, 17\u201324 July 2026 (n=1,005 adults in London \u2014 a London sample, not GB). Comfortable and uncomfortable are as published; the 12% don\u2019t know is the unprinted remainder.',
     url: 'https://yougov.com/en-gb/articles/55954-how-do-londoners-feel-about-self-driving-cars'
   },
@@ -1289,7 +1289,7 @@ const ENTRIES = [
       {label:'Green', pct:10, color:'#6AB023'},
       {label:'Other parties', pct:9, color:'#A9A69E'},
     ],
-    analysis: "YouGov called this Labour's biggest lead since the tracker restarted in January 2025, and Reform's joint-lowest score in the same period \u2014 but look at where the seats actually moved. Labour is up a single point, which YouGov itself says sits inside the margin of error. The Conservatives are down three. The six-point lead was built by the party behind losing ground, not the party ahead gaining it. Reform's 20 is its joint lowest and the Lib Dems tick up to 12, their best showing on this bus. The published shares add to 99% with no don't-know figure, so these 87 are decided voters scaled to fit \u2014 and because the site's rule hands spare seats to the largest group, Labour's 27% reads as 25 seats here against the Conservatives' 18 and Reform's 17. Thirteen seats separate first from third; 44 is what a majority needs.",
+    analysis: "YouGov called this Labour's biggest lead since the tracker restarted in January 2025, and Reform's joint-lowest score in the same period \u2014 but look at where the seats actually moved. Labour is up a single point, which YouGov itself says sits inside the margin of error. The Conservatives are down three. The six-point lead was built by the party behind losing ground, not the party ahead gaining it. Reform's 20 is its joint lowest and the Lib Dems tick up to 12, their best showing on this bus. The published shares add to 99% with no don't-know figure, so these 87 are decided voters scaled to fit: Labour has 24 seats, the Conservatives and Reform 18 each. Six seats separate first from joint second; 44 is what a majority needs.",
     source: 'YouGov for The Times and Sky News, 8\u20139 November 2026 (n=2,437 GB adults). Published shares sum to 99% and no don\u2019t-know figure is given.',
     url: 'https://yougov.com/en-gb/articles/55928-voting-intention-8-9-november-2026-lab-27-con-21-ref-20-ld-12-grn-10'
   },
@@ -1385,7 +1385,7 @@ const ENTRIES = [
       {label:'Employed, non-graduate-level job', pct:20, color:'#E28A2B'},
       {label:'Unemployed or economically inactive', pct:12, color:'#8C8A80'},
     ],
-    analysis: "This week's talk of collapsing graduate vacancies makes it sound like the whole bus is jobless — but the government's own figures paint a steadier picture: 60 of 87 working-age graduates are in a genuinely graduate-level job, a share that actually inched up on the year before. The more interesting seats are the 17 who took a degree and ended up somewhere that never needed one, and the 10 not working at all. Worth flagging: this bus is every working-age graduate in England, not just this year's leavers — so the newest, most anxious graduates are only a handful of these passengers, not the whole load.",
+    analysis: "This week's talk of collapsing graduate vacancies makes it sound like the whole bus is jobless — but the government's own figures paint a steadier picture: 59 of 87 working-age graduates are in a genuinely graduate-level job, a share that actually inched up on the year before. The more interesting seats are the 17 who took a degree and ended up somewhere that never needed one, and the 11 not working at all. Worth flagging: this bus is every working-age graduate in England, not just this year's leavers — so the newest, most anxious graduates are only a handful of these passengers, not the whole load.",
     source: 'Department for Education: Graduate Labour Market Statistics, 2024',
     url: 'https://explore-education-statistics.service.gov.uk/find-statistics/graduate-labour-markets/2024'
   },
@@ -1441,7 +1441,7 @@ const ENTRIES = [
       {label:'Oppose', pct:17, color:'#C93B32'},
       {label:'Undecided', pct:19, color:'#A9A69E'},
     ],
-    analysis: "Fifty-five passengers back government funding for forty new live facial recognition vans on Britain's streets — nearly two-thirds of the bus, at a time when police forces are already widening deployment despite sustained opposition from civil liberties campaigners. Fifteen are opposed outright. The other seventeen haven't made up their minds, which is a lot of people still weighing a technology that, by the time they decide, may already be parked on their high street.",
+    analysis: "Fifty-six passengers back government funding for forty new live facial recognition vans on Britain's streets — nearly two-thirds of the bus, at a time when police forces are already widening deployment despite sustained opposition from civil liberties campaigners. Fifteen are opposed outright. The other sixteen haven't made up their minds, which is a lot of people still weighing a technology that, by the time they decide, may already be parked on their high street.",
     source: 'Ipsos / Daily Mail, 5 Feb 2026 (n=970, England & Wales, 18-75)',
     url: 'https://www.ipsos.com/en-uk/public-back-use-facial-recognition-safer-streets-are-sceptical-about-ai-chatbots-ipsos-poll-finds'
   },
@@ -1571,7 +1571,7 @@ const ENTRIES = [
       {label:'Sales & customer service', pct:7, color:'#C93B32'},
       {label:'Process, plant & machine operatives', pct:5, color:'#A6447A'},
     ],
-    analysis: "No single occupation gets close to owning this bus. Professional occupations — teachers, engineers, senior nurses, accountants — take the largest single block at 22 of 87, roughly a quarter, but that still leaves three in four passengers doing something else entirely. Associate professional and admin roles between them (13 plus 10) cover almost exactly as much ground as the professional block alone, and the two together outnumber managers and directors more than two-to-one. The smallest group on board is process, plant and machine operatives — just 4 passengers, a reminder of how much of Britain's old industrial workforce has shrunk, automated, or been reclassified into services over the last generation.",
+    analysis: "No single occupation gets close to owning this bus. Professional occupations — teachers, engineers, senior nurses, accountants — take the largest single block at 23 of 87, roughly a quarter, but that still leaves three in four passengers doing something else entirely. Associate professional and admin roles between them (13 plus 9) cover almost exactly as much ground as the professional block alone, and the two together outnumber managers and directors more than two-to-one. The smallest group on board is process, plant and machine operatives — just 4 passengers, a reminder of how much of Britain's old industrial workforce has shrunk, automated, or been reclassified into services over the last generation.",
     source: 'GOV.UK Ethnicity facts and figures: Employment by occupation (Annual Population Survey)',
     url: 'https://www.ethnicity-facts-figures.service.gov.uk/work-pay-and-benefits/employment/employment-by-occupation/latest'
   },
@@ -1616,7 +1616,7 @@ const ENTRIES = [
       {label:'Liberal Democrat', pct:5, color:'#FAA61A'},
       {label:'Other / Independent', pct:1, color:'#8E7CC3'},
     ],
-    analysis: "Put everyone who voted Labour in 2024 back on the bus and ask again today, and most are still sitting with the party — but the empty seats tell their own story. Reform UK and the 'don't know' bench are now neck and neck for second place, each drawing off about one in ten former Labour voters, while the Greens alone are picking up nearly as many defectors as the Conservatives and Liberal Democrats combined. (The published figures total 98%, not 100% — in line with this site's rounding rule that no group is ever dropped off the bus, the couple of leftover seats land with the largest group, Labour.)",
+    analysis: "Put everyone who voted Labour in 2024 back on the bus and ask again today, and most are still sitting with the party — but the empty seats tell their own story. Reform UK and the 'don't know' bench are now neck and neck for second place, each drawing off about one in ten former Labour voters, while the Greens alone are picking up nearly as many defectors as the Conservatives and Liberal Democrats combined. (The published figures total 98%, not 100%, so each share is scaled up slightly to fill all 87 seats.)",
     source: 'More in Common, 2024 Labour voters — current voting intention',
     url: 'https://www.moreincommon.org.uk/'
   },
@@ -1658,7 +1658,7 @@ const ENTRIES = [
       {label:'Stay out', pct:34, color:'#C93B32'},
       {label:'Undecided', pct:11, color:'#A9A69E'},
     ],
-    analysis: "A decade on from the referendum, this bus has quietly changed its mind: 47 passengers would now vote to rejoin against 30 who'd stay out — almost the mirror image of 2016. It fits the pattern More in Common has tracked, with support for rejoining rising across nearly every voter segment since the vote. But before treating this as settled, read the next entry.",
+    analysis: "A decade on from the referendum, this bus has quietly changed its mind: 48 passengers would now vote to rejoin against 30 who'd stay out — almost the mirror image of 2016. It fits the pattern More in Common has tracked, with support for rejoining rising across nearly every voter segment since the vote. But before treating this as settled, read the next entry.",
     source: 'YouGov, 2–3 June 2026',
     url: 'https://yougov.com/en-gb/topics/politics'
   },
@@ -2047,7 +2047,7 @@ const ENTRIES = [
       {label:'Oppose', pct:57, color:'#C93B32'},
       {label:"Don't know", pct:11, color:'#A9A69E'},
     ],
-    analysis: "Parliament has voted to lower the voting age to 16, but the bus never asked for it: only 28 of the 87 support the change, while 49 oppose it. Opposition runs across almost every age group and party — including, in some polls, among 16- and 17-year-olds themselves. It is an unusual reform in that the people it enfranchises are among the least enthusiastic about being enfranchised.",
+    analysis: "Parliament has voted to lower the voting age to 16, but the bus never asked for it: only 28 of the 87 support the change, while 50 oppose it. Opposition runs across almost every age group and party — including, in some polls, among 16- and 17-year-olds themselves. It is an unusual reform in that the people it enfranchises are among the least enthusiastic about being enfranchised.",
     source: 'YouGov, July 2025',
     url: 'https://yougov.co.uk/politics'
   },
@@ -2216,7 +2216,7 @@ const ENTRIES = [
       {label:'Some other party', pct:3, color:'#6B7280'},
       {label:"Don't know", pct:32, color:'#A9A69E'},
     ],
-    analysis: "Nobody owns the opposition. The Conservatives edge it with 23 of the 87 passengers, Reform UK is close behind on 19, and the Greens and Lib Dems manage 8 and 5. The biggest group by far is the 29 who can't name an effective opposition at all. That the party polling third in voting intention is still seen as the best opposition suggests Reform's recent slide has cost it more than votes.",
+    analysis: "Nobody owns the opposition. The Conservatives edge it with 24 of the 87 passengers, Reform UK is close behind on 19, and the Greens and Lib Dems manage 8 and 5. The biggest group by far is the 28 who can't name an effective opposition at all. That the party polling third in voting intention is still seen as the best opposition suggests Reform's recent slide has cost it more than votes.",
     source: 'YouGov daily question, 5 October 2026 (n=5,125; figures sum to 99% as published)',
     url: 'https://yougov.com/en-gb/daily-results/20261005-6ec94-1'
   },
@@ -2229,7 +2229,7 @@ const ENTRIES = [
       {label:'Not ready', pct:59, color:'#C93B32'},
       {label:'Neither / not stated', pct:21, color:'#A9A69E'},
     ],
-    analysis: "Seventeen of the 87 passengers think the Conservatives are ready to govern again, and 52 do not. That is still a clear thumbs-down, but it is nearly double the 11% who said so a year ago, one of several measures on which Kemi Badenoch's party has recovered ground. Her net favourability is still negative (32% favourable, 47% unfavourable), so it is a recovery from a very low base. The remaining 18 are the residual, since YouGov does not publish a don't-know figure for this question.",
+    analysis: "Eighteen of the 87 passengers think the Conservatives are ready to govern again, and 51 do not. That is still a clear thumbs-down, but it is nearly double the 11% who said so a year ago, one of several measures on which Kemi Badenoch's party has recovered ground. Her net favourability is still negative (32% favourable, 47% unfavourable), so it is a recovery from a very low base. The remaining 18 are the residual, since YouGov does not publish a don't-know figure for this question.",
     source: 'YouGov, 31 August–1 September 2026 (n=2,008); residual calculated, not published',
     url: 'https://yougov.com/en-gb/articles/55673-how-do-britons-see-the-conservatives-and-kemi-badenoch-ahead-of-the-partys-2026-conference'
   },
@@ -2243,7 +2243,7 @@ const ENTRIES = [
       {label:'Oppose', pct:19, color:'#E28A2B'},
       {label:"Don't know", pct:17, color:'#A9A69E'},
     ],
-    analysis: "Put a firm limit on what landlords can charge and 55 of the 87 say yes, against 17 who object. The support is not lukewarm either: 34 are 'strongly' for it, while only 8 are strongly against. Fifteen have no view. The groups here add to 101% as published because of rounding, but the message is clear: a rent cap is one of the least contested ideas on this bus, even if the details of any real policy would be far harder to agree.",
+    analysis: "Put a firm limit on what landlords can charge and 56 of the 87 say yes, against 16 who object. The support is not lukewarm either: 34 are 'strongly' for it, while only 8 are strongly against. Fifteen have no view. The groups here add to 101% as published because of rounding, but the message is clear: a rent cap is one of the least contested ideas on this bus, even if the details of any real policy would be far harder to agree.",
     source: 'YouGov daily question, 2 October 2026 (n=5,367; sums to 101% from rounding)',
     url: 'https://yougov.com/en-gb/daily-results/20261002-1e97e-2'
   },
@@ -2297,7 +2297,7 @@ const ENTRIES = [
       {label:'No', pct:45, color:'#E28A2B'},
       {label:"Don't know", pct:20, color:'#A9A69E'},
     ],
-    analysis: "Ask the bus the question cold and only 30 of the 87 say yes, with 40 saying no and 17 unsure. Then YouGov did something simple: it told people what the word means (men and women having equal rights and status) and asked again. This time 65% said yes, around 57 passengers. Asked about the principle on its own, 83% agreed that men and women should have equal rights and status, about 72 seats, against 11% (10) who disagreed. The labels are doing a lot of the work here: the idea is popular, the word is a much harder sell.",
+    analysis: "Ask the bus the question cold and only 31 of the 87 say yes, with 39 saying no and 17 unsure. Then YouGov did something simple: it told people what the word means (men and women having equal rights and status) and asked again. This time 65% said yes, around 57 passengers. Asked about the principle on its own, 83% agreed that men and women should have equal rights and status, about 72 seats, against 11% (10) who disagreed. The labels are doing a lot of the work here: the idea is popular, the word is a much harder sell.",
     source: 'YouGov: Are you a feminist? It depends how you ask (published 6 March 2025); sums to 100% as published',
     url: 'https://yougov.com/en-gb/articles/51745-are-you-a-feminist-it-depends-how-you-ask'
   },
@@ -2587,7 +2587,7 @@ const ENTRIES = [
       {label:"Neither / don't know", pct:48, color:'#A9A69E'},
       ]},
     ],
-    analysis: "Both figures now come from the same Ipsos poll (17-22 July), so this swap is a like-for-like comparison: Streeting left Health at net −23 and Cooper arrived at −16, seven points better. It was taken the week Burnham took office, before either had time in the job, and Cooper's grey section is the bigger one, 41 of 87 passengers against Streeting's 37. The NHS brief moves from one of the cabinet's most unfavourably viewed ministers to one of its least examined.",
+    analysis: "Both figures now come from the same Ipsos poll (17-22 July), so this swap is a like-for-like comparison: Streeting left Health at net −23 and Cooper arrived at −16, seven points better. It was taken the week Burnham took office, before either had time in the job, and Cooper's grey section is the bigger one, 42 of 87 passengers against Streeting's 37. The NHS brief moves from one of the cabinet's most unfavourably viewed ministers to one of its least examined.",
     source: "Ipsos Political Pulse, July 2026 (fieldwork 17-22 July, 2,255 GB adults aged 18+); Neither / don't know = everyone who gave neither a favourable nor an unfavourable view, calculated.",
     url: 'https://www.ipsos.com/sites/default/files/ct/news/documents/2026-08/Ipsos_July%2026_Political%20Pulse_v1d4_Int%20Use%20Only.pdf'
   },
@@ -2705,6 +2705,20 @@ const ENTRIES = [
 ];
 
 const TOTAL = 87;
+
+// Seats per group: largest-remainder method. Each share is scaled to the 87 seats, every group gets the
+// whole seats it has earned, and any seats still unassigned go one at a time to the groups with the biggest
+// leftover fractions (ties: the larger share, then list order). A group very close to zero can have zero seats.
+function seatCounts(groups){
+  const total = groups.reduce((t, g) => t + g.pct, 0) || 1;
+  const quota = groups.map(g => g.pct / total * TOTAL);
+  const seats = quota.map(q => Math.floor(q + 1e-9));
+  let left = TOTAL - seats.reduce((a, b) => a + b, 0);
+  const order = quota.map((q, i) => i)
+    .sort((a, b) => ((quota[b] - seats[b]) - (quota[a] - seats[a])) || (groups[b].pct - groups[a].pct) || (a - b));
+  for(let k = 0; left > 0; k++, left--) seats[order[k % order.length]]++;
+  return seats;
+}
 const container = document.getElementById('entries');
 const aboutSection = document.getElementById('about');
 const tabs = document.querySelectorAll('.tab');
@@ -2815,14 +2829,8 @@ function roomSvg(groups, seedNum, flipped){
   svg += `<text x="200" y="-18" font-family="Archivo, sans-serif" font-weight="600" font-size="20" letter-spacing="1.5" fill="#83898F">Upper deck &middot; 40 people</text>`;
   svg += `<text x="720" y="-18" font-family="Archivo, sans-serif" font-weight="600" font-size="20" letter-spacing="1.5" fill="#83898F">Lower deck &middot; 47 people (22 seated, 25 standing)</text>`;
 
-  // ----- counts with min-1 guarantee -----
-  let counts = groups.map(g => Math.max(1, Math.round((g.pct/100)*TOTAL)));
-  let diff = counts.reduce((a,b)=>a+b,0) - TOTAL;
-  while(diff !== 0){
-    const idx = counts.indexOf(Math.max(...counts));
-    counts[idx] += diff > 0 ? -1 : 1;
-    diff += diff > 0 ? -1 : 1;
-  }
+  // ----- seat counts (largest remainder) -----
+  const counts = seatCounts(groups);
   svg = svg.replace('grouped by opinion', 'grouped by opinion: ' + groups.map((g, i) => escapeForHtml(g.label) + ' ' + counts[i]).join(', '));
 
   // ----- 87 places mapped to each artwork's transparent window bands -----
@@ -4145,12 +4153,6 @@ document.getElementById('lastChecked').textContent = SITE_LAST_CHECKED;
 
 // ----- data download: every poll, group, percentage and seat count, as CSV or JSON -----
 (function(){
-  function seatCounts(groups){
-    const c = groups.map(g => Math.max(1, Math.round(g.pct / 100 * 87)));
-    let d = c.reduce((a, b) => a + b, 0) - 87;
-    while(d !== 0){ const i = c.indexOf(Math.max(...c)); c[i] += d > 0 ? -1 : 1; d += d > 0 ? -1 : 1; }
-    return c;
-  }
   function rows(){
     const out = [];
     ENTRIES.forEach(e => {
@@ -4171,7 +4173,7 @@ document.getElementById('lastChecked').textContent = SITE_LAST_CHECKED;
     const a = ev.target.closest && ev.target.closest('[data-download]'); if(!a) return;
     ev.preventDefault();
     const r = rows();
-    if(a.dataset.download === 'json') save('the87project-polls.json', 'application/json', JSON.stringify({site:'https://the87project.com/', note:'Each poll is redrawn as 87 seats; seats = percent x 87, rounded, adjusted so every poll totals 87.', rows:r}, null, 1));
+    if(a.dataset.download === 'json') save('the87project-polls.json', 'application/json', JSON.stringify({site:'https://the87project.com/', note:'Each poll is redrawn as 87 seats; seats = percent x 87, whole seats first, then spare seats to the largest remainders so every poll totals 87.', rows:r}, null, 1));
     else { const keys = Object.keys(r[0]); save('the87project-polls.csv', 'text/csv;charset=utf-8', '\ufeff' + [keys.join(',')].concat(r.map(x => keys.map(k => csvCell(x[k])).join(','))).join('\r\n')); }
   });
 })();
@@ -4587,9 +4589,7 @@ openFromHash();
   list.sort((a, b) => (entryDateValue(b[0]) - entryDateValue(a[0])) || (b[1] - a[1]));
   if(!list.length) return;
   const e = list[0][0];
-  const c = e.groups.map(g => Math.max(1, Math.round(g.pct / 100 * 87)));
-  let diff = c.reduce((a, b) => a + b, 0) - 87;
-  while(diff !== 0){ const k = c.indexOf(Math.max(...c)); c[k] += diff > 0 ? -1 : 1; diff += diff > 0 ? -1 : 1; }
+  const c = seatCounts(e.groups);
   const kEl = document.createElement('span'); kEl.className = 'cl-k'; kEl.textContent = 'Latest poll \u00b7 ' + e.date + ' \u00b7 87 seats';
   const qEl = document.createElement('span'); qEl.className = 'cl-q'; qEl.textContent = e.question;
   const dots = document.createElement('span'); dots.className = 'cl-dots'; dots.setAttribute('aria-hidden', 'true');
